@@ -1,0 +1,15 @@
+{
+    "srcDir": "src",
+    "mainModuleFileName": "index.ts",
+    "mainModuleName": "Utils",
+    "fileExtensions": [
+        ".ts", ".js"
+    ],
+    "externalModules": [],
+    "copyAssets": true,
+    "sourcemap": true,
+    "uglify": false,
+    "libConfig": {
+        "enabled": true
+    }
+}

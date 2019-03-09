@@ -1,0 +1,1 @@
+export {default as isString} from './modules/is-string';

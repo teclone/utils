@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "declaration": true,
+        "emitDeclarationOnly": true,
+        "declarationDir": "./typings",
+        "module": "ESNext",
+        "moduleResolution": "node",
+        "noImplicitAny": false,
+        "outDir": "./lib",
+        "sourceMap": true
+    },
+    "include": [
+        "src/**/*"
+    ],
+    "exclude": ["node_modules"]
+}
