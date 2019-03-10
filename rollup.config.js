@@ -4,7 +4,7 @@ import { uglify } from 'rollup-plugin-uglify';
 
 import rollupAll from 'rollup-all';
 
-let plugins = [
+const plugins = [
     resolve({
         extensions: ['.ts', '.js'],
     }),

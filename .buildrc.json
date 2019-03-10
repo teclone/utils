@@ -5,11 +5,10 @@
     "fileExtensions": [
         ".ts", ".js"
     ],
-    "externalModules": [],
-    "copyAssets": true,
-    "sourcemap": true,
-    "uglify": false,
     "libConfig": {
+        "enabled": true
+    },
+    "distConfig": {
         "enabled": true
     }
 }

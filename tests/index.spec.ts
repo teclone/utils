@@ -5,5 +5,8 @@ describe('Utils', function() {
         it(`should return true if argument is a string`, function() {
             expect(Utils.isString('my string')).toBeTruthy();
         });
+        it(`should return false if argument is not a string`, function() {
+            expect(Utils.isString([])).toBeFalsy();
+        });
     });
 });
