@@ -6,7 +6,7 @@
   "scripts": {
     "commit": "git-cz",
     "test": "BABEL_ENV=test jest",
-    "build": "tsc && BABEL_ENV=build rollup --config"
+    "build": "rimraf dist lib typings && tsc && BABEL_ENV=build rollup --config"
   },
   "author": "Harrison Ifeanyichukwu <Harrisonifeanyichukwu@gmail.com> (https://github.com/harrison-ifeanyichukwu)",
   "license": "MIT",
@@ -20,6 +20,7 @@
     "commitizen": "3.0.7",
     "cz-conventional-changelog": "2.1.0",
     "jest": "24.3.1",
+    "rimraf": "2.6.3",
     "rollup": "0.66.6",
     "rollup-all": "1.5.1",
     "rollup-plugin-babel": "4.0.3",
