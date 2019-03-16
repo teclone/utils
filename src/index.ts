@@ -86,7 +86,7 @@ export const isParameter = (arg: any, isNullValid: boolean = true) => {
 /**
  * puts argument into an array if it is not an array,
  */
-export const makeArray = (arg: any, isNullValid: boolean = false): Array<any> => {
+export const makeArray = <T>(arg: T[] | T, isNullValid: boolean = false): Array<T> => {
     if (isArray(arg))
         return arg;
 
@@ -105,4 +105,43 @@ export const keyNotSetOrTrue = (key: string, object: object): boolean => {
  */
 export const keySetAndTrue = (key: string, object: object): boolean => {
     return typeof object[key] !== 'undefined' && !!object[key];
+};
+
+/**
+ * returns the value for the first key that exists in the object otherwise,
+ * it returns the default value
+ */
+export const value = <T = any>(keys: string | string[], object: object, defaultValue: T = null): T => {
+    keys = makeArray(keys);
+    for (const key of keys) {
+        if (typeof object[key] !== 'undefined')
+            return object[key];
+    }
+    return defaultValue;
+};
+
+/**
+ * returns the value for the first key that exists in the object whose value is an array otherwise,
+ * it returns the default value
+ */
+export const arrayValue = <T = any>(keys: string | string[], object: object, defaultValue: T[] = []): T[] => {
+    keys = makeArray(keys);
+    for (const key of keys) {
+        if (isArray(object[key]))
+            return object[key];
+    }
+    return defaultValue;
+};
+
+/**
+ * returns the value for the first key that exists in the object whose value is an object otherwise,
+ * it returns the default value
+ */
+export const objectValue = (keys: string | string[], object: object, defaultValue: object = {}): object => {
+    keys = makeArray(keys);
+    for (const key of keys) {
+        if (isObject(object[key]))
+            return object[key];
+    }
+    return defaultValue;
 };

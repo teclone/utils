@@ -1,7 +1,7 @@
 import * as Utils from '../src/index';
 
 describe('Utils', function() {
-    describe('.isString(arg)', function() {
+    describe('.isString(arg: any): boolean', function() {
         it(`should return true if argument is a string`, function() {
             expect(Utils.isString('my string')).toBeTruthy();
         });
@@ -10,7 +10,7 @@ describe('Utils', function() {
         });
     });
 
-    describe('.isNumber(arg)', function() {
+    describe('.isNumber(arg: any): boolean', function() {
         it('should return true if argument is of type number and it is not NaN', function() {
             expect(Utils.isNumber(22)).toBeTruthy();
         });
@@ -21,7 +21,7 @@ describe('Utils', function() {
         });
     });
 
-    describe('isInt(arg)', function() {
+    describe('isInt(arg: any): boolean', function() {
         it(`should return true if argument is an int or can be cast to an int`, function() {
             expect(Utils.isInt('042')).toBeTruthy();
             expect(Utils.isInt('+33')).toBeTruthy();
@@ -35,7 +35,7 @@ describe('Utils', function() {
         });
     });
 
-    describe('isNumeric(arg)', function() {
+    describe('isNumeric(arg: any): boolean', function() {
         it(`should return true if argument is a numeric value`, function() {
             expect(Utils.isNumeric('000.4eeeee')).toBeTruthy();
             expect(Utils.isNumeric('.0004eeeee')).toBeTruthy();
@@ -50,7 +50,7 @@ describe('Utils', function() {
         });
     });
 
-    describe('.isArray(arg)', function() {
+    describe('.isArray(arg: any): boolean', function() {
         it('should return true if argument is an array', function() {
             expect(Utils.isArray([])).toBeTruthy();
         });
@@ -61,7 +61,7 @@ describe('Utils', function() {
         });
     });
 
-    describe('.isCallable(arg)', function() {
+    describe('.isCallable(arg: any): boolean', function() {
         it('should return true if argument is a function', function() {
             expect(Utils.isCallable(name => name)).toBeTruthy();
         });
@@ -71,7 +71,7 @@ describe('Utils', function() {
         });
     });
 
-    describe('.isObject(arg)', function() {
+    describe('.isObject(arg: any): boolean', function() {
         it('should return true if argument is an object', function() {
             expect(Utils.isObject({})).toBeTruthy();
             expect(Utils.isObject([])).toBeTruthy();
@@ -84,7 +84,7 @@ describe('Utils', function() {
         });
     });
 
-    describe('.isPlainObject(arg)', function() {
+    describe('.isPlainObject(arg: any): boolean', function() {
         it('should return true if argument is a plain javascript object', function() {
             expect(Utils.isPlainObject({})).toBeTruthy();
             expect(Utils.isPlainObject(Object.create(null))).toBeTruthy();
@@ -97,7 +97,7 @@ describe('Utils', function() {
         });
     });
 
-    describe('isRegex(arg)', function() {
+    describe('isRegex(arg: any): boolean', function() {
         it(`should return true if argument is a regex object`, function() {
             expect(Utils.isRegex(/something/)).toBeTruthy();
             expect(Utils.isRegex(new RegExp('^\\d+$'))).toBeTruthy();
@@ -109,7 +109,7 @@ describe('Utils', function() {
         });
     });
 
-    describe('.isParameter(arg, isNullValid=true)', function() {
+    describe('.isParameter(arg: any, isNullValid=true): boolean', function() {
         it('should return true if argument is a valid function parameter', function() {
             expect(Utils.isParameter(3.2)).toBeTruthy();
         });
@@ -124,7 +124,7 @@ describe('Utils', function() {
         });
     });
 
-    describe('.makeArray(arg, isNullValid=false)', function() {
+    describe('.makeArray<T>(arg: T | T[], isNullValid=false): T[]', function() {
         it(`should return argument if is an array`, function() {
             const arg = ['item'];
             expect(Utils.makeArray(arg)).toStrictEqual(arg);
@@ -145,7 +145,7 @@ describe('Utils', function() {
         });
     });
 
-    describe('.keyNotSetOrTrue(key, object)', function() {
+    describe('.keyNotSetOrTrue(key: string, object: object): boolean', function() {
         it(`should return true if key is not set in the given object`, function() {
             expect(Utils.keyNotSetOrTrue('key', {})).toBeTruthy();
         });
@@ -159,7 +159,7 @@ describe('Utils', function() {
         });
     });
 
-    describe('.keySetAndTrue(key, object)', function() {
+    describe('.keySetAndTrue(key: string, object: object): boolean', function() {
         it(`should return true if key is set in the given object and true`, function() {
             expect(Utils.keySetAndTrue('key', {key: true})).toBeTruthy();
         });
@@ -168,6 +168,55 @@ describe('Utils', function() {
         its value is falsy`, function() {
             expect(Utils.keySetAndTrue('key', {})).toBeFalsy();
             expect(Utils.keySetAndTrue('key', {key: false})).toBeFalsy();
+        });
+    });
+
+    describe('.value<T=any>(keys: string | string[], object: object, defaultValue: T = null): T', function() {
+        const object = {name: 'Jack', age: 10};
+
+        it(`should return the value for the first set key in the object`, function() {
+            expect(Utils.value('name', object)).toEqual(object.name);
+            expect(Utils.value(['height', 'name'], object)).toEqual(object.name);
+            expect(Utils.value(['height', 'age', 'name'], object)).toEqual(object.age);
+        });
+
+        it(`should return the default value if no key is set in the object`, function() {
+            expect(Utils.value('height', object)).toBeNull();
+            expect(Utils.value(['height', 'unset'], object, 22)).toEqual(22);
+        });
+    });
+
+    describe('.arrayValue<T=any>(keys: string | string[], object: object, defaultValue: T[] = []): T[]', function() {
+        const object = {names: ['Jack', 'Jane'], ages: [10, 20, 30]};
+
+        it(`should return the value for the first set key in the object that is an array`, function() {
+            expect(Utils.arrayValue('names', object)).toEqual(object.names);
+            expect(Utils.arrayValue(['heights', 'names'], object)).toEqual(object.names);
+            expect(Utils.arrayValue(['heights', 'ages', 'names'], object)).toEqual(object.ages);
+        });
+
+        it(`should return the default value if no key is set in the object that is an array`, function() {
+            expect(Utils.arrayValue('heights', object)).toEqual([]);
+            expect(Utils.arrayValue(['heights', 'unset'], object, [22.5])).toEqual([22.5]);
+        });
+    });
+
+    describe('.objectValue(keys: string | string[], object: object, defaultValue: object = {}): object', function() {
+        const object = {
+            settings: {notify: true, zoom: false},
+            themes: ['oneUI', 'touchWiz'],
+            name: 'customApp'
+        };
+
+        it(`should return the value for the first set key in the object that is an object`, function() {
+            expect(Utils.objectValue('settings', object)).toEqual(object.settings);
+            expect(Utils.objectValue(['name', 'themes'], object)).toEqual(object.themes);
+            expect(Utils.objectValue(['settings', 'themes', 'name'], object)).toEqual(object.settings);
+        });
+
+        it(`should return the default value if no key is set in the object that is an object`, function() {
+            expect(Utils.objectValue('heights', object)).toEqual({});
+            expect(Utils.objectValue(['heights', 'unset'], object, object)).toEqual(object);
         });
     });
 });
