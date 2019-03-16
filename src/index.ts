@@ -82,3 +82,27 @@ export const isParameter = (arg: any, isNullValid: boolean = true) => {
 
     return true;
 };
+
+/**
+ * puts argument into an array if it is not an array,
+ */
+export const makeArray = (arg: any, isNullValid: boolean = false): Array<any> => {
+    if (isArray(arg))
+        return arg;
+
+    return isParameter(arg, isNullValid)? [arg] : [];
+};
+
+/**
+ * returns true if key is not set in the given object or key is set and its value is truthy
+ */
+export const keyNotSetOrTrue = (key: string, object: object): boolean => {
+    return typeof object[key] === 'undefined' || !!object[key];
+};
+
+/**
+ * returns true if key is set in the given object and its value is truthy
+ */
+export const keySetAndTrue = (key: string, object: object): boolean => {
+    return typeof object[key] !== 'undefined' && !!object[key];
+};

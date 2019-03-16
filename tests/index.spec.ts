@@ -10,7 +10,7 @@ describe('Utils', function() {
         });
     });
 
-    describe('.isNumber(variable)', function() {
+    describe('.isNumber(arg)', function() {
         it('should return true if argument is of type number and it is not NaN', function() {
             expect(Utils.isNumber(22)).toBeTruthy();
         });
@@ -21,7 +21,7 @@ describe('Utils', function() {
         });
     });
 
-    describe('isInt(variable)', function() {
+    describe('isInt(arg)', function() {
         it(`should return true if argument is an int or can be cast to an int`, function() {
             expect(Utils.isInt('042')).toBeTruthy();
             expect(Utils.isInt('+33')).toBeTruthy();
@@ -35,7 +35,7 @@ describe('Utils', function() {
         });
     });
 
-    describe('isNumeric(variable)', function() {
+    describe('isNumeric(arg)', function() {
         it(`should return true if argument is a numeric value`, function() {
             expect(Utils.isNumeric('000.4eeeee')).toBeTruthy();
             expect(Utils.isNumeric('.0004eeeee')).toBeTruthy();
@@ -50,7 +50,7 @@ describe('Utils', function() {
         });
     });
 
-    describe('.isArray(variable)', function() {
+    describe('.isArray(arg)', function() {
         it('should return true if argument is an array', function() {
             expect(Utils.isArray([])).toBeTruthy();
         });
@@ -61,7 +61,7 @@ describe('Utils', function() {
         });
     });
 
-    describe('.isCallable(variable)', function() {
+    describe('.isCallable(arg)', function() {
         it('should return true if argument is a function', function() {
             expect(Utils.isCallable(name => name)).toBeTruthy();
         });
@@ -71,7 +71,7 @@ describe('Utils', function() {
         });
     });
 
-    describe('.isObject(variable)', function() {
+    describe('.isObject(arg)', function() {
         it('should return true if argument is an object', function() {
             expect(Utils.isObject({})).toBeTruthy();
             expect(Utils.isObject([])).toBeTruthy();
@@ -84,7 +84,7 @@ describe('Utils', function() {
         });
     });
 
-    describe('.isPlainObject(variable)', function() {
+    describe('.isPlainObject(arg)', function() {
         it('should return true if argument is a plain javascript object', function() {
             expect(Utils.isPlainObject({})).toBeTruthy();
             expect(Utils.isPlainObject(Object.create(null))).toBeTruthy();
@@ -97,7 +97,7 @@ describe('Utils', function() {
         });
     });
 
-    describe('isRegex(variable)', function() {
+    describe('isRegex(arg)', function() {
         it(`should return true if argument is a regex object`, function() {
             expect(Utils.isRegex(/something/)).toBeTruthy();
             expect(Utils.isRegex(new RegExp('^\\d+$'))).toBeTruthy();
@@ -109,7 +109,7 @@ describe('Utils', function() {
         });
     });
 
-    describe('.isParameter(variable, isNullValid=true)', function() {
+    describe('.isParameter(arg, isNullValid=true)', function() {
         it('should return true if argument is a valid function parameter', function() {
             expect(Utils.isParameter(3.2)).toBeTruthy();
         });
@@ -121,6 +121,53 @@ describe('Utils', function() {
         it('should accept a second boolean argument indicating if null arguments should be taken as valid', function() {
             expect(Utils.isParameter(null, false)).toBeFalsy();
             expect(Utils.isParameter(null)).toBeTruthy();
+        });
+    });
+
+    describe('.makeArray(arg, isNullValid=false)', function() {
+        it(`should return argument if is an array`, function() {
+            const arg = ['item'];
+            expect(Utils.makeArray(arg)).toStrictEqual(arg);
+        });
+
+        it(`should put argument into an array and return`, function() {
+            const arg = 'item';
+            expect(Utils.makeArray(arg)).toEqual([arg]);
+        });
+
+        it(`should return empty array if argument is undefined or null`, function() {
+            expect(Utils.makeArray(undefined)).toEqual([]);
+            expect(Utils.makeArray(null)).toEqual([]);
+        });
+
+        it(`should take null as valid argument if isNullValid parameter is set to true`, function() {
+            expect(Utils.makeArray(null, true)).toEqual([null]);
+        });
+    });
+
+    describe('.keyNotSetOrTrue(key, object)', function() {
+        it(`should return true if key is not set in the given object`, function() {
+            expect(Utils.keyNotSetOrTrue('key', {})).toBeTruthy();
+        });
+
+        it(`should return true if key is set in the given object and its value is truthy`, function() {
+            expect(Utils.keyNotSetOrTrue('key', {key: 1})).toBeTruthy();
+        });
+
+        it(`should return false if key is set in the given object and its value is falsy`, function() {
+            expect(Utils.keyNotSetOrTrue('key', {key: 0})).toBeFalsy();
+        });
+    });
+
+    describe('.keySetAndTrue(key, object)', function() {
+        it(`should return true if key is set in the given object and true`, function() {
+            expect(Utils.keySetAndTrue('key', {key: true})).toBeTruthy();
+        });
+
+        it(`should return false if key is not set in the given object or if key is set but
+        its value is falsy`, function() {
+            expect(Utils.keySetAndTrue('key', {})).toBeFalsy();
+            expect(Utils.keySetAndTrue('key', {key: false})).toBeFalsy();
         });
     });
 });
