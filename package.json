@@ -6,6 +6,7 @@
   "scripts": {
     "commit": "git-cz",
     "test": "BABEL_ENV=test jest",
+    "watch-test": "BABEL_ENV=test jest --watch",
     "build": "rimraf dist lib typings && tsc && BABEL_ENV=build rollup --config"
   },
   "author": "Harrison Ifeanyichukwu <Harrisonifeanyichukwu@gmail.com> (https://github.com/harrison-ifeanyichukwu)",
