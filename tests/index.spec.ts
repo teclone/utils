@@ -219,4 +219,158 @@ describe('Utils', function() {
             expect(Utils.objectValue(['heights', 'unset'], object, object)).toEqual(object);
         });
     });
+
+    describe(`.scopeCallback(callback: CallbackCache | Callback,
+        scope: object = null, parameters: T | T[] = [])`, function() {
+
+        it(`should return a scoped annonymous function for the given callback`, function() {
+            const scope = {};
+            const mockFn = jest.fn();
+            mockFn.mockReturnThis();
+
+            const scopedCallback = Utils.scopeCallback(mockFn, scope);
+            expect(scopedCallback).toBeInstanceOf(Function);
+
+            scopedCallback();
+            expect(mockFn.mock.results[0].value).toStrictEqual(scope);
+        });
+
+        it(`should pass in the given arguments to the callback when executed`, function() {
+            const parameter = 2;
+            const mockFn = jest.fn();
+            mockFn.mockReturnThis();
+
+            const scopedCallback = Utils.scopeCallback(mockFn, null, parameter);
+
+            scopedCallback(1);
+
+            expect(mockFn.mock.calls[0][0]).toEqual(1);
+            expect(mockFn.mock.calls[0][1]).toEqual(2);
+        });
+
+        it(`should default the scope object to null if not given, and the parameters to empty
+            array`, function() {
+            const mockFn = jest.fn();
+            mockFn.mockReturnThis();
+
+            const scopedCallback = Utils.scopeCallback(mockFn);
+            expect(scopedCallback).toBeInstanceOf(Function);
+
+            scopedCallback();
+            expect(mockFn.mock.results[0].value).toStrictEqual(null);
+            expect(mockFn.mock.calls[0].length).toEqual(0);
+        });
+
+        it(`should generate a scoped callback for the given callback cache object`, function() {
+            const callbackCache: Utils.CallbackCache<jest.Mock> = {
+                callback: jest.fn(),
+                parameters: [1, 2],
+                scope: {id: 1}
+            };
+            callbackCache.callback.mockReturnThis();
+
+            const scopedCallback = Utils.scopeCallback(callbackCache);
+            expect(scopedCallback).toBeInstanceOf(Function);
+
+            scopedCallback(0);
+            callbackCache.parameters = [3, 4];
+            scopedCallback(0);
+
+            expect(callbackCache.callback.mock.calls[0]).toEqual([0, 1, 2]);
+            expect(callbackCache.callback.mock.calls[1]).toEqual([0, 3, 4]);
+        });
+    });
+
+    describe(`.scheduleCallback(callback: Callback, time: number = 1000)`, function() {
+
+        it(`should schedule the execution of the given callback to the given time and return a
+        promise`, function() {
+            expect(Utils.scheduleCallback(jest.fn())).toBeInstanceOf(Promise);
+
+            const mockFn = jest.fn();
+            return Utils.scheduleCallback(mockFn).then(() => {
+                expect(mockFn.mock.calls.length).toEqual(1);
+            });
+        });
+    });
+
+    describe('.generateRandomDigits(length: number = 4): string', function() {
+        it(`should generate random digits up to the given length`, function() {
+            expect(Utils.generateRandomDigits()).toHaveLength(4);
+            expect(Utils.generateRandomDigits(6)).toMatch(/^\d{6}$/);
+        });
+    });
+
+    describe('.generateRandomText(length: number = 4, exemptNumerals: boolean = false): string', function() {
+        it(`should generate random alphabetic and numerical characters up to the given length`, function() {
+            expect(Utils.generateRandomText()).toHaveLength(4);
+            expect(Utils.generateRandomText(6)).toMatch(/^[a-z0-9]{6}$/i);
+        });
+
+        it(`should not include numerical characters if second argument is true`, function() {
+            expect(Utils.generateRandomText(6, true)).toMatch(/^[a-z]{6}$/i);
+        });
+    });
+
+    describe('.camelCase(text: string, delimiter: string | RegExp = /[-_]/): string', function() {
+        it(`should turn the given text string into camel casing using the given delimiter`, function() {
+            expect(Utils.camelCase('my:string', ':')).toEqual('myString');
+        });
+
+        it(`should default the delimiter argument to /[_-]/ if not given`, function() {
+            expect(Utils.camelCase('my-second_string')).toEqual('mySecondString');
+        });
+    });
+
+    describe('.range(from: number | string, to: number | string, step: number = 1): number[] | string[]', function() {
+
+        const alphabets = 'abcdefghijklmnopqrstuvwxyz'.split('');
+        const upperCaseAlphabets = alphabets.map(alphabet => alphabet.toUpperCase());
+
+        it(`should create a range of numbers if passed in numeric values starting from the given
+        from argument and stopping at the given end argument, stepping ahead according to the
+        given step argument`, function() {
+            expect(Utils.range(0, 10)).toEqual([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+            expect(Utils.range(0, 10, 2)).toEqual([0, 2, 4, 6, 8, 10]);
+        });
+
+        it(`should default step argument to 1 if it is less than or equal to zero`, function() {
+            expect(Utils.range(0, 5, 0)).toEqual([0, 1, 2, 3, 4, 5]);
+            expect(Utils.range(0, 5, -2)).toEqual([0, 1, 2, 3, 4, 5]);
+        });
+
+        it(`should interchange from with to if from argument is greater than to argument`, function() {
+            expect(Utils.range(5, 0)).toEqual([0, 1, 2, 3, 4, 5]);
+        });
+
+        it(`should create a range of alphabets if passed in alphabet values starting from the given
+        from argument and stopping at the given end argument, stepping ahead according to the
+        given step argument`, function() {
+            expect(Utils.range('a', 'z')).toEqual(alphabets);
+
+            expect(Utils.range('a', 'z', 2)).toEqual(
+                alphabets.filter((char, index) => index % 2 === 0)
+            );
+        });
+
+        it(`should return alphabets in upper case if from argument is an upperCase letter`, function() {
+            expect(Utils.range('A', 'Z')).toEqual(upperCaseAlphabets);
+        });
+
+        it(`should default ceil step value to an integer`, function() {
+            expect(Utils.range('A', 'Z', 0.25)).toEqual(upperCaseAlphabets);
+
+            expect(Utils.range('A', 'Z', 2.5)).toEqual(
+                upperCaseAlphabets.filter((char, index) => index % 3 === 0)
+            );
+        });
+
+        it(`should return empty array if from argument is a string but not a letter alphabet`, function() {
+            expect(Utils.range(',', 'z')).toEqual([]);
+        });
+
+        it(`should default to argument to z if it is not an alphabet`, function() {
+            expect(Utils.range('a', ',')).toEqual(alphabets);
+        });
+    });
 });
