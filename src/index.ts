@@ -1,6 +1,22 @@
 
 const toString = Object.prototype.toString;
 
+const alphabets = 'abcdefghijklmnopqrstuvwxyz';
+
+const digits = '0123456789';
+
+export interface Callback {
+    (...args): any;
+    [propName: string]: any;
+}
+
+export interface CallbackCache <C extends Function = Callback, P = any> {
+    callback: C;
+    parameters?: P | P[],
+    scope?: object;
+    [propName: string]: any;
+}
+
 /**
  * tests if argument is a string
  */
@@ -32,7 +48,7 @@ export const isNumeric = (arg: any): arg is number => {
 /**
  * test if argument is an array
  */
-export const isArray = (arg: any): arg is Array<any> => {
+export const isArray = <T>(arg: T | T[]): arg is Array<T> => {
     return toString.call(arg) === '[object Array]' || arg instanceof Array;
 };
 
@@ -54,7 +70,7 @@ export const isRegex = (arg: any): arg is RegExp => {
 /**
  * test if argument is a javascript object
  */
-export const isObject = (arg: any): arg is object => {
+export const isObject = <T=object>(arg: any): arg is T => {
     return typeof arg === 'object' && arg !== null;
 };
 
@@ -144,4 +160,146 @@ export const objectValue = (keys: string | string[], object: object, defaultValu
             return object[key];
     }
     return defaultValue;
+};
+
+export function scopeCallback(callbackCache: CallbackCache): (...args) => any;
+
+export function scopeCallback<T=any>(callback: Callback, scope?: object,
+    parameters?: T | T[]): (...args) => any;
+
+/**
+ * generates a callback function, scoping the execution with optional extra parameters
+ */
+export function scopeCallback<T=any>(callback: Callback | CallbackCache,
+    scope: object = null, parameters: T | T[] = []) {
+
+    if (isObject<CallbackCache>(callback)) {
+
+        return (...args) => {
+            parameters = makeArray(callback.parameters);
+            scope = value('scope', callback, null);
+
+            try {
+                return callback.callback.apply(scope, [...args, ...parameters]);
+            }
+            catch(ex){
+                // do nothing
+            }
+        };
+    }
+    else {
+        parameters = makeArray(parameters);
+        return (...args) => {
+            try {
+                return callback.apply(scope, [...args, ...parameters]);
+            }
+            catch(ex){
+                // do nothing
+            }
+        };
+    }
+};
+
+/**
+ * schedules the execution of a scoped callback to a given time
+ */
+export const scheduleCallback = (scopedCallback: Callback, time: number = 1000) => {
+    return new Promise(function(resolve) {
+        setTimeout(() => {
+            resolve(scopedCallback());
+        }, time);
+    });
+};
+
+/**
+ * generates random digit of given character length
+ */
+export const generateRandomDigits = (length: number = 4): string => {
+
+    const result: string[] = [];
+
+    while (length--) {
+        result.push(digits.charAt(Math.floor(Math.random() * digits.length)));
+    }
+    return result.join('');
+};
+
+/**
+ * generates a random text of given character length
+ */
+export const generateRandomText = (length: number = 4, exemptNumerals: boolean = false): string => {
+    const letters = alphabets + alphabets.toUpperCase();
+
+    const chars = exemptNumerals? letters : letters + digits;
+    const result: string[] = [];
+
+    let start = -1;
+    while (++start < length) {
+        result.push(chars.charAt(Math.floor(Math.random() * chars.length)));
+    }
+    return result.join('');
+};
+
+/**
+ * converts text to camel like casing
+ */
+export const camelCase = (text: string, delimiter: string | RegExp = /[-_]/): string => {
+    return text.split(delimiter).map((token, index) => {
+        return index === 0? token : token.charAt(0).toUpperCase() + token.substring(1);
+    }).join('');
+};
+
+export function range(from: number, to: number, step?: number): number[];
+
+export function range(from: string, to: string, step?: number): string[];
+
+/**
+ * creates a range of values
+ */
+export function range(from: string | number, to: string | number,
+    step: number = 1): number[] | string[] {
+
+    const result = [];
+    const letters = from.toString().toLowerCase() !== from? alphabets.toUpperCase() : alphabets;
+    step = step <= 0? 1 : step;
+
+    //resolve start and end points
+    let start: number = null;
+    let end: number = null;
+
+    if (isString(from)) {
+        start = alphabets.indexOf(from.toLowerCase());
+        end = alphabets.indexOf((to as string).toLowerCase());
+
+        if (start < 0)
+            start = null;
+
+        if (end < 0)
+            end = letters.length - 1;
+    }
+    else {
+        start = from;
+        end = to as number;
+    }
+
+    if (start !== null) {
+        //interchange start with end if start is greater than end
+        if (start > end) {
+            const interchanger = start;
+            start = end;
+            end = interchanger;
+        }
+
+        if (isString(from)) {
+            step = step >= 1? Math.ceil(step) : 1;
+            for(start; start <= end; start += step)
+                result.push(letters[start]);
+        }
+        else {
+            for(start; start <= end; start += step)
+                result.push(start);
+        }
+    }
+
+    return result;
 };

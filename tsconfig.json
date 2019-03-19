@@ -3,11 +3,17 @@
         "declaration": true,
         "emitDeclarationOnly": true,
         "declarationDir": "./typings",
-        "module": "ESNext",
         "moduleResolution": "node",
         "noImplicitAny": false,
         "outDir": "./lib",
-        "sourceMap": true
+        "sourceMap": true,
+        "downlevelIteration": true,
+        "lib": [
+            "dom",
+            "es5",
+            "es2015.collection",
+            "es2015.iterable"
+        ]
     },
     "include": [
         "src/**/*"
