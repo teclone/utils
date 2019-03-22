@@ -109,6 +109,19 @@ export const makeArray = <T>(arg: T[] | T, isNullValid: boolean = false): Array<
     return isParameter(arg, isNullValid)? [arg] : [];
 };
 
+function makeObject<T extends object>(arg: T): T;
+function makeObject(arg: any): object;
+
+/**
+ * returns argument if it is an object, otherwise, returns an empty plain object
+ */
+function makeObject<T>(arg: T | any): T | object {
+    if (isObject(arg))
+        return arg;
+
+    return {};
+};
+
 /**
  * returns true if key is not set in the given object or key is set and its value is truthy
  */
@@ -328,7 +341,7 @@ export const copy = <T extends object, O extends object>(target: T, ...objects: 
         if (isCallable(value) || isRegex(value) || !isObject(value))
             return value;
 
-        dest = isObject(dest)? dest : {};
+        dest = makeObject(dest);
         for (const [key, current] of Object.entries(value)) {
             dest[key] = cloneEach(dest[key], current);
         }
@@ -342,6 +355,25 @@ export const copy = <T extends object, O extends object>(target: T, ...objects: 
     });
 
     return target as T & {[P in keyof O] : O[P]};
+};
+
+/**
+ * expands the string key and turns it into an object property
+ */
+export const expandProperty = <T extends object>(target: T, key: string, value: any, delimiter: string = '.'): T & {
+    [propName: string]: any
+} => {
+    const keys = key.split(delimiter);
+    const lastKey = keys.pop();
+
+    const lastObject: object = keys.reduce((current, key) => {
+        current[key] = makeObject(current[key]);
+        return current[key];
+    }, target);
+
+    lastObject[lastKey] = value;
+
+    return target;
 };
 
 /**
