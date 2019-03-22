@@ -240,15 +240,6 @@ export const generateRandomText = (length: number = 4, exemptNumerals: boolean =
     return result.join('');
 };
 
-/**
- * converts text to camel like casing
- */
-export const camelCase = (text: string, delimiter: string | RegExp = /[-_]/): string => {
-    return text.split(delimiter).map((token, index) => {
-        return index === 0? token : token.charAt(0).toUpperCase() + token.substring(1);
-    }).join('');
-};
-
 export function range(from: number, to: number, step?: number): number[];
 
 export function range(from: string, to: string, step?: number): string[];
@@ -302,4 +293,50 @@ export function range(from: string | number, to: string | number,
     }
 
     return result;
+};
+
+
+/**
+ * copies the objects into the target object, without creating references, unlike Object.assign
+ */
+export const copy = <T extends object, O extends object>(target: T, ...objects: O[]): T & {
+    [P in keyof O] : O[P]
+} => {
+
+    const cloneEach = (dest: any, value: any) => {
+
+        if (isArray(value)) {
+            dest = makeArray(dest);
+            value.forEach((current, index) => {
+                dest[index] = cloneEach(null, current);
+            });
+            return dest;
+        }
+
+        if (isCallable(value) || isRegex(value) || !isObject(value))
+            return value;
+
+        dest = isObject(dest)? dest : {};
+        for (const [key, current] of Object.entries(value)) {
+            dest[key] = cloneEach(dest[key], current);
+        }
+        return dest;
+    };
+
+    objects.forEach((item) => {
+        for (const [key, value] of Object.entries(item)) {
+            target[key] = cloneEach(target[key], value);
+        }
+    });
+
+    return target as T & {[P in keyof O] : O[P]};
+};
+
+/**
+ * converts text to camel like casing
+ */
+export const camelCase = (text: string, delimiter: string | RegExp = /[-_]/): string => {
+    return text.split(delimiter).map((token, index) => {
+        return index === 0? token : token.charAt(0).toUpperCase() + token.substring(1);
+    }).join('');
 };
