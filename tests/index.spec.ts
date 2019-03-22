@@ -312,16 +312,6 @@ describe('Utils', function() {
         });
     });
 
-    describe('.camelCase(text: string, delimiter: string | RegExp = /[-_]/): string', function() {
-        it(`should turn the given text string into camel casing using the given delimiter`, function() {
-            expect(Utils.camelCase('my:string', ':')).toEqual('myString');
-        });
-
-        it(`should default the delimiter argument to /[_-]/ if not given`, function() {
-            expect(Utils.camelCase('my-second_string')).toEqual('mySecondString');
-        });
-    });
-
     describe('.range(from: number | string, to: number | string, step: number = 1): number[] | string[]', function() {
 
         const alphabets = 'abcdefghijklmnopqrstuvwxyz'.split('');
@@ -393,6 +383,25 @@ describe('Utils', function() {
             const copy = Utils.copy({colors: {white: '#000', red: 'red'}}, {colors});
             expect(copy.colors.white).toEqual('#fff');
             expect(copy.colors.red).toEqual('red');
+        });
+    });
+
+    describe('.expandProperty(target: object, key: string, value: any, delimiter: string = ".")', function() {
+
+        it(`should expand the given key into an object property`, function() {
+            const target = Utils.expandProperty({}, 'headers.contentType', 'text/html');
+
+            expect(target.headers.contentType).toEqual('text/html');
+        });
+    });
+
+    describe('.camelCase(text: string, delimiter: string | RegExp = /[-_]/): string', function() {
+        it(`should turn the given text string into camel casing using the given delimiter`, function() {
+            expect(Utils.camelCase('my:string', ':')).toEqual('myString');
+        });
+
+        it(`should default the delimiter argument to /[_-]/ if not given`, function() {
+            expect(Utils.camelCase('my-second_string')).toEqual('mySecondString');
         });
     });
 });
