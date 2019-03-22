@@ -373,4 +373,26 @@ describe('Utils', function() {
             expect(Utils.range('a', ',')).toEqual(alphabets);
         });
     });
+
+    describe('.clone(target: object, ...objects: object[])', function() {
+        const headers = {'Content-Type': 'text/html'};
+        const heights = [22, 33, 34, 37];
+
+        it(`should copy all the objects into the target object without creating refrences`, function() {
+            const copy = Utils.copy({}, {headers, heights, name: 'harrison'});
+            expect(copy.headers).toEqual(headers);
+            expect(copy.headers).not.toBe(headers);
+
+            expect(copy.heights).toEqual(heights);
+            expect(copy.name).toEqual('harrison');
+        });
+
+        it(`should keep existing properties and override when necessary`, function() {
+            const colors = {white: '#fff', grey: '#777', faint: '#999'};
+
+            const copy = Utils.copy({colors: {white: '#000', red: 'red'}}, {colors});
+            expect(copy.colors.white).toEqual('#fff');
+            expect(copy.colors.red).toEqual('red');
+        });
+    });
 });
