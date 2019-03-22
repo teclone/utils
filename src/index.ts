@@ -162,8 +162,15 @@ export const objectValue = (keys: string | string[], object: object, defaultValu
     return defaultValue;
 };
 
+/**
+ * scope callback using a cache object
+ * @param callbackCache
+ */
 export function scopeCallback(callbackCache: CallbackCache): (...args) => any;
 
+/**
+ * scope callback using the given scope and parameters
+ */
 export function scopeCallback<T=any>(callback: Callback, scope?: object,
     parameters?: T | T[]): (...args) => any;
 
@@ -233,15 +240,20 @@ export const generateRandomText = (length: number = 4, exemptNumerals: boolean =
     const chars = exemptNumerals? letters : letters + digits;
     const result: string[] = [];
 
-    let start = -1;
-    while (++start < length) {
+    while (length--) {
         result.push(chars.charAt(Math.floor(Math.random() * chars.length)));
     }
     return result.join('');
 };
 
+/**
+ * creates a range of numerical values
+ */
 export function range(from: number, to: number, step?: number): number[];
 
+/**
+ * creates a range of alphabetic characters
+ */
 export function range(from: string, to: string, step?: number): string[];
 
 /**
