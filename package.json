@@ -4,6 +4,9 @@
   "description": "A collection of utility methods useful for day to day project and library development",
   "main": "lib/index",
   "typings": "typings/index",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "commit": "git-cz",
     "test": "BABEL_ENV=test jest",
