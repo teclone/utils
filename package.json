@@ -1,13 +1,16 @@
 {
   "name": "@forensic-js/utils",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "lib/index",
+  "typings": "typings/index",
   "scripts": {
     "commit": "git-cz",
     "test": "BABEL_ENV=test jest",
     "watch-test": "BABEL_ENV=test jest --watch",
-    "build": "rimraf dist lib typings && tsc && BABEL_ENV=build rollup --config"
+    "build": "rimraf dist lib typings && tsc && BABEL_ENV=build rollup --config",
+    "report-coverage": "jest --coverage --coverageReporters=text-lcov | coveralls",
+    "semantic-release": "semantic-release"
   },
   "author": "Harrison Ifeanyichukwu <Harrisonifeanyichukwu@gmail.com> (https://github.com/harrison-ifeanyichukwu)",
   "license": "MIT",
@@ -28,11 +31,16 @@
     "rollup-plugin-node-resolve": "3.4.0",
     "rollup-plugin-uglify": "6.0.2",
     "tslint": "5.12.0",
-    "typescript": "3.3.3333"
+    "typescript": "3.3.3333",
+    "semantic-release": "^15.13.3"
   },
   "config": {
     "commitizen": {
       "path": "cz-conventional-changelog"
     }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/harrison-ifeanyichukwu/utils.git"
   }
 }
