@@ -1,7 +1,7 @@
 {
   "name": "@forensic-js/utils",
   "version": "0.0.0",
-  "description": "",
+  "description": "A collection of utility methods useful for day to day project and library development",
   "main": "lib/index",
   "typings": "typings/index",
   "scripts": {
