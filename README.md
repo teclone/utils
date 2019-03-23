@@ -1,4 +1,4 @@
-# Handler
+# Utils
 
 [![Build Status](https://travis-ci.org/harrison-ifeanyichukwu/utils.svg?branch=master)](https://travis-ci.org/harrison-ifeanyichukwu/utils)
 [![Coverage Status](https://coveralls.io/repos/github/harrison-ifeanyichukwu/utils/badge.svg?branch=master)](https://coveralls.io/github/harrison-ifeanyichukwu/utils?branch=master)
@@ -9,3 +9,34 @@
 Utils is a collection of utility methods for day to day web application and library development. It is developed for reusability purposes as it is utilized by most of all libraries published by same author.
 
 If you bumped into this project and find it useful for your project, please don't hesitate to give us a star.
+
+because it is a typescript project, you get excellent auto-completion and type checks.
+
+## Installation
+
+```bash
+npm install @forensic-js/utils
+```
+
+## Usage Sample
+
+```typescript
+import {scopeCallback, camelCase, copy, range, expandProperty} from '@forensic-js/utils';
+
+
+console.log(camelCase('my-string')); //logs myString
+console.log(camelCase('my:string', ':')); //logs myString
+
+//copy objects without creating references
+const myObject = {
+    headers: {
+        'contentType': 'text/html'
+    },
+    colors: ['#fff', 'green', '#808080']
+};
+const myObjectCopy = copy({}, myObject);
+
+//changing headers does not change the copy
+myObject.headers.contentType = 'text/css';
+console.log(myObjectCopy.headers.contentType); //logs text/html
+```

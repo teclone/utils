@@ -1,4 +1,3 @@
-
 const toString = Object.prototype.toString;
 
 const alphabets = 'abcdefghijklmnopqrstuvwxyz';
@@ -211,7 +210,7 @@ export function scopeCallback<T=any>(callback: Callback | CallbackCache,
         parameters = makeArray(parameters);
         return (...args) => {
             try {
-                return callback.apply(scope, [...args, ...parameters]);
+                return callback.apply(scope, [...args, ... (parameters as T[])]);
             }
             catch(ex){
                 // do nothing

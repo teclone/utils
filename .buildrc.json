@@ -9,6 +9,7 @@
         "enabled": true
     },
     "distConfig": {
-        "enabled": true
+        "enabled": true,
+        "uglify": true
     }
 }
