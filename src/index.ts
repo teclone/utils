@@ -108,13 +108,13 @@ export const makeArray = <T>(arg: T[] | T, isNullValid: boolean = false): Array<
     return isParameter(arg, isNullValid)? [arg] : [];
 };
 
-function makeObject<T extends object>(arg: T): T;
-function makeObject(arg: any): object;
+export function makeObject<T extends object>(arg: T): T;
+export function makeObject(arg: any): object;
 
 /**
  * returns argument if it is an object, otherwise, returns an empty plain object
  */
-function makeObject<T>(arg: T | any): T | object {
+export function makeObject<T>(arg: T | any): T | object {
     if (isObject(arg))
         return arg;
 
@@ -172,6 +172,30 @@ export const objectValue = (keys: string | string[], object: object, defaultValu
             return object[key];
     }
     return defaultValue;
+};
+
+/**
+ * it deletes given property from the given object if it exists
+ * returns true if it succeeds, otherwise returns false
+ */
+export const deleteProperty = (key: string, target: object): boolean => {
+
+    try {
+        return delete target[key];
+    }
+    catch (ex) {
+        return false;
+    }
+};
+
+/**
+ * it deletes given property from the given object if it exists
+ * returns true if all properties where handled accurately, also returns true if any of
+ * the properties could not be deleted.
+ */
+export const deleteProperties = (keys: string[], target: object) => {
+    const results = keys.map(key => deleteProperty(key, target));
+    return results.length === 0 || results.every(result => result);
 };
 
 /**
@@ -382,4 +406,36 @@ export const camelCase = (text: string, delimiter: string | RegExp = /[-_]/): st
     return text.split(delimiter).map((token, index) => {
         return index === 0? token : token.charAt(0).toUpperCase() + token.substring(1);
     }).join('');
+};
+
+/**
+ * pads the given target text or number with the pad with value until the target length meets
+ * the given length
+ */
+export const padLeft = (target: string | number, length=4, padWith: string | number = 0): string => {
+    target = target.toString();
+    padWith = padWith.toString();
+
+    let padTimes = length - target.length;
+    while (padTimes-- > 0) {
+        target = padWith + target;
+    }
+
+    return target;
+};
+
+/**
+ * pads the given target text or number with the pad with value until the target length meets
+ * the given length
+ */
+export const padRight = (target: string | number, length=4, padWith: string | number = 0): string => {
+    target = target.toString();
+    padWith = padWith.toString();
+
+    let padTimes = length - target.length;
+    while (padTimes-- > 0) {
+        target += padWith;
+    }
+
+    return target;
 };
