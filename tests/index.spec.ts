@@ -127,7 +127,7 @@ describe('Utils', function() {
     describe('.makeArray<T>(arg: T | T[], isNullValid=false): T[]', function() {
         it(`should return argument if is an array`, function() {
             const arg = ['item'];
-            expect(Utils.makeArray(arg)).toStrictEqual(arg);
+            expect(Utils.makeArray(arg)).toBe(arg);
         });
 
         it(`should put argument into an array and return`, function() {
@@ -142,6 +142,56 @@ describe('Utils', function() {
 
         it(`should take null as valid argument if isNullValid parameter is set to true`, function() {
             expect(Utils.makeArray(null, true)).toEqual([null]);
+        });
+    });
+
+    describe('.makeObject<T>(arg: T | any): T | object', function() {
+        it(`should return argument if is an object`, function() {
+            const arg = ['item'];
+            expect(Utils.makeObject(arg)).toBe(arg);
+        });
+
+        it(`should return empty object if argument is not an object`, function() {
+            expect(Utils.makeObject(null)).toEqual({});
+        });
+    });
+
+    describe('.deleteProperty(key: string, target: object): boolean', function() {
+        it(`should delete the given property from the target object`, function() {
+            const target = {name: 'name'};
+            expect(Utils.deleteProperty('name', target)).toBeTruthy();
+            expect(target.name).toBeUndefined();
+        });
+
+        it(`should return false if the given property cannot be deleted because it is non
+        configurable`, function() {
+            const target = {};
+            Object.defineProperty(target, 'name', {
+                value: 'name',
+                configurable: false
+            });
+            expect(Utils.deleteProperty('name', target)).toBeFalsy();
+            expect(target['name']).toBeDefined();
+        });
+    });
+
+    describe('.deleteProperties(keys: string[], target: object): boolean', function() {
+        it(`should delete the given array of properties from the target object`, function() {
+            const target = {name: 'name'};
+            expect(Utils.deleteProperties(['name'], target)).toBeTruthy();
+            expect(target.name).toBeUndefined();
+        });
+
+        it(`should return false if any of the given properties cannot be deleted because it is non
+        configurable`, function() {
+            const target = {age: 22};
+            Object.defineProperty(target, 'name', {
+                value: 'name',
+                configurable: false
+            });
+            expect(Utils.deleteProperties(['age', 'name'], target)).toBeFalsy();
+            expect(target['name']).toBeDefined();
+            expect(target.age).toBeUndefined();
         });
     });
 
@@ -402,6 +452,34 @@ describe('Utils', function() {
 
         it(`should default the delimiter argument to /[_-]/ if not given`, function() {
             expect(Utils.camelCase('my-second_string')).toEqual('mySecondString');
+        });
+    });
+
+    describe('.padLeft(target: string | number, length:number = 4, padWith: string | number = 0): string', function() {
+
+        it(`should pad the given target to the left with the given padWith value up till the
+        target length meets the given length`, function() {
+            expect(Utils.padLeft(12, 6, 0)).toEqual('000012');
+            expect(Utils.padLeft(12, 3, '-')).toEqual('-12');
+            expect(Utils.padLeft(12, 2, '-')).toEqual('12');
+        });
+
+        it(`should default the length to 4 and the padWith argument to 0 if not given`, function() {
+            expect(Utils.padLeft(12)).toEqual('0012');
+        });
+    });
+
+    describe('.padRight(target: string | number, length:number = 4, padWith: string | number = 0): string', function() {
+
+        it(`should pad the given target to the right with the given padWith value up till the
+        target length meets the given length`, function() {
+            expect(Utils.padRight(12, 6, 0)).toEqual('120000');
+            expect(Utils.padRight(12, 3, '-')).toEqual('12-');
+            expect(Utils.padRight(12, 2, '-')).toEqual('12');
+        });
+
+        it(`should default the length to 4 and the padWith argument to 0 if not given`, function() {
+            expect(Utils.padRight(12)).toEqual('1200');
         });
     });
 });
