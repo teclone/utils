@@ -11,7 +11,7 @@
     "commit": "git-cz",
     "test": "BABEL_ENV=test jest",
     "watch-test": "BABEL_ENV=test jest --watch",
-    "build": "rimraf dist lib typings && tsc && BABEL_ENV=build rollup --config",
+    "build": "rimraf dist lib typings && ./node_modules/typescript/bin/tsc && BABEL_ENV=build rollup --config",
     "report-coverage": "jest --coverage --coverageReporters=text-lcov | coveralls",
     "semantic-release": "semantic-release"
   },
