@@ -4,17 +4,38 @@ const alphabets = 'abcdefghijklmnopqrstuvwxyz';
 
 const digits = '0123456789';
 
-export interface Callback {
+export declare interface Callback {
     (...args): any;
     [propName: string]: any;
 }
 
-export interface CallbackCache <C extends Function = Callback, P = any> {
+export declare interface CallbackCache <C extends Function = Callback, P = any> {
     callback: C;
     parameters?: P | P[],
     scope?: object;
     [propName: string]: any;
 }
+
+/**
+ * tests if argument is null
+ */
+export const isNull = (arg: any): arg is null => {
+    return arg === null;
+};
+
+/**
+ * tests if argument is undefined
+ */
+export const isUndefined = (arg: any): arg is undefined => {
+    return typeof arg === 'undefined';
+};
+
+/**
+ * tests if argument is boolean
+ */
+export const isBoolean = (arg: any): arg is boolean => {
+    return typeof arg === 'boolean';
+};
 
 /**
  * tests if argument is a string
@@ -101,7 +122,7 @@ export const isParameter = (arg: any, isNullValid: boolean = true) => {
 /**
  * puts argument into an array if it is not an array,
  */
-export const makeArray = <T>(arg: T[] | T, isNullValid: boolean = false): Array<T> => {
+export const makeArray = <T>(arg: T | T[] | any, isNullValid: boolean = false): Array<T> => {
     if (isArray(arg))
         return arg;
 

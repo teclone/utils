@@ -1,6 +1,33 @@
 import * as Utils from '../src/index';
 
 describe('Utils', function() {
+    describe('.isNull(arg: any): boolean', function() {
+        it(`should return true if argument is null`, function() {
+            expect(Utils.isNull(null)).toBeTruthy();
+        });
+        it(`should return false if argument is not null`, function() {
+            expect(Utils.isNull([])).toBeFalsy();
+        });
+    });
+
+    describe('.isUndefined(arg: any): boolean', function() {
+        it(`should return true if argument is undefined`, function() {
+            expect(Utils.isUndefined(undefined)).toBeTruthy();
+        });
+        it(`should return false if argument is not undefined`, function() {
+            expect(Utils.isUndefined(null)).toBeFalsy();
+        });
+    });
+
+    describe('.isBoolean(arg: any): boolean', function() {
+        it(`should return true if argument is a boolean value`, function() {
+            expect(Utils.isBoolean(false)).toBeTruthy();
+        });
+        it(`should return false if argument is not a boolean value`, function() {
+            expect(Utils.isBoolean([])).toBeFalsy();
+        });
+    });
+
     describe('.isString(arg: any): boolean', function() {
         it(`should return true if argument is a string`, function() {
             expect(Utils.isString('my string')).toBeTruthy();
