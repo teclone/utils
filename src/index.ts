@@ -122,7 +122,7 @@ export const isParameter = (arg: any, isNullValid: boolean = true) => {
 /**
  * puts argument into an array if it is not an array,
  */
-export const makeArray = <T>(arg: T | T[] | any, isNullValid: boolean = false): Array<T> => {
+export const makeArray = <T>(arg: T | T[], isNullValid: boolean = false): Array<T> => {
     if (isArray(arg))
         return arg;
 
