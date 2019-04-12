@@ -88,10 +88,11 @@ export const isRegex = (arg: any): arg is RegExp => {
 };
 
 /**
- * test if argument is a javascript object
+ * test if argument is a javascript object, but not an array, Regex, function or null
  */
 export const isObject = <T=object>(arg: any): arg is T => {
-    return typeof arg === 'object' && arg !== null;
+    return typeof arg === 'object' && arg !== null && !isCallable(arg) && !isArray(arg)
+        && !isRegex(arg);
 };
 
 /**
@@ -133,13 +134,15 @@ export function makeObject<T extends object>(arg: T): T;
 export function makeObject(arg: any): object;
 
 /**
- * returns argument if it is an object, otherwise, returns an empty plain object
+ * returns argument if it is an object, otherwise returns an empty plain object,
+ * an object is a javascript entity whose typeof returns 'object' but it is not a null,
+ * function, array or RegExp
  */
-export function makeObject<T>(arg: T | any): T | object {
-    if (isObject(arg))
+export function makeObject<T>(arg: any): T {
+    if (isObject<T>(arg))
         return arg;
 
-    return {};
+    return {} as T;
 };
 
 /**

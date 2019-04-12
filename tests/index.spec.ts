@@ -99,9 +99,8 @@ describe('Utils', function() {
     });
 
     describe('.isObject(arg: any): boolean', function() {
-        it('should return true if argument is an object', function() {
+        it('should return true if argument is an object, but not an array, function, regex or null', function() {
             expect(Utils.isObject({})).toBeTruthy();
-            expect(Utils.isObject([])).toBeTruthy();
         });
 
         it('should return false if argument is not an object', function() {
@@ -174,7 +173,7 @@ describe('Utils', function() {
 
     describe('.makeObject<T>(arg: T | any): T | object', function() {
         it(`should return argument if is an object`, function() {
-            const arg = ['item'];
+            const arg = {name: 'item'};
             expect(Utils.makeObject(arg)).toBe(arg);
         });
 
@@ -287,8 +286,7 @@ describe('Utils', function() {
 
         it(`should return the value for the first set key in the object that is an object`, function() {
             expect(Utils.objectValue('settings', object)).toEqual(object.settings);
-            expect(Utils.objectValue(['name', 'themes'], object)).toEqual(object.themes);
-            expect(Utils.objectValue(['settings', 'themes', 'name'], object)).toEqual(object.settings);
+            expect(Utils.objectValue(['themes', 'settings'], object)).toEqual(object.settings);
         });
 
         it(`should return the default value if no key is set in the object that is an object`, function() {
