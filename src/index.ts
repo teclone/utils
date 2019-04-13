@@ -463,3 +463,36 @@ export const padRight = (target: string | number, length=4, padWith: string | nu
 
     return target;
 };
+
+/**
+ * encodes the query name and value and returns the result
+ * @param name query name
+ * @param value query value
+ * @param multiValueIdentifier an identifier to be prepended to multivalue query names for
+ * identification.
+ */
+export const encodeQuery = (name: string, value: string | number | (string|number)[],
+    multiValueIdentifier: string = '[]'): string => {
+    name = encodeURIComponent(name);
+    if (isArray(value)) {
+        return value.map(current => encodeURIComponent(current.toString())).map(current => {
+            return `${name}${multiValueIdentifier}=${current}`;
+        }).join('&');
+    }
+    else {
+        return `${name}=${encodeURIComponent(value.toString())}`
+    }
+};
+
+/**
+ * encodes each entry in the query object and returns result
+ * @param query query object containing name value pairs
+ * @param multiValueIdentifier an identifier to be prepended to multivalue query names for
+ * identification.
+ */
+export const encodeQueries = (query: {[name: string]: string | number | (string | number)[]},
+    multiValueIdentifier: string = '[]'): string => {
+    return Object.keys(query).map(name => {
+        return encodeQuery(name, query[name], multiValueIdentifier);
+    }).join('&');
+};

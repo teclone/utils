@@ -507,4 +507,56 @@ describe('Utils', function() {
             expect(Utils.padRight(12)).toEqual('1200');
         });
     });
+
+    describe(`encodeQuery(name: string, value: string | number | (string|number)[],
+        multiValueIdentifier: string = '[]'): string`, function() {
+
+        it(`should encode the given name and value query parameter and return the result`, function() {
+            expect(Utils.encodeQuery('name', 'Harrison')).toEqual('name=Harrison');
+        });
+
+        it(`should append the given multivalue parameter to array value query names for easy
+            identification`, function() {
+            const fruits = ['apple', 'orange', 'mango'];
+            expect(Utils.encodeQuery('fruits', fruits, '{}')).toEqual(
+                'fruits{}=apple&fruits{}=orange&fruits{}=mango'
+            );
+        });
+
+        it(`should default the multivalue parameter to empty [] if not given`, function() {
+            const fruits = ['apple', 'orange', 'mango'];
+            expect(Utils.encodeQuery('fruits', fruits)).toEqual(
+                'fruits[]=apple&fruits[]=orange&fruits[]=mango'
+            );
+        });
+    });
+
+    describe(`encodeQueries(query: {[name: string]: string | number | (string|number)[],
+        multiValueIdentifier: string = '[]'): string`, function() {
+
+        it(`should encode each name value entries in the given query object and return`, function() {
+            expect(Utils.encodeQueries({name: 'Harrison'})).toEqual('name=Harrison');
+        });
+
+        it(`should append the given multivalue parameter to array value query names for easy
+            identification`, function() {
+            const query = {
+                name: 'Harrison',
+                fruits: ['apple', 'orange', 'mango']
+            };
+            expect(Utils.encodeQueries(query, '{}')).toEqual(
+                'name=Harrison&fruits{}=apple&fruits{}=orange&fruits{}=mango'
+            );
+        });
+
+        it(`should default the multivalue parameter to empty [] if not given`, function() {
+            const query = {
+                name: 'Harrison',
+                fruits: ['apple', 'orange', 'mango']
+            };
+            expect(Utils.encodeQueries(query)).toEqual(
+                'name=Harrison&fruits[]=apple&fruits[]=orange&fruits[]=mango'
+            );
+        });
+    });
 });
