@@ -559,4 +559,40 @@ describe('Utils', function() {
             );
         });
     });
+
+    describe('.expandToNumeric(size: number | string): number', function() {
+        it(`should expand the given unit based size to full numeric value multiplying value by
+        1000 if unit is k case insensitive`, function() {
+            expect(Utils.expandToNumeric('2.5k')).toEqual(2500);
+            expect(Utils.expandToNumeric('.5k')).toEqual(500);
+        });
+
+        it(`should expand the given unit based size to full numeric value multiplying value by
+        1000000 if unit is m or mb case insensitive`, function() {
+            expect(Utils.expandToNumeric('2.5M')).toEqual(2500000);
+            expect(Utils.expandToNumeric('.5mb')).toEqual(500000);
+        });
+
+        it(`should expand the given unit based size to full numeric value multiplying value by
+        1000000000 if unit is g or gb case insensitive`, function() {
+            expect(Utils.expandToNumeric('2.5G')).toEqual(2500000000);
+            expect(Utils.expandToNumeric('.5gb')).toEqual(500000000);
+        });
+
+        it(`should expand the given unit based size to full numeric value multiplying value by
+        1000000000000 if unit is T or tb case insensitive`, function() {
+            expect(Utils.expandToNumeric('2.5T')).toEqual(2500000000000);
+            expect(Utils.expandToNumeric('.5TB')).toEqual(500000000000);
+        });
+
+        it(`should return number if argument is a number`, function() {
+            expect(Utils.expandToNumeric('2.5')).toEqual(2.5);
+            expect(Utils.expandToNumeric(25)).toEqual(25);
+        });
+
+        it(`should return 0 if argument is a numeric unit`, function() {
+            expect(Utils.expandToNumeric('a')).toEqual(0);
+            expect(Utils.expandToNumeric('a00')).toEqual(0);
+        });
+    });
 });
