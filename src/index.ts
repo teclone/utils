@@ -4,13 +4,6 @@ const alphabets = 'abcdefghijklmnopqrstuvwxyz';
 
 const digits = '0123456789';
 
-const units = {
-    'k': 1000,
-    'm': 1000000,
-    'g': 1000000000,
-    't': 1000000000000
-}
-
 export declare interface Callback {
     (...args): any;
     [propName: string]: any;
@@ -535,4 +528,12 @@ export const expandToNumeric = (size: number | string): number => {
     else {
         return 0;
     }
+};
+
+/**
+ * strips out beginning and ending forward or backward slashes from the given path
+ * @param path the path to work on
+ */
+export const stripSlashes = (path: string): string => {
+    return path.replace(/^[\\/]+/, '').replace(/[\\/]+$/, '');
 };

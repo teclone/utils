@@ -595,4 +595,12 @@ describe('Utils', function() {
             expect(Utils.expandToNumeric('a00')).toEqual(0);
         });
     });
+
+    describe('.stripSlashes(path: string): string', function() {
+        it(`should strip beginning and ending backward or forward slashes from the given path`, function() {
+            expect(Utils.stripSlashes('/path/to/resource/')).toEqual('path/to/resource');
+            expect(Utils.stripSlashes('\\path/to/resource\\')).toEqual('path/to/resource');
+            expect(Utils.stripSlashes('\\/\\/path/to/resource\\/\\/')).toEqual('path/to/resource');
+        });
+    });
 });
