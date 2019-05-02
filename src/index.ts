@@ -530,6 +530,46 @@ export const expandToNumeric = (size: number | string): number => {
     }
 };
 
+const convertToUnit = (units: string[], value: number, maximumFractionDigits: number, defaultUnit: string) => {
+
+    const snapPoints = [1000000000000, 1000000000, 1000000, 1000];
+    const length = snapPoints.length;
+    let i = -1;
+
+    const formatter = new Intl.NumberFormat(undefined, {maximumFractionDigits});
+    while (++i < length) {
+        const snapPoint = snapPoints[i];
+        const unit = units[i];
+
+        if (value >= snapPoint) {
+            return formatter.format(value / snapPoint) + unit;
+        }
+    }
+    return value + defaultUnit;
+};
+
+/**
+ * converts the given numeric value to file memory units
+ *
+ * @param value number value to be converted
+ * @param maximumFractionDigits number of maximum decimal values allowed, defaults to 2
+ */
+export const convertToMemoryUnit = (value: number, maximumFractionDigits: number = 2) => {
+    const units = ['tb', 'gb', 'mb', 'kb'];
+    return convertToUnit(units, value, maximumFractionDigits, 'bytes');
+};
+
+/**
+ * converts the given numeric value to monetary units
+ *
+ * @param value number value to be converted
+ * @param maximumFractionDigits number of maximum decimal values allowed, defaults to 2
+ */
+export const convertToMonetaryUnit = (value: number, maximumFractionDigits: number = 2) => {
+    const units = ['T', 'B', 'M', 'K'];
+    return convertToUnit(units, value, maximumFractionDigits, '');
+};
+
 /**
  * strips out beginning and ending forward or backward slashes from the given path
  * @param path the path to work on

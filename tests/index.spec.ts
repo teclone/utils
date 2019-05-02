@@ -603,4 +603,30 @@ describe('Utils', function() {
             expect(Utils.stripSlashes('\\/\\/path/to/resource\\/\\/')).toEqual('path/to/resource');
         });
     });
+
+    describe(`.convertToMemoryUnit(value: number, maximumFractionDigits: number = 2)`, function() {
+        it(`should inspect the given number, convert it to its abbreviated form`, function() {
+            expect(Utils.convertToMemoryUnit(5)).toEqual('5bytes');
+            expect(Utils.convertToMemoryUnit(5000)).toEqual('5kb');
+            expect(Utils.convertToMemoryUnit(5000000)).toEqual('5mb');
+            expect(Utils.convertToMemoryUnit(5000000000)).toEqual('5gb');
+            expect(Utils.convertToMemoryUnit(5000000000000)).toEqual('5tb');
+        });
+
+        it(`should keep the fractional part within the given maximumFractionDigits argument`, function() {
+            const formater = new Intl.NumberFormat(undefined, {maximumFractionDigits: 1});
+            const value = 50002;
+            expect(Utils.convertToMemoryUnit(value, 1)).toEqual(formater.format(value / 1000) + 'kb');
+        });
+    });
+
+    describe(`.convertToMonetaryUnit(value: number, maximumFractionDigits: number = 2)`, function() {
+        it(`should inspect the given number, convert it to its abbreviated form`, function() {
+            expect(Utils.convertToMonetaryUnit(5)).toEqual('5');
+            expect(Utils.convertToMonetaryUnit(5000)).toEqual('5K');
+            expect(Utils.convertToMonetaryUnit(5000000)).toEqual('5M');
+            expect(Utils.convertToMonetaryUnit(5000000000)).toEqual('5B');
+            expect(Utils.convertToMonetaryUnit(5000000000000)).toEqual('5T');
+        });
+    });
 });
