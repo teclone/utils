@@ -111,11 +111,13 @@ export const isPlainObject = (arg: any): arg is object => {
  * except undefined.
  */
 export const isParameter = (arg: any, isNullValid: boolean = true) => {
-    if (typeof arg === 'undefined')
+    if (typeof arg === 'undefined') {
         return false;
+    }
 
-    if (arg === null)
+    if (arg === null) {
         return isNullValid;
+    }
 
     return true;
 };
@@ -123,9 +125,10 @@ export const isParameter = (arg: any, isNullValid: boolean = true) => {
 /**
  * puts argument into an array if it is not an array,
  */
-export const makeArray = <T>(arg: T | T[], isNullValid: boolean = false): Array<T> => {
-    if (isArray(arg))
+export const makeArray = <T>(arg: T | T[] | null | undefined, isNullValid: boolean = false): Array<T> => {
+    if (isArray(arg)) {
         return arg;
+    }
 
     return isParameter(arg, isNullValid)? [arg] : [];
 };
@@ -139,8 +142,9 @@ export function makeObject(arg: any): object;
  * function, array or RegExp
  */
 export function makeObject<T>(arg: any): T {
-    if (isObject<T>(arg))
+    if (isObject<T>(arg)) {
         return arg;
+    }
 
     return {} as T;
 };
@@ -166,8 +170,9 @@ export const keySetAndTrue = (key: string, object: object): boolean => {
 export const value = <T = any>(keys: string | string[], object: object, defaultValue: T = null): T => {
     keys = makeArray(keys);
     for (const key of keys) {
-        if (typeof object[key] !== 'undefined')
+        if (typeof object[key] !== 'undefined') {
             return object[key];
+        }
     }
     return defaultValue;
 };
@@ -179,8 +184,9 @@ export const value = <T = any>(keys: string | string[], object: object, defaultV
 export const arrayValue = <T = any>(keys: string | string[], object: object, defaultValue: T[] = []): T[] => {
     keys = makeArray(keys);
     for (const key of keys) {
-        if (isArray(object[key]))
+        if (isArray(object[key])) {
             return object[key];
+        }
     }
     return defaultValue;
 };
@@ -192,8 +198,9 @@ export const arrayValue = <T = any>(keys: string | string[], object: object, def
 export const objectValue = (keys: string | string[], object: object, defaultValue: object = {}): object => {
     keys = makeArray(keys);
     for (const key of keys) {
-        if (isObject(object[key]))
+        if (isObject(object[key])) {
             return object[key];
+        }
     }
     return defaultValue;
 };
@@ -334,11 +341,13 @@ export function range(from: string | number, to: string | number,
         start = alphabets.indexOf(from.toLowerCase());
         end = alphabets.indexOf((to as string).toLowerCase());
 
-        if (start < 0)
+        if (start < 0) {
             start = null;
+        }
 
-        if (end < 0)
+        if (end < 0) {
             end = letters.length - 1;
+        }
     }
     else {
         start = from;
@@ -359,8 +368,9 @@ export function range(from: string | number, to: string | number,
                 result.push(letters[start]);
         }
         else {
-            for(start; start <= end; start += step)
+            for(start; start <= end; start += step) {
                 result.push(start);
+            }
         }
     }
 
@@ -385,8 +395,9 @@ export const copy = <T extends object, O extends object>(target: T, ...objects: 
             return dest;
         }
 
-        if (isCallable(value) || isRegex(value) || !isObject(value))
+        if (isCallable(value) || isRegex(value) || !isObject(value)) {
             return value;
+        }
 
         dest = makeObject(dest);
         for (const [key, current] of Object.entries(value)) {
