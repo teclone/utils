@@ -1,9 +1,9 @@
 {
   "name": "@forensic-js/utils",
   "version": "0.0.0",
-  "description": "A collection of utility methods useful for day to day project and library development",
+  "description": "A collection of day-to-day utility methods usable in both node and browser environments",
   "main": "lib/index",
-  "typings": "typings/index",
+  "typings": "lib/typings/index",
   "publishConfig": {
     "access": "public"
   },
@@ -11,10 +11,16 @@
     "commit": "git-cz",
     "test": "BABEL_ENV=test jest",
     "watch-test": "BABEL_ENV=test jest --watch",
-    "build": "rimraf dist lib typings && ./node_modules/typescript/bin/tsc && BABEL_ENV=build rollup --config",
+    "build": "rimraf dist lib && tsc && BABEL_ENV=build rollup --config",
     "report-coverage": "jest --coverage --coverageReporters=text-lcov | coveralls",
     "semantic-release": "semantic-release"
   },
+  "keywords": [
+    "utility-methods",
+    "node-utils",
+    "browser-utils",
+    "common-functions"
+  ],
   "author": "Harrison Ifeanyichukwu <Harrisonifeanyichukwu@gmail.com> (https://github.com/harrison-ifeanyichukwu)",
   "license": "MIT",
   "devDependencies": {
@@ -31,7 +37,7 @@
     "jest": "24.3.1",
     "rimraf": "2.6.3",
     "rollup": "0.66.6",
-    "rollup-all": "1.5.2",
+    "rollup-all": "1.6.8",
     "rollup-plugin-babel": "4.3.2",
     "rollup-plugin-node-resolve": "3.4.0",
     "rollup-plugin-uglify": "6.0.2",
