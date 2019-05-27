@@ -1,7 +1,7 @@
 import * as Utils from '../src/index';
 
 describe('Utils', function() {
-    describe('.isNull(arg: any): boolean', function() {
+    describe('.isNull(arg: any): arg is null', function() {
         it(`should return true if argument is null`, function() {
             expect(Utils.isNull(null)).toBeTruthy();
         });
@@ -10,7 +10,7 @@ describe('Utils', function() {
         });
     });
 
-    describe('.isUndefined(arg: any): boolean', function() {
+    describe('.isUndefined(arg: any): arg is undefined', function() {
         it(`should return true if argument is undefined`, function() {
             expect(Utils.isUndefined(undefined)).toBeTruthy();
         });
@@ -19,7 +19,7 @@ describe('Utils', function() {
         });
     });
 
-    describe('.isBoolean(arg: any): boolean', function() {
+    describe('.isBoolean(arg: any): arg is boolean', function() {
         it(`should return true if argument is a boolean value`, function() {
             expect(Utils.isBoolean(false)).toBeTruthy();
         });
@@ -28,16 +28,7 @@ describe('Utils', function() {
         });
     });
 
-    describe('.isString(arg: any): boolean', function() {
-        it(`should return true if argument is a string`, function() {
-            expect(Utils.isString('my string')).toBeTruthy();
-        });
-        it(`should return false if argument is not a string`, function() {
-            expect(Utils.isString([])).toBeFalsy();
-        });
-    });
-
-    describe('.isNumber(arg: any): boolean', function() {
+    describe('.isNumber(arg: any): arg is number', function() {
         it('should return true if argument is of type number and it is not NaN', function() {
             expect(Utils.isNumber(22)).toBeTruthy();
         });
@@ -48,7 +39,16 @@ describe('Utils', function() {
         });
     });
 
-    describe('isInt(arg: any): boolean', function() {
+    describe('.isString(arg: any): arg is string', function() {
+        it(`should return true if argument is a string`, function() {
+            expect(Utils.isString('my string')).toBeTruthy();
+        });
+        it(`should return false if argument is not a string`, function() {
+            expect(Utils.isString([])).toBeFalsy();
+        });
+    });
+
+    describe('isInt(arg: any): arg is string', function() {
         it(`should return true if argument is an int or can be cast to an int`, function() {
             expect(Utils.isInt('042')).toBeTruthy();
             expect(Utils.isInt('+33')).toBeTruthy();
@@ -62,7 +62,7 @@ describe('Utils', function() {
         });
     });
 
-    describe('isNumeric(arg: any): boolean', function() {
+    describe('isNumeric(arg: any): arg is string', function() {
         it(`should return true if argument is a numeric value`, function() {
             expect(Utils.isNumeric('000.4eeeee')).toBeTruthy();
             expect(Utils.isNumeric('.0004eeeee')).toBeTruthy();
@@ -77,7 +77,7 @@ describe('Utils', function() {
         });
     });
 
-    describe('.isArray(arg: any): boolean', function() {
+    describe('.isArray<T>(arg: T | T[]): arg is Array<T>', function() {
         it('should return true if argument is an array', function() {
             expect(Utils.isArray([])).toBeTruthy();
         });
@@ -88,7 +88,7 @@ describe('Utils', function() {
         });
     });
 
-    describe('.isCallable(arg: any): boolean', function() {
+    describe('.isCallable(arg: any): arg is callable', function() {
         it('should return true if argument is a function', function() {
             expect(Utils.isCallable(name => name)).toBeTruthy();
         });
@@ -98,7 +98,7 @@ describe('Utils', function() {
         });
     });
 
-    describe('.isObject(arg: any): boolean', function() {
+    describe('.isObject<T=object>(arg: any): arg is T', function() {
         it('should return true if argument is an object, but not an array, function, regex or null', function() {
             expect(Utils.isObject({})).toBeTruthy();
         });
@@ -123,7 +123,7 @@ describe('Utils', function() {
         });
     });
 
-    describe('isRegex(arg: any): boolean', function() {
+    describe('isRegex(arg: any): arg is RegExp', function() {
         it(`should return true if argument is a regex object`, function() {
             expect(Utils.isRegex(/something/)).toBeTruthy();
             expect(Utils.isRegex(new RegExp('^\\d+$'))).toBeTruthy();
@@ -135,7 +135,7 @@ describe('Utils', function() {
         });
     });
 
-    describe('.isParameter(arg: any, isNullValid=true): boolean', function() {
+    describe('.isParameter(arg: any, isNullable=true): boolean', function() {
         it('should return true if argument is a valid function parameter', function() {
             expect(Utils.isParameter(3.2)).toBeTruthy();
         });
@@ -150,7 +150,7 @@ describe('Utils', function() {
         });
     });
 
-    describe('.makeArray<T>(arg: T | T[], isNullValid=false): T[]', function() {
+    describe('.makeArray<T>(arg: T | T[], isNullable=false): T[]', function() {
         it(`should return argument if is an array`, function() {
             const arg = ['item'];
             expect(Utils.makeArray(arg)).toBe(arg);
@@ -166,7 +166,7 @@ describe('Utils', function() {
             expect(Utils.makeArray(null)).toEqual([]);
         });
 
-        it(`should take null as valid argument if isNullValid parameter is set to true`, function() {
+        it(`should take null as valid argument if isNullable parameter is set to true`, function() {
             expect(Utils.makeArray(null, true)).toEqual([null]);
         });
     });
@@ -247,37 +247,46 @@ describe('Utils', function() {
         });
     });
 
-    describe('.value<T=any>(keys: string | string[], object: object, defaultValue: T = null): T', function() {
+    describe('.pickValue<T=any>(keys: string | string[], object: object, defaultValue: T = null): T', function() {
         const object = {name: 'Jack', age: 10};
 
         it(`should return the value for the first set key in the object`, function() {
-            expect(Utils.value('name', object)).toEqual(object.name);
-            expect(Utils.value(['height', 'name'], object)).toEqual(object.name);
-            expect(Utils.value(['height', 'age', 'name'], object)).toEqual(object.age);
+            expect(Utils.pickValue('name', object)).toEqual(object.name);
+            expect(Utils.pickValue(['height', 'name'], object)).toEqual(object.name);
+            expect(Utils.pickValue(['height', 'age', 'name'], object)).toEqual(object.age);
+        });
+
+        it(`should capture any error that occurs while trying the access value`, function() {
+            const proxy = new Proxy(object, {
+                get() {
+                    throw new Error('you cant read from this object')
+                }
+            });
+            expect(Utils.pickValue('name', proxy)).toBeUndefined();
         });
 
         it(`should return the default value if no key is set in the object`, function() {
-            expect(Utils.value('height', object)).toBeNull();
-            expect(Utils.value(['height', 'unset'], object, 22)).toEqual(22);
+            expect(Utils.pickValue('height', object)).toBeUndefined();
+            expect(Utils.pickValue(['height', 'unset'], object, 22)).toEqual(22);
         });
     });
 
-    describe('.arrayValue<T=any>(keys: string | string[], object: object, defaultValue: T[] = []): T[]', function() {
+    describe('.pickArray<T=any>(keys: string | string[], object: object, defaultValue: T[] = []): T[]', function() {
         const object = {names: ['Jack', 'Jane'], ages: [10, 20, 30]};
 
         it(`should return the value for the first set key in the object that is an array`, function() {
-            expect(Utils.arrayValue('names', object)).toEqual(object.names);
-            expect(Utils.arrayValue(['heights', 'names'], object)).toEqual(object.names);
-            expect(Utils.arrayValue(['heights', 'ages', 'names'], object)).toEqual(object.ages);
+            expect(Utils.pickArray('names', object)).toEqual(object.names);
+            expect(Utils.pickArray(['heights', 'names'], object)).toEqual(object.names);
+            expect(Utils.pickArray(['heights', 'ages', 'names'], object)).toEqual(object.ages);
         });
 
         it(`should return the default value if no key is set in the object that is an array`, function() {
-            expect(Utils.arrayValue('heights', object)).toEqual([]);
-            expect(Utils.arrayValue(['heights', 'unset'], object, [22.5])).toEqual([22.5]);
+            expect(Utils.pickArray('heights', object)).toEqual([]);
+            expect(Utils.pickArray(['heights', 'unset'], object, [22.5])).toEqual([22.5]);
         });
     });
 
-    describe('.objectValue(keys: string | string[], object: object, defaultValue: object = {}): object', function() {
+    describe('.pickObject(keys: string | string[], object: object, defaultValue: object = {}): object', function() {
         const object = {
             settings: {notify: true, zoom: false},
             themes: ['oneUI', 'touchWiz'],
@@ -285,13 +294,13 @@ describe('Utils', function() {
         };
 
         it(`should return the value for the first set key in the object that is an object`, function() {
-            expect(Utils.objectValue('settings', object)).toEqual(object.settings);
-            expect(Utils.objectValue(['themes', 'settings'], object)).toEqual(object.settings);
+            expect(Utils.pickObject('settings', object)).toEqual(object.settings);
+            expect(Utils.pickObject(['themes', 'settings'], object)).toEqual(object.settings);
         });
 
         it(`should return the default value if no key is set in the object that is an object`, function() {
-            expect(Utils.objectValue('heights', object)).toEqual({});
-            expect(Utils.objectValue(['heights', 'unset'], object, object)).toEqual(object);
+            expect(Utils.pickObject('heights', object)).toEqual({});
+            expect(Utils.pickObject(['heights', 'unset'], object, object)).toEqual(object);
         });
     });
 

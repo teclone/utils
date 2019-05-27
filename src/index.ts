@@ -38,13 +38,6 @@ export const isBoolean = (arg: any): arg is boolean => {
 };
 
 /**
- * tests if argument is a string
- */
-export const isString = (arg: any): arg is string => {
-    return typeof arg === 'string';
-};
-
-/**
  * tests if argument is a number
  */
 export const isNumber = (arg: any): arg is number => {
@@ -52,16 +45,23 @@ export const isNumber = (arg: any): arg is number => {
 };
 
 /**
+ * tests if argument is a string
+ */
+export const isString = (arg: any): arg is string => {
+    return typeof arg === 'string';
+};
+
+/**
  * test if argument starts with integer, whether positive or negative
  */
-export const isInt = (arg: any): arg is number => {
+export const isInt = (arg: any): arg is string => {
     return /^[-+]?\d+/.test(arg);
 };
 
 /**
  * test if argument starts with number(integer or float), whether positive or negative
  */
-export const isNumeric = (arg: any): arg is number => {
+export const isNumeric = (arg: any): arg is string => {
     return /^[-+.]?\d+/.test(arg);
 };
 
@@ -110,13 +110,13 @@ export const isPlainObject = (arg: any): arg is object => {
  * test if argument is a valid method parameter. by default, all types are valid parameters
  * except undefined.
  */
-export const isParameter = (arg: any, isNullValid: boolean = true) => {
+export const isParameter = (arg: any, isNullable: boolean = true) => {
     if (typeof arg === 'undefined') {
         return false;
     }
 
     if (arg === null) {
-        return isNullValid;
+        return isNullable;
     }
 
     return true;
@@ -125,12 +125,12 @@ export const isParameter = (arg: any, isNullValid: boolean = true) => {
 /**
  * puts argument into an array if it is not an array,
  */
-export const makeArray = <T>(arg: T | T[] | null | undefined, isNullValid: boolean = false): Array<T> => {
+export const makeArray = <T>(arg: T | T[] | null | undefined, isNullable: boolean = false): Array<T> => {
     if (isArray(arg)) {
         return arg;
     }
 
-    return isParameter(arg, isNullValid)? [arg] : [];
+    return isParameter(arg, isNullable)? [arg] : [];
 };
 
 export function makeObject<T extends object>(arg: T): T;
@@ -164,14 +164,32 @@ export const keySetAndTrue = (key: string, object: object): boolean => {
 };
 
 /**
+ * picks the given value from the object, supressing any error that may occur while trying
+ * to access key
+ *
+ * @param key
+ * @param object
+ */
+const _pickValue = (key: string, object: object) => {
+    try {
+        const value = object[key];
+        return value;
+    }
+    catch(ex) {
+        return undefined;
+    }
+};
+
+/**
  * returns the value for the first key that exists in the object otherwise,
  * it returns the default value
  */
-export const value = <T = any>(keys: string | string[], object: object, defaultValue: T = null): T => {
+export const pickValue = <T = any>(keys: string | string[], object: object, defaultValue?: T): T => {
     keys = makeArray(keys);
     for (const key of keys) {
-        if (typeof object[key] !== 'undefined') {
-            return object[key];
+        const value = _pickValue(key, object);
+        if (typeof value !== 'undefined') {
+            return value;
         }
     }
     return defaultValue;
@@ -181,11 +199,12 @@ export const value = <T = any>(keys: string | string[], object: object, defaultV
  * returns the value for the first key that exists in the object whose value is an array otherwise,
  * it returns the default value
  */
-export const arrayValue = <T = any>(keys: string | string[], object: object, defaultValue: T[] = []): T[] => {
+export const pickArray = <T = any>(keys: string | string[], object: object, defaultValue: T[] = []): T[] => {
     keys = makeArray(keys);
     for (const key of keys) {
-        if (isArray(object[key])) {
-            return object[key];
+        const value = _pickValue(key, object);
+        if (isArray(value)) {
+            return value;
         }
     }
     return defaultValue;
@@ -195,11 +214,12 @@ export const arrayValue = <T = any>(keys: string | string[], object: object, def
  * returns the value for the first key that exists in the object whose value is an object otherwise,
  * it returns the default value
  */
-export const objectValue = (keys: string | string[], object: object, defaultValue: object = {}): object => {
+export const pickObject = (keys: string | string[], object: object, defaultValue: object = {}): object => {
     keys = makeArray(keys);
     for (const key of keys) {
-        if (isObject(object[key])) {
-            return object[key];
+        const value = _pickValue(key, object);
+        if (isObject(value)) {
+            return value;
         }
     }
     return defaultValue;
@@ -251,7 +271,7 @@ export function scopeCallback<T=any>(callback: Callback | CallbackCache,
 
         return (...args) => {
             parameters = makeArray(callback.parameters);
-            scope = value('scope', callback, null);
+            scope = pickValue('scope', callback, null);
 
             try {
                 return callback.callback.apply(scope, [...args, ...parameters]);
