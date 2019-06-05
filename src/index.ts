@@ -464,6 +464,13 @@ export const camelCase = (text: string, delimiter: string | RegExp = /[-_]/): st
 };
 
 /**
+ * converts text to snake like casing
+ */
+export const snakeCase = (text: string, delimiter: string | RegExp = /[-_]/): string => {
+    return text.split(delimiter).map((token) => token.toLowerCase()).join('_');
+};
+
+/**
  * pads the given target text or number with the pad with value until the target length meets
  * the given length
  */

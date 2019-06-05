@@ -489,6 +489,16 @@ describe('Utils', function() {
         });
     });
 
+    describe('.snakeCase(text: string, delimiter: string | RegExp = /[-_]/): string', function() {
+        it(`should turn the given text string into snake casing using the given delimiter`, function() {
+            expect(Utils.snakeCase('my:string', ':')).toEqual('my_string');
+        });
+
+        it(`should default the delimiter argument to /[_-]/ if not given`, function() {
+            expect(Utils.snakeCase('my-second_string')).toEqual('my_second_string');
+        });
+    });
+
     describe('.padLeft(target: string | number, length:number = 4, padWith: string | number = 0): string', function() {
 
         it(`should pad the given target to the left with the given padWith value up till the
