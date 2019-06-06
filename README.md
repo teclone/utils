@@ -23,7 +23,6 @@ npm install @forensic-js/utils
 ```typescript
 import {scopeCallback, camelCase, copy, range, expandProperty} from '@forensic-js/utils';
 
-
 console.log(camelCase('my-string')); //logs myString
 console.log(camelCase('my:string', ':')); //logs myString
 
@@ -39,4 +38,8 @@ const myObjectCopy = copy({}, myObject);
 //changing headers does not change the copy
 myObject.headers.contentType = 'text/css';
 console.log(myObjectCopy.headers.contentType); //logs text/html
+
+// expand property into a target object
+const result = expandProperty({}, 'headers.contentType', 'text/css');
+console.log(result.headers.contentType); // logs text/css
 ```
