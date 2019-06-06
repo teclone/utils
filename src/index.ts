@@ -16,6 +16,12 @@ export declare interface CallbackCache <C extends Function = Callback, P = any> 
     [propName: string]: any;
 }
 
+export const CASE_STYLES = {
+    NONE: 0,
+    CAMEL_CASE: 1,
+    SNAKE_CASE: 2
+};
+
 /**
  * tests if argument is null
  */
@@ -436,28 +442,9 @@ export const copy = <T extends object, O extends object>(target: T, ...objects: 
 };
 
 /**
- * expands the string key and turns it into an object property
- */
-export const expandProperty = <T extends object>(target: T, key: string, value: any, delimiter: string = '.'): T & {
-    [propName: string]: any
-} => {
-    const keys = key.split(delimiter);
-    const lastKey = keys.pop();
-
-    const lastObject: object = keys.reduce((current, key) => {
-        current[key] = makeObject(current[key]);
-        return current[key];
-    }, target);
-
-    lastObject[lastKey] = value;
-
-    return target;
-};
-
-/**
  * converts text to camel like casing
  */
-export const camelCase = (text: string, delimiter: string | RegExp = /[-_]/): string => {
+export const camelCase = (text: string, delimiter: string | RegExp = /[-_\s]/): string => {
     return text.split(delimiter).map((token, index) => {
         return index === 0? token : token.charAt(0).toUpperCase() + token.substring(1);
     }).join('');
@@ -466,8 +453,42 @@ export const camelCase = (text: string, delimiter: string | RegExp = /[-_]/): st
 /**
  * converts text to snake like casing
  */
-export const snakeCase = (text: string, delimiter: string | RegExp = /[-_]/): string => {
+export const snakeCase = (text: string, delimiter: string | RegExp = /[-_\s]/): string => {
     return text.split(delimiter).map((token) => token.toLowerCase()).join('_');
+};
+
+/**
+ * expands the string key and turns it into an object property
+ */
+export const expandProperty = <T extends object>(target: T, key: string, value: any, delimiter: string = '.',
+    caseStyle: number = CASE_STYLES.CAMEL_CASE): T & {[propName: string]: any} => {
+
+    const applyCase = (key) => {
+        switch(caseStyle) {
+
+            case CASE_STYLES.CAMEL_CASE:
+                return camelCase(key);
+
+            case CASE_STYLES.SNAKE_CASE:
+                return snakeCase(key);
+
+            default:
+                return key;
+        }
+    };
+
+    const keys = key.split(delimiter);
+    const lastKey = applyCase(keys.pop());
+
+    const lastObject: object = keys.reduce((current, key) => {
+        key = applyCase(key);
+        current[key] = makeObject(current[key]);
+        return current[key];
+    }, target);
+
+    lastObject[lastKey] = value;
+
+    return target;
 };
 
 /**

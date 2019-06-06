@@ -448,7 +448,7 @@ describe('Utils', function() {
         });
     });
 
-    describe('.clone(target: object, ...objects: object[])', function() {
+    describe('.copy(target: object, ...objects: object[])', function() {
         const headers = {'Content-Type': 'text/html'};
         const heights = [22, 33, 34, 37];
 
@@ -470,32 +470,54 @@ describe('Utils', function() {
         });
     });
 
-    describe('.expandProperty(target: object, key: string, value: any, delimiter: string = ".")', function() {
-
-        it(`should expand the given key into an object property`, function() {
-            const target = Utils.expandProperty({}, 'headers.contentType', 'text/html');
-
-            expect(target.headers.contentType).toEqual('text/html');
-        });
-    });
-
-    describe('.camelCase(text: string, delimiter: string | RegExp = /[-_]/): string', function() {
+    describe(`.camelCase(text: string, delimiter: string | RegExp = /[-_\\s]/): string`, function() {
         it(`should turn the given text string into camel casing using the given delimiter`, function() {
             expect(Utils.camelCase('my:string', ':')).toEqual('myString');
         });
 
-        it(`should default the delimiter argument to /[_-]/ if not given`, function() {
+        it(`should default the delimiter argument to /[_-\\s]/ if not given`, function() {
             expect(Utils.camelCase('my-second_string')).toEqual('mySecondString');
         });
     });
 
-    describe('.snakeCase(text: string, delimiter: string | RegExp = /[-_]/): string', function() {
+    describe(`.snakeCase(text: string, delimiter: string | RegExp = /[-_\\s]/): string`, function() {
         it(`should turn the given text string into snake casing using the given delimiter`, function() {
             expect(Utils.snakeCase('my:string', ':')).toEqual('my_string');
         });
 
-        it(`should default the delimiter argument to /[_-]/ if not given`, function() {
+        it(`should default the delimiter argument to /[_-\\s]/ if not given`, function() {
             expect(Utils.snakeCase('my-second_string')).toEqual('my_second_string');
+        });
+    });
+
+    describe(`.expandProperty(target: object, key: string, value: any, delimiter: string = ".",
+        caseStyle= CASE_STYLES.CAMEL_CASE)`, function() {
+
+        it(`should expand the given keys into an object property`, function() {
+            const target = Utils.expandProperty({}, 'headers.contentType', 'text/html');
+            expect(target.headers.contentType).toEqual('text/html');
+        });
+
+        it(`should apply camelCase styles to property names during the expansion`, function() {
+            const target = Utils.expandProperty({}, 'headers.content-type', 'text/html', '.');
+            expect(target.headers.contentType).toEqual('text/html');
+        });
+
+        it(`should apply snake case styles to property names during the expansion if caseStyle
+        argument is set to CASE_STYLES.SNAKE_CASE`, function() {
+            const target = Utils.expandProperty({}, 'headers.content-type', 'text/html', '.',
+                Utils.CASE_STYLES.SNAKE_CASE);
+            expect(target.headers.content_type).toEqual('text/html');
+            expect(target.headers).not.toHaveProperty('contentType');
+        });
+
+        it(`should apply no case styles to property names during the expansion if caseStyle
+        argument is set to CASE_STYLES.NONE`, function() {
+            const target = Utils.expandProperty({}, 'headers.content-type', 'text/html', '.',
+                Utils.CASE_STYLES.NONE);
+            expect(target.headers['content-type']).toEqual('text/html');
+            expect(target.headers).not.toHaveProperty('contentType');
+            expect(target.headers).not.toHaveProperty('content_type');
         });
     });
 
