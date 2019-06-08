@@ -182,6 +182,18 @@ describe('Utils', function() {
         });
     });
 
+    describe(`.isTypeof<T extends O, O extends object = any>(props: string | string, target: O): target is T`, function() {
+        it(`should assert that target is of type T if all the given props are defined in the
+            target object`, function() {
+            expect(Utils.isTypeOf<Array<number>>('length', [])).toEqual(true);
+        });
+
+        it(`should assert that target is not of type T if any of the given props is not defined in
+            the target object`, function() {
+            expect(Utils.isTypeOf<Array<number>>('len', [])).toEqual(false);
+        });
+    });
+
     describe('.deleteProperty(key: string, target: object): boolean', function() {
         it(`should delete the given property from the target object`, function() {
             const target = {name: 'name'};

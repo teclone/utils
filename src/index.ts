@@ -23,6 +23,23 @@ export const CASE_STYLES = {
 };
 
 /**
+ * picks the given value from the object, supressing any error that may occur while trying
+ * to access key
+ *
+ * @param key
+ * @param object
+ */
+const _pickValue = (key: string, object: object) => {
+    try {
+        const value = object[key];
+        return value;
+    }
+    catch(ex) {
+        return undefined;
+    }
+};
+
+/**
  * tests if argument is null
  */
 export const isNull = (arg: any): arg is null => {
@@ -127,7 +144,6 @@ export const isParameter = (arg: any, isNullable: boolean = true) => {
 
     return true;
 };
-
 /**
  * puts argument into an array if it is not an array,
  */
@@ -156,6 +172,16 @@ export function makeObject<T>(arg: any): T {
 };
 
 /**
+ * asserts that target is T if the given property is defined in target
+ * @param prop property to check
+ * @param target the target object
+ */
+export const isTypeOf = <T extends O, O extends object = any>(props: string | string[], target: O): target is T => {
+    return makeArray(props).every(prop => typeof _pickValue(prop, target) !== 'undefined');
+}
+
+
+/**
  * returns true if key is not set in the given object or key is set and its value is truthy
  */
 export const keyNotSetOrTrue = (key: string, object: object): boolean => {
@@ -167,23 +193,6 @@ export const keyNotSetOrTrue = (key: string, object: object): boolean => {
  */
 export const keySetAndTrue = (key: string, object: object): boolean => {
     return typeof object[key] !== 'undefined' && !!object[key];
-};
-
-/**
- * picks the given value from the object, supressing any error that may occur while trying
- * to access key
- *
- * @param key
- * @param object
- */
-const _pickValue = (key: string, object: object) => {
-    try {
-        const value = object[key];
-        return value;
-    }
-    catch(ex) {
-        return undefined;
-    }
 };
 
 /**
