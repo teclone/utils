@@ -467,30 +467,37 @@ export const snakeCase = (text: string, delimiter: string | RegExp = /[-_\s]/): 
 };
 
 /**
+ * applies case based on the case style chosen
+ * @param text text to apply case on
+ * @param caseStyle case style of choice
+ * @param delimiter optional delimiter string or regex
+ */
+export const applyCase = (text: string, caseStyle: number,
+    delimiter: string | RegExp = /[-_\s]/): string => {
+        switch(caseStyle) {
+
+            case CASE_STYLES.CAMEL_CASE:
+                return camelCase(text, delimiter);
+
+            case CASE_STYLES.SNAKE_CASE:
+                return snakeCase(text, delimiter);
+
+            default:
+                return text;
+        }
+};
+
+/**
  * expands the string key and turns it into an object property
  */
 export const expandProperty = <T extends object>(target: T, key: string, value: any, delimiter: string = '.',
     caseStyle: number = CASE_STYLES.CAMEL_CASE): T & {[propName: string]: any} => {
 
-    const applyCase = (key) => {
-        switch(caseStyle) {
-
-            case CASE_STYLES.CAMEL_CASE:
-                return camelCase(key);
-
-            case CASE_STYLES.SNAKE_CASE:
-                return snakeCase(key);
-
-            default:
-                return key;
-        }
-    };
-
     const keys = key.split(delimiter);
-    const lastKey = applyCase(keys.pop());
+    const lastKey = applyCase(keys.pop(), caseStyle);
 
     const lastObject: object = keys.reduce((current, key) => {
-        key = applyCase(key);
+        key = applyCase(key, caseStyle);
         current[key] = makeObject(current[key]);
         return current[key];
     }, target);
