@@ -488,6 +488,14 @@ export const applyCase = (text: string, caseStyle: number,
 };
 
 /**
+ * capitalizes the given text
+ * @param text text to capitalize
+ */
+export const capitalize = (text: string): string => {
+    return text.length > 0? text.charAt(0).toUpperCase() + text.substring(1).toLowerCase() : '';
+}
+
+/**
  * expands the string key and turns it into an object property
  */
 export const expandProperty = <T extends object>(target: T, key: string, value: any, delimiter: string = '.',

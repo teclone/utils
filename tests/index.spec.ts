@@ -502,6 +502,17 @@ describe('Utils', function() {
         });
     });
 
+    describe(`.capitalize(text: string): string`, function() {
+        it(`should capitalize the given text`, function() {
+            expect(Utils.capitalize('naMe')).toEqual('Name');
+            expect(Utils.capitalize('')).toEqual('');
+        });
+
+        it(`should default the delimiter argument to /[_-\\s]/ if not given`, function() {
+            expect(Utils.snakeCase('my-second_string')).toEqual('my_second_string');
+        });
+    });
+
     describe(`.expandProperty(target: object, key: string, value: any, delimiter: string = ".",
         caseStyle= CASE_STYLES.CAMEL_CASE)`, function() {
 
