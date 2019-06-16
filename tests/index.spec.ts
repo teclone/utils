@@ -468,10 +468,24 @@ describe('Utils', function() {
         });
     });
 
-    describe('.flatten<T>(arr: Array<T>)', function() {
-        it(`should flatten the given array to any deep length`, function() {
+    describe('.flatten<T>(arr: Array<T>, depth: number = 1)', function() {
+        it(`should flatten the given array up to the given length`, function() {
             const testData = [1, 2, 3, 4, [5, 6, [7, 8, 9, [10]]]];
-            expect(Utils.flatten(testData)).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+            expect(Utils.flatten(testData, 2)).toEqual([
+                1, 2, 3, 4, 5, 6, 7, 8, 9, [10]
+            ]);
+        });
+
+        it(`should default the depth parameter to 1 if not given`, function() {
+            const testData = [1, 2, 3, 4, [5, 6, [7, 8, 9, [10]]]];
+            expect(Utils.flatten(testData)).toEqual([
+                1, 2, 3, 4, 5, 6, [7, 8, 9, [10]]
+            ]);
+        });
+
+        it(`should do nothing but return the array if the depth parameter is less than 1`, function() {
+            const testData = [1, 2, 3, 4, [5, 6, [7, 8, 9, [10]]]];
+            expect(Utils.flatten(testData, -1)).toEqual(testData);
         });
     });
 

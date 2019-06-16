@@ -9,7 +9,7 @@ export declare interface Callback {
     [propName: string]: any;
 }
 
-export declare interface CallbackCache <C extends Function = Callback, P = any> {
+export declare interface CallbackCache<C extends Function = Callback, P = any> {
     callback: C;
     parameters?: P | P[],
     scope?: object;
@@ -34,7 +34,7 @@ const _pickValue = (key: string, object: object) => {
         const value = object[key];
         return value;
     }
-    catch(ex) {
+    catch (ex) {
         return undefined;
     }
 };
@@ -113,7 +113,7 @@ export const isRegex = (arg: any): arg is RegExp => {
 /**
  * test if argument is a javascript object, but not an array, Regex, function or null
  */
-export const isObject = <T=object>(arg: any): arg is T => {
+export const isObject = <T = object>(arg: any): arg is T => {
     return typeof arg === 'object' && arg !== null && !isCallable(arg) && !isArray(arg)
         && !isRegex(arg);
 };
@@ -152,7 +152,7 @@ export const makeArray = <T>(arg: T | T[] | null | undefined, isNullable: boolea
         return arg;
     }
 
-    return isParameter(arg, isNullable)? [arg] : [];
+    return isParameter(arg, isNullable) ? [arg] : [];
 };
 
 export function makeObject<T extends object>(arg: T): T;
@@ -273,13 +273,13 @@ export function scopeCallback(callbackCache: CallbackCache): (...args) => any;
 /**
  * scope callback using the given scope and parameters
  */
-export function scopeCallback<T=any>(callback: Callback, scope?: object,
+export function scopeCallback<T = any>(callback: Callback, scope?: object,
     parameters?: T | T[]): (...args) => any;
 
 /**
  * generates a callback function, scoping the execution with optional extra parameters
  */
-export function scopeCallback<T=any>(callback: Callback | CallbackCache,
+export function scopeCallback<T = any>(callback: Callback | CallbackCache,
     scope: object = null, parameters: T | T[] = []) {
 
     if (isObject<CallbackCache>(callback)) {
@@ -291,7 +291,7 @@ export function scopeCallback<T=any>(callback: Callback | CallbackCache,
             try {
                 return callback.callback.apply(scope, [...args, ...parameters]);
             }
-            catch(ex){
+            catch (ex) {
                 // do nothing
             }
         };
@@ -302,7 +302,7 @@ export function scopeCallback<T=any>(callback: Callback | CallbackCache,
             try {
                 return callback.apply(scope, [...args, ... (parameters as T[])]);
             }
-            catch(ex){
+            catch (ex) {
                 // do nothing
             }
         };
@@ -313,7 +313,7 @@ export function scopeCallback<T=any>(callback: Callback | CallbackCache,
  * schedules the execution of a scoped callback to a given time
  */
 export const scheduleCallback = (scopedCallback: Callback, time: number = 1000) => {
-    return new Promise(function(resolve) {
+    return new Promise(function (resolve) {
         setTimeout(() => {
             resolve(scopedCallback());
         }, time);
@@ -350,7 +350,7 @@ export const generateRandomDigits = (length: number = 4): string => {
 export const generateRandomText = (length: number = 4, exemptNumerals: boolean = false): string => {
     const letters = alphabets + alphabets.toUpperCase();
 
-    const chars = exemptNumerals? letters : letters + digits;
+    const chars = exemptNumerals ? letters : letters + digits;
     const result: string[] = [];
 
     while (length--) {
@@ -376,8 +376,8 @@ export function range(from: string | number, to: string | number,
     step: number = 1): number[] | string[] {
 
     const result = [];
-    const letters = from.toString().toLowerCase() !== from? alphabets.toUpperCase() : alphabets;
-    step = step <= 0? 1 : step;
+    const letters = from.toString().toLowerCase() !== from ? alphabets.toUpperCase() : alphabets;
+    step = step <= 0 ? 1 : step;
 
     //resolve start and end points
     let start: number = null;
@@ -409,12 +409,13 @@ export function range(from: string | number, to: string | number,
         }
 
         if (isString(from)) {
-            step = step >= 1? Math.ceil(step) : 1;
-            for(start; start <= end; start += step)
+            step = step >= 1 ? Math.ceil(step) : 1;
+            for (start; start <= end; start += step) {
                 result.push(letters[start]);
+            }
         }
         else {
-            for(start; start <= end; start += step) {
+            for (start; start <= end; start += step) {
                 result.push(start);
             }
         }
@@ -426,18 +427,29 @@ export function range(from: string | number, to: string | number,
 /**
  * flattens arrays to any deep length
  * @param arr array to flatten
+ * @param depth the depth value to enter
  */
-export const flatten = <T>(arr: Array<T>) => {
-    const result: Array<T> = [];
-    return arr.reduce((result, current) => {
-        if (!isArray(current)) {
-            result.push(current);
-            return result;
+export const flatten = <T>(arr: Array<T>, depth: number = 1) => {
+    if (depth < 1) {
+        return Array.prototype.slice.call(arr);
+    }
+    return (function flat(arr: Array<T>, depth: number) {
+        let result: Array<T> = [];
+
+        const len = arr.length;
+        let i = 0;
+        depth = depth - 1;
+        while (i < len) {
+            const el = arr[i++];
+            if (Array.isArray(el)) {
+                result = result.concat(depth > 0? flat(el, depth) : el);
+            }
+            else {
+                result.push(el);
+            }
         }
-        else {
-            return result.concat(flatten(current));
-        }
-    }, result);
+        return result;
+    })(arr, depth);
 };
 
 
@@ -445,7 +457,7 @@ export const flatten = <T>(arr: Array<T>) => {
  * copies the objects into the target object, without creating references, unlike Object.assign
  */
 export const copy = <T extends object, O extends object>(target: T, ...objects: O[]): T & {
-    [P in keyof O] : O[P]
+    [P in keyof O]: O[P]
 } => {
 
     const cloneEach = (dest: any, value: any) => {
@@ -475,7 +487,7 @@ export const copy = <T extends object, O extends object>(target: T, ...objects: 
         }
     });
 
-    return target as T & {[P in keyof O] : O[P]};
+    return target as T & { [P in keyof O]: O[P] };
 };
 
 /**
@@ -483,7 +495,7 @@ export const copy = <T extends object, O extends object>(target: T, ...objects: 
  */
 export const camelCase = (text: string, delimiter: string | RegExp = /[-_\s]/): string => {
     return text.split(delimiter).map((token, index) => {
-        return index === 0? token : token.charAt(0).toUpperCase() + token.substring(1);
+        return index === 0 ? token : token.charAt(0).toUpperCase() + token.substring(1);
     }).join('');
 };
 
@@ -502,17 +514,17 @@ export const snakeCase = (text: string, delimiter: string | RegExp = /[-_\s]/): 
  */
 export const applyCase = (text: string, caseStyle: number,
     delimiter: string | RegExp = /[-_\s]/): string => {
-        switch(caseStyle) {
+    switch (caseStyle) {
 
-            case CASE_STYLES.CAMEL_CASE:
-                return camelCase(text, delimiter);
+        case CASE_STYLES.CAMEL_CASE:
+            return camelCase(text, delimiter);
 
-            case CASE_STYLES.SNAKE_CASE:
-                return snakeCase(text, delimiter);
+        case CASE_STYLES.SNAKE_CASE:
+            return snakeCase(text, delimiter);
 
-            default:
-                return text;
-        }
+        default:
+            return text;
+    }
 };
 
 /**
@@ -520,14 +532,14 @@ export const applyCase = (text: string, caseStyle: number,
  * @param text text to capitalize
  */
 export const capitalize = (text: string): string => {
-    return text.length > 0? text.charAt(0).toUpperCase() + text.substring(1).toLowerCase() : '';
+    return text.length > 0 ? text.charAt(0).toUpperCase() + text.substring(1).toLowerCase() : '';
 }
 
 /**
  * expands the string key and turns it into an object property
  */
 export const expandProperty = <T extends object>(target: T, key: string, value: any, delimiter: string = '.',
-    caseStyle: number = CASE_STYLES.CAMEL_CASE): T & {[propName: string]: any} => {
+    caseStyle: number = CASE_STYLES.CAMEL_CASE): T & { [propName: string]: any } => {
 
     const keys = key.split(delimiter);
     const lastKey = applyCase(keys.pop(), caseStyle);
@@ -547,7 +559,7 @@ export const expandProperty = <T extends object>(target: T, key: string, value: 
  * pads the given target text or number with the pad with value until the target length meets
  * the given length
  */
-export const padLeft = (target: string | number, length=4, padWith: string | number = 0): string => {
+export const padLeft = (target: string | number, length = 4, padWith: string | number = 0): string => {
     target = target.toString();
     padWith = padWith.toString();
 
@@ -563,7 +575,7 @@ export const padLeft = (target: string | number, length=4, padWith: string | num
  * pads the given target text or number with the pad with value until the target length meets
  * the given length
  */
-export const padRight = (target: string | number, length=4, padWith: string | number = 0): string => {
+export const padRight = (target: string | number, length = 4, padWith: string | number = 0): string => {
     target = target.toString();
     padWith = padWith.toString();
 
@@ -582,7 +594,7 @@ export const padRight = (target: string | number, length=4, padWith: string | nu
  * @param multiValueIdentifier an identifier to be prepended to multivalue query names for
  * identification.
  */
-export const encodeQuery = (name: string, value: string | number | (string|number)[],
+export const encodeQuery = (name: string, value: string | number | (string | number)[],
     multiValueIdentifier: string = '[]'): string => {
     name = encodeURIComponent(name);
     if (isArray(value)) {
@@ -601,7 +613,7 @@ export const encodeQuery = (name: string, value: string | number | (string|numbe
  * @param multiValueIdentifier an identifier to be prepended to multivalue query names for
  * identification.
  */
-export const encodeQueries = (query: {[name: string]: string | number | (string | number)[]},
+export const encodeQueries = (query: { [name: string]: string | number | (string | number)[] },
     multiValueIdentifier: string = '[]'): string => {
     return Object.keys(query).map(name => {
         return encodeQuery(name, query[name], multiValueIdentifier);
@@ -622,18 +634,18 @@ export const expandToNumeric = (size: number | string): number => {
         let numeric = Number.parseFloat(RegExp.$1);
         const unit = RegExp.$2.toLowerCase();
 
-        switch(unit) {
+        switch (unit) {
             case 'k':
-                return numeric *  1000;
+                return numeric * 1000;
             case 'm':
             case 'mb':
-                return numeric *  1000000;
+                return numeric * 1000000;
             case 'g':
             case 'gb':
-                return numeric *  1000000000;
+                return numeric * 1000000000;
             case 't':
             case 'tb':
-                return numeric *  1000000000000;
+                return numeric * 1000000000000;
         }
     }
     else {
@@ -647,7 +659,7 @@ const convertToUnit = (units: string[], value: number, maximumFractionDigits: nu
     const length = snapPoints.length;
     let i = -1;
 
-    const formatter = new Intl.NumberFormat(undefined, {maximumFractionDigits});
+    const formatter = new Intl.NumberFormat(undefined, { maximumFractionDigits });
     while (++i < length) {
         const snapPoint = snapPoints[i];
         const unit = units[i];
