@@ -321,6 +321,17 @@ export const scheduleCallback = (scopedCallback: Callback, time: number = 1000) 
 };
 
 /**
+ * generates a random number between min (inclusive) and max (inclusive)
+ * @param min the min value that can be generated
+ * @param max the maximum value that can be generated
+ */
+export const generateRandomNumber = (min: number, max: number): number => {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+};
+
+/**
  * generates random digit of given character length
  */
 export const generateRandomDigits = (length: number = 4): string => {
@@ -410,6 +421,23 @@ export function range(from: string | number, to: string | number,
     }
 
     return result;
+};
+
+/**
+ * flattens arrays to any deep length
+ * @param arr array to flatten
+ */
+export const flatten = <T>(arr: Array<T>) => {
+    const result: Array<T> = [];
+    return arr.reduce((result, current) => {
+        if (!isArray(current)) {
+            result.push(current);
+            return result;
+        }
+        else {
+            return result.concat(flatten(current));
+        }
+    }, result);
 };
 
 

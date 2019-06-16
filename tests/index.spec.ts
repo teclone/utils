@@ -390,6 +390,14 @@ describe('Utils', function() {
         });
     });
 
+    describe('.generateRandomNumber(min: number, max: number)', function() {
+        it(`should generate a random number between the given min and max value inclusive`, function() {
+            const result = Utils.generateRandomNumber(0, 1);
+            expect(result).toBeLessThanOrEqual(1);
+            expect(result).toBeGreaterThanOrEqual(0);
+        });
+    });
+
     describe('.generateRandomDigits(length: number = 4): string', function() {
         it(`should generate random digits up to the given length`, function() {
             expect(Utils.generateRandomDigits()).toHaveLength(4);
@@ -457,6 +465,13 @@ describe('Utils', function() {
 
         it(`should default to argument to z if it is not an alphabet`, function() {
             expect(Utils.range('a', ',')).toEqual(alphabets);
+        });
+    });
+
+    describe('.flatten<T>(arr: Array<T>)', function() {
+        it(`should flatten the given array to any deep length`, function() {
+            const testData = [1, 2, 3, 4, [5, 6, [7, 8, 9, [10]]]];
+            expect(Utils.flatten(testData)).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
         });
     });
 
