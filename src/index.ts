@@ -9,7 +9,7 @@ export declare interface Callback {
   [propName: string]: any;
 }
 
-export declare interface CallbackCache<C extends () => any = Callback, P = any> {
+export declare interface CallbackCache<C extends Function = Callback, P = any> {
   callback: C;
   parameters?: P | P[];
   scope?: object;
@@ -97,7 +97,7 @@ export const isArray = <T>(arg: T | T[]): arg is T[] => {
 /**
  * test if argument is a function
  */
-export const isCallable = (arg: any): arg is () => any => {
+export const isCallable = (arg: any): arg is Function => {
   return (toString.call(arg) === '[object Function]' || arg instanceof Function) && !(arg instanceof RegExp);
 };
 
