@@ -5,13 +5,22 @@ import { uglify } from 'rollup-plugin-uglify';
 import rollupAll from 'rollup-all';
 
 const plugins = [
-    resolve({
-        extensions: ['.ts', '.js'],
-    }),
-    babel({
-        exclude: 'node_modules/**',
-        extensions: ['.ts', '.js']
-    }),
+  resolve({
+    extensions: ['.ts', '.js'],
+  }),
+  babel({
+    exclude: 'node_modules/**',
+    extensions: ['.ts', '.js'],
+  }),
 ];
 
-export default rollupAll.getExports(uglify(), plugins);
+export default rollupAll.getExports(uglify(), plugins, {
+  entryFile: 'index.ts',
+  moduleName: 'Utils',
+  distConfig: {
+    enabled: true,
+  },
+  libConfig: {
+    enabled: true,
+  },
+});
