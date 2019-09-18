@@ -717,8 +717,6 @@ export const uniqueArray = <T = any>(array: T[]): T[] => {
     },
   }); // create an object with no prototype.
 
-  console.log(typedHashes);
-
   const unique: T[] = [];
 
   array.forEach(element => {
