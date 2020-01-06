@@ -19,7 +19,7 @@ export declare interface CallbackCache<C extends Function = Callback, P = any> {
 export const CASE_STYLES = {
   NONE: 0,
   CAMEL_CASE: 1,
-  SNAKE_CASE: 2,
+  SNAKE_CASE: 2
 };
 
 /**
@@ -98,7 +98,10 @@ export const isArray = <T>(arg: T | T[]): arg is T[] => {
  * test if argument is a function
  */
 export const isCallable = (arg: any): arg is Function => {
-  return (toString.call(arg) === '[object Function]' || arg instanceof Function) && !(arg instanceof RegExp);
+  return (
+    (toString.call(arg) === '[object Function]' || arg instanceof Function) &&
+    !(arg instanceof RegExp)
+  );
 };
 
 /**
@@ -112,7 +115,13 @@ export const isRegex = (arg: any): arg is RegExp => {
  * test if argument is a javascript object, but not an array, Regex, function or null
  */
 export const isObject = <T = object>(arg: any): arg is T => {
-  return typeof arg === 'object' && arg !== null && !isCallable(arg) && !isArray(arg) && !isRegex(arg);
+  return (
+    typeof arg === 'object' &&
+    arg !== null &&
+    !isCallable(arg) &&
+    !isArray(arg) &&
+    !isRegex(arg)
+  );
 };
 
 /**
@@ -144,7 +153,10 @@ export const isParameter = (arg: any, isNullable: boolean = true) => {
 /**
  * puts argument into an array if it is not an array,
  */
-export const makeArray = <T>(arg: T | T[] | null | undefined, isNullable: boolean = false): T[] => {
+export const makeArray = <T>(
+  arg: T | T[] | null | undefined,
+  isNullable: boolean = false
+): T[] => {
   if (isArray(arg)) {
     return arg;
   }
@@ -159,17 +171,11 @@ export const makeArray = <T>(arg: T | T[] | null | undefined, isNullable: boolea
  */
 export const fillArray = <T>(arg: T[], length: number, value?: T): T[] => {
   const difference = length - arg.length;
-  value = value ?? (arg.length > 0? arg[arg.length - 1] : undefined);
+  value = value ?? (arg.length > 0 ? arg[arg.length - 1] : undefined);
   if (difference > 0) {
-    return [
-      ...arg,
-      ...Array(difference).fill(value)
-    ]
-  }
-  else {
-    return [
-      ...arg
-    ];
+    return [...arg, ...Array(difference).fill(value)];
+  } else {
+    return [...arg];
   }
 };
 
@@ -194,8 +200,13 @@ export function makeObject<T>(arg: any): T {
  * @param prop property to check
  * @param target the target object
  */
-export const isTypeOf = <T extends O, O extends object = any>(props: string | string[], target: O): target is T => {
-  return makeArray(props).every(prop => typeof getValue(prop, target) !== 'undefined');
+export const isTypeOf = <T extends O, O extends object = any>(
+  props: string | string[],
+  target: O
+): target is T => {
+  return makeArray(props).every(
+    prop => typeof getValue(prop, target) !== 'undefined'
+  );
 };
 
 /**
@@ -216,7 +227,11 @@ export const keySetAndTrue = (key: string, object: object): boolean => {
  * returns the value for the first key that exists in the object otherwise,
  * it returns the default value
  */
-export const pickValue = <T = any>(keys: string | string[], object: object, defaultValue?: T): T => {
+export const pickValue = <T = any>(
+  keys: string | string[],
+  object: object,
+  defaultValue?: T
+): T => {
   keys = makeArray(keys);
   for (const key of keys) {
     const value = getValue(key, object);
@@ -231,7 +246,11 @@ export const pickValue = <T = any>(keys: string | string[], object: object, defa
  * returns the value for the first key that exists in the object whose value is an array otherwise,
  * it returns the default value
  */
-export const pickArray = <T = any>(keys: string | string[], object: object, defaultValue: T[] = []): T[] => {
+export const pickArray = <T = any>(
+  keys: string | string[],
+  object: object,
+  defaultValue: T[] = []
+): T[] => {
   keys = makeArray(keys);
   for (const key of keys) {
     const value = getValue(key, object);
@@ -246,7 +265,11 @@ export const pickArray = <T = any>(keys: string | string[], object: object, defa
  * returns the value for the first key that exists in the object whose value is an object otherwise,
  * it returns the default value
  */
-export const pickObject = (keys: string | string[], object: object, defaultValue: object = {}): object => {
+export const pickObject = (
+  keys: string | string[],
+  object: object,
+  defaultValue: object = {}
+): object => {
   keys = makeArray(keys);
   for (const key of keys) {
     const value = getValue(key, object);
@@ -288,7 +311,11 @@ export function scopeCallback(callbackCache: CallbackCache): (...args) => any;
 /**
  * scope callback using the given scope and parameters
  */
-export function scopeCallback<T = any>(callback: Callback, scope?: object, parameters?: T | T[]): (...args) => any;
+export function scopeCallback<T = any>(
+  callback: Callback,
+  scope?: object,
+  parameters?: T | T[]
+): (...args) => any;
 
 /**
  * generates a callback function, scoping the execution with optional extra parameters
@@ -324,7 +351,10 @@ export function scopeCallback<T = any>(
 /**
  * schedules the execution of a scoped callback to a given time
  */
-export const scheduleCallback = (scopedCallback: Callback, time: number = 1000) => {
+export const scheduleCallback = (
+  scopedCallback: Callback,
+  time: number = 1000
+) => {
   return new Promise(function(resolve) {
     setTimeout(() => {
       resolve(scopedCallback());
@@ -358,7 +388,10 @@ export const generateRandomDigits = (length: number = 4): string => {
 /**
  * generates a random text of given character length
  */
-export const generateRandomText = (length: number = 4, exemptNumerals: boolean = false): string => {
+export const generateRandomText = (
+  length: number = 4,
+  exemptNumerals: boolean = false
+): string => {
   const letters = alphabets + alphabets.toUpperCase();
 
   const chars = exemptNumerals ? letters : letters + digits;
@@ -383,9 +416,16 @@ export function range(from: string, to: string, step?: number): string[];
 /**
  * creates a range of values
  */
-export function range(from: string | number, to: string | number, step: number = 1): number[] | string[] {
+export function range(
+  from: string | number,
+  to: string | number,
+  step: number = 1
+): number[] | string[] {
   const result = [];
-  const letters = from.toString().toLowerCase() !== from ? alphabets.toUpperCase() : alphabets;
+  const letters =
+    from.toString().toLowerCase() !== from
+      ? alphabets.toUpperCase()
+      : alphabets;
   step = step <= 0 ? 1 : step;
 
   // resolve start and end points
@@ -489,8 +529,10 @@ export const copy = <T extends object, O extends object>(
   };
 
   objects.forEach(item => {
-    for (const [key, value] of Object.entries(item)) {
-      target[key] = cloneEach(target[key], value);
+    if (isObject(item)) {
+      for (const [key, value] of Object.entries(item)) {
+        target[key] = cloneEach(target[key], value);
+      }
     }
   });
 
@@ -500,11 +542,16 @@ export const copy = <T extends object, O extends object>(
 /**
  * converts text to camel like casing
  */
-export const camelCase = (text: string, delimiter: string | RegExp = /[-_\s]/): string => {
+export const camelCase = (
+  text: string,
+  delimiter: string | RegExp = /[-_\s]/
+): string => {
   return text
     .split(delimiter)
     .map((token, index) => {
-      return index === 0 ? token : token.charAt(0).toUpperCase() + token.substring(1);
+      return index === 0
+        ? token
+        : token.charAt(0).toUpperCase() + token.substring(1);
     })
     .join('');
 };
@@ -512,7 +559,10 @@ export const camelCase = (text: string, delimiter: string | RegExp = /[-_\s]/): 
 /**
  * converts text to snake like casing
  */
-export const snakeCase = (text: string, delimiter: string | RegExp = /[-_\s]/): string => {
+export const snakeCase = (
+  text: string,
+  delimiter: string | RegExp = /[-_\s]/
+): string => {
   return text
     .split(delimiter)
     .map(token => token.toLowerCase())
@@ -525,7 +575,11 @@ export const snakeCase = (text: string, delimiter: string | RegExp = /[-_\s]/): 
  * @param caseStyle case style of choice
  * @param delimiter optional delimiter string or regex
  */
-export const applyCase = (text: string, caseStyle: number, delimiter: string | RegExp = /[-_\s]/): string => {
+export const applyCase = (
+  text: string,
+  caseStyle: number,
+  delimiter: string | RegExp = /[-_\s]/
+): string => {
   switch (caseStyle) {
     case CASE_STYLES.CAMEL_CASE:
       return camelCase(text, delimiter);
@@ -543,7 +597,9 @@ export const applyCase = (text: string, caseStyle: number, delimiter: string | R
  * @param text text to capitalize
  */
 export const capitalize = (text: string): string => {
-  return text.length > 0 ? text.charAt(0).toUpperCase() + text.substring(1).toLowerCase() : '';
+  return text.length > 0
+    ? text.charAt(0).toUpperCase() + text.substring(1).toLowerCase()
+    : '';
 };
 
 /**
@@ -574,7 +630,11 @@ export const expandProperty = <T extends object>(
  * pads the given target text or number with the pad with value until the target length meets
  * the given length
  */
-export const padLeft = (target: string | number, length = 4, padWith: string | number = 0): string => {
+export const padLeft = (
+  target: string | number,
+  length = 4,
+  padWith: string | number = 0
+): string => {
   target = target.toString();
   padWith = padWith.toString();
 
@@ -590,7 +650,11 @@ export const padLeft = (target: string | number, length = 4, padWith: string | n
  * pads the given target text or number with the pad with value until the target length meets
  * the given length
  */
-export const padRight = (target: string | number, length = 4, padWith: string | number = 0): string => {
+export const padRight = (
+  target: string | number,
+  length = 4,
+  padWith: string | number = 0
+): string => {
   target = target.toString();
   padWith = padWith.toString();
 
@@ -652,7 +716,10 @@ export const expandToNumeric = (size: number | string): number => {
   size = size.toString();
   if (/^\.\d+$/.test(size) || /^\d+(?:\.\d*)?$/.test(size)) {
     return Number.parseFloat(size);
-  } else if (/^(\.\d+)([a-z]+)$/i.test(size) || /^(\d+(?:\.\d*)?)([a-z]+)$/i.test(size)) {
+  } else if (
+    /^(\.\d+)([a-z]+)$/i.test(size) ||
+    /^(\d+(?:\.\d*)?)([a-z]+)$/i.test(size)
+  ) {
     let numeric = Number.parseFloat(RegExp.$1);
     const unit = RegExp.$2.toLowerCase();
 
@@ -674,7 +741,12 @@ export const expandToNumeric = (size: number | string): number => {
   }
 };
 
-const convertToUnit = (units: string[], value: number, maximumFractionDigits: number, defaultUnit: string) => {
+const convertToUnit = (
+  units: string[],
+  value: number,
+  maximumFractionDigits: number,
+  defaultUnit: string
+) => {
   const snapPoints = [1000000000000, 1000000000, 1000000, 1000];
   const length = snapPoints.length;
   let i = -1;
@@ -697,7 +769,10 @@ const convertToUnit = (units: string[], value: number, maximumFractionDigits: nu
  * @param value number value to be converted
  * @param maximumFractionDigits number of maximum decimal values allowed, defaults to 2
  */
-export const convertToMemoryUnit = (value: number, maximumFractionDigits: number = 2) => {
+export const convertToMemoryUnit = (
+  value: number,
+  maximumFractionDigits: number = 2
+) => {
   const units = ['tb', 'gb', 'mb', 'kb'];
   return convertToUnit(units, value, maximumFractionDigits, 'bytes');
 };
@@ -708,7 +783,10 @@ export const convertToMemoryUnit = (value: number, maximumFractionDigits: number
  * @param value number value to be converted
  * @param maximumFractionDigits number of maximum decimal values allowed, defaults to 2
  */
-export const convertToMonetaryUnit = (value: number, maximumFractionDigits: number = 2) => {
+export const convertToMonetaryUnit = (
+  value: number,
+  maximumFractionDigits: number = 2
+) => {
   const units = ['T', 'B', 'M', 'K'];
   return convertToUnit(units, value, maximumFractionDigits, '');
 };
@@ -728,14 +806,14 @@ export const stripSlashes = (path: string): string => {
 export const uniqueArray = <T = any>(array: T[]): T[] => {
   const typedHashes = Object.create(null, {
     boolean: {
-      value: Object.create(null),
+      value: Object.create(null)
     },
     string: {
-      value: Object.create(null),
+      value: Object.create(null)
     },
     number: {
-      value: Object.create(null),
-    },
+      value: Object.create(null)
+    }
   }); // create an object with no prototype.
 
   const unique: T[] = [];
