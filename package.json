@@ -2,8 +2,9 @@
   "name": "@forensic-js/utils",
   "version": "0.0.0-development",
   "description": "A collection of day-to-day utility methods usable in both node and browser environments",
-  "main": "lib/index",
-  "typings": "lib/typings/index",
+  "main": "build/index",
+  "module": "build/esm/index",
+  "typings": "build/index",
   "publishConfig": {
     "access": "public"
   },
@@ -11,7 +12,7 @@
     "commit": "git-cz",
     "test": "BABEL_ENV=test jest",
     "watch-test": "BABEL_ENV=test jest --watch",
-    "build": "rimraf dist lib && tsc && BABEL_ENV=build rollup --config",
+    "build": "rimraf build && tsc && rollup-all",
     "report-coverage": "jest --coverage --coverageReporters=text-lcov | coveralls",
     "semantic-release": "semantic-release"
   },
@@ -38,11 +39,7 @@
     "cz-conventional-changelog": "2.1.0",
     "jest": "24.3.1",
     "rimraf": "2.6.3",
-    "rollup": "0.66.6",
-    "rollup-all": "1.6.16",
-    "rollup-plugin-babel": "4.3.2",
-    "rollup-plugin-node-resolve": "3.4.0",
-    "rollup-plugin-uglify": "6.0.2",
+    "rollup-all": "1.10.0",
     "semantic-release": "^15.13.24",
     "semantic-release-cli": "5.2.1",
     "tslint": "5.12.0",

@@ -118,6 +118,7 @@ export const isObject = <T = object>(arg: any): arg is T => {
   return (
     typeof arg === 'object' &&
     arg !== null &&
+    arg !== undefined &&
     !isCallable(arg) &&
     !isArray(arg) &&
     !isRegex(arg)
