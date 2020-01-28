@@ -842,3 +842,78 @@ export const uniqueArray = <T = any>(array: T[]): T[] => {
 
   return unique;
 };
+
+export const isBrowser = () => typeof window !== 'undefined';
+
+/**
+ * detects if local storage is supported
+ */
+export const localStorageSupported = () => {
+  return isBrowser() && typeof window.localStorage !== 'undefined';
+};
+
+/**
+ * detects if service worker is supported
+ */
+export const serviceWorkerSupported = () => {
+  return isBrowser() && 'serviceWorker' in window.navigator;
+};
+
+/**
+ * detects if push notifications is supported
+ */
+export const notificationSupported = () => {
+  return isBrowser() && 'Notification' in window;
+};
+
+/**
+ * retrieves a value from storage
+ */
+export const getFromStorage = (key: string, defaultValue: any = null) => {
+  if (localStorageSupported()) {
+    const value = window.localStorage.getItem(key);
+    if (isNull(value) || isUndefined(value)) {
+      return defaultValue;
+    } else {
+      return value;
+    }
+  } else {
+    return defaultValue;
+  }
+};
+
+/**
+ * sets a value to storage if storage is a supported.
+ * returns true if succeeds, else returns false
+ */
+export const setToStorage = (key: string, value: string) => {
+  if (localStorageSupported()) {
+    window.localStorage.setItem(key, value);
+    return true;
+  }
+  return false;
+};
+
+/**
+ * request for notification permission
+ */
+export const requestNotification = () => {
+  const hasPromiseSupport = () => {
+    try {
+      Notification.requestPermission().then();
+    } catch (e) {
+      return false;
+    }
+    return true;
+  };
+
+  return new Promise(resolve => {
+    if (notificationSupported()) {
+      if (hasPromiseSupport()) {
+        Notification.requestPermission().then(status => resolve());
+      } else {
+        Notification.requestPermission(status => resolve(status));
+      }
+    }
+  });
+};

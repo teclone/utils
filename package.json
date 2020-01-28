@@ -39,7 +39,7 @@
     "cz-conventional-changelog": "2.1.0",
     "jest": "24.3.1",
     "rimraf": "2.6.3",
-    "rollup-all": "1.10.0",
+    "rollup-all": "1.10.4",
     "semantic-release": "^15.13.24",
     "semantic-release-cli": "5.2.1",
     "tslint": "5.12.0",
