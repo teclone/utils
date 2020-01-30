@@ -914,7 +914,7 @@ export const notificationSupported = () => {
 export const pushManagerSupported = () => {
   return (
     getGlobal() &&
-    'pushManager' in getGlobal() &&
+    'PushManager' in getGlobal() &&
     PushSubscription.prototype.hasOwnProperty('getKey')
   );
 };
