@@ -843,27 +843,80 @@ export const uniqueArray = <T = any>(array: T[]): T[] => {
   return unique;
 };
 
+/**
+ * detects if we are ruining in browser
+ */
 export const isBrowser = () => typeof window !== 'undefined';
+
+/**
+ * detects if we are running in a service worker
+ */
+export const isServiceWorker = () => typeof self !== 'undefined';
+
+/**
+ * returns the global object, either window, self or null
+ */
+export const getGlobal = () => {
+  if (isBrowser()) {
+    return window;
+  } else if (isServiceWorker()) {
+    return self;
+  } else {
+    return null;
+  }
+};
 
 /**
  * detects if local storage is supported
  */
 export const localStorageSupported = () => {
-  return isBrowser() && typeof window.localStorage !== 'undefined';
+  return getGlobal() && typeof getGlobal().localStorage !== 'undefined';
 };
 
 /**
  * detects if service worker is supported
  */
 export const serviceWorkerSupported = () => {
-  return isBrowser() && 'serviceWorker' in window.navigator;
+  if (isServiceWorker()) {
+    return true;
+  } else if (isBrowser()) {
+    return 'serviceWorker' in window.navigator;
+  } else {
+    return false;
+  }
+};
+
+/**
+ * detects if index db is supported
+ */
+export const indexDBSupported = () => {
+  return getGlobal() && 'indexedDB' in getGlobal() && indexedDB !== null;
 };
 
 /**
  * detects if push notifications is supported
  */
 export const notificationSupported = () => {
-  return isBrowser() && 'Notification' in window;
+  if (isBrowser()) {
+    return 'Notification' in getGlobal();
+  } else if (isServiceWorker()) {
+    return ServiceWorkerRegistration.prototype.hasOwnProperty(
+      'showNotification'
+    );
+  } else {
+    return false;
+  }
+};
+
+/**
+ * detects if push manager is supported
+ */
+export const pushManagerSupported = () => {
+  return (
+    getGlobal() &&
+    'pushManager' in getGlobal() &&
+    PushSubscription.prototype.hasOwnProperty('getKey')
+  );
 };
 
 /**
@@ -910,7 +963,7 @@ export const requestNotification = () => {
   return new Promise(resolve => {
     if (notificationSupported()) {
       if (hasPromiseSupport()) {
-        Notification.requestPermission().then(status => resolve());
+        Notification.requestPermission().then(status => resolve(status));
       } else {
         Notification.requestPermission(status => resolve(status));
       }

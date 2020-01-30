@@ -7702,10 +7702,10 @@ rimraf@^2.5.2, rimraf@^2.5.4, rimraf@^2.6.2, rimraf@^2.6.3:
   dependencies:
     glob "^7.1.3"
 
-rollup-all@1.10.4:
-  version "1.10.4"
-  resolved "https://registry.yarnpkg.com/rollup-all/-/rollup-all-1.10.4.tgz#3e0828d1480bfafcdb562e6587233f79e4c6f390"
-  integrity sha512-ftUsxtdaqnloI0hDdcR2wqMpGq4inKtcjT912t4BqEbVM4CKt5/YddJh8iRwjn44Auohj9y1CoJmK1H8mnpxPw==
+rollup-all@1.10.6:
+  version "1.10.6"
+  resolved "https://registry.yarnpkg.com/rollup-all/-/rollup-all-1.10.6.tgz#3e6f7f8d7d4d86bc65b0cf128babcdb42e341e37"
+  integrity sha512-XxHGPsx+6yczIzbU9r42lch049I2JfBTnsxJl+9iLNHr9XhfNjGrl86crQ1lyq0wdG5AwQjgdPcl1IX+sq1CLg==
   dependencies:
     "@babel/core" "7.7.5"
     "@babel/plugin-proposal-class-properties" "^7.4.0"
