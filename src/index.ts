@@ -955,61 +955,67 @@ export const requestNotification = () => {
 };
 
 /**
- * returns the width and height of the browser
+ * returns the width and height of the given element or browser if no element is given without taking into account scrollbars
+ * and clipped content due to overflow
  */
-export const getClientSize = () => {
+export const getClientSize = (elem?: HTMLElement | null) => {
   const result = {
     width: 0,
     height: 0,
   };
 
-  if (isBrowser()) {
-    result.width = document.documentElement.clientWidth;
-    result.height = document.documentElement.clientHeight;
-  }
-
-  return result;
-};
-
-/**
- * returns the width and height of the element or the document if no window is specified, without borders, unless if  includeBorders is specified
- */
-export const getElementSize = (elem?: HTMLElement | null, includeBorders?: boolean) => {
-  const result = {
-    width: 0,
-    height: 0,
+  const getW = (elem: HTMLElement) => {
+    return elem.clientWidth;
   };
 
-  const getWidth = (elem: HTMLElement) => {
-    return includeBorders
-      ? Math.max(elem.scrollWidth, elem.offsetWidth, elem.clientWidth)
-      : Math.max(elem.scrollWidth, elem.clientWidth);
-  };
-
-  const getHeight = (elem: HTMLElement) => {
-    return includeBorders
-      ? Math.max(elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
-      : Math.max(elem.scrollHeight, elem.clientHeight);
+  const getH = (elem: HTMLElement) => {
+    return elem.clientHeight;
   };
 
   if (elem) {
-    result.height = getHeight(elem);
-    result.width = getWidth(elem);
+    result.width = getW(elem);
+    result.height = getH(elem);
   } else if (isBrowser()) {
-    result.height = Math.max(
-      getHeight(document.body),
-      getHeight(document.documentElement),
-    );
-    result.width = Math.max(getWidth(document.body), getWidth(document.documentElement));
+    result.width = Math.max(getW(document.body), getW(document.documentElement));
+    result.height = Math.max(getH(document.body), getH(document.documentElement));
   }
 
   return result;
 };
 
 /**
- * returns the current scroll dimensions of the given element or the window if no element is specified
+ * returns the width and height of the given element or page if no element is given taking into account
+ * clipped contents width and height due to overflow
  */
-export const getElementScroll = (elem?: HTMLElement | null) => {
+export const getScrollSize = (elem?: HTMLElement | null) => {
+  const result = {
+    width: 0,
+    height: 0,
+  };
+
+  const getW = (elem: HTMLElement) => {
+    return Math.max(elem.clientWidth, elem.scrollWidth);
+  };
+
+  const getH = (elem: HTMLElement) => {
+    return Math.max(elem.clientHeight, elem.scrollHeight);
+  };
+
+  if (elem) {
+    result.width = getW(elem);
+    result.height = getH(elem);
+  } else if (isBrowser()) {
+    result.width = Math.max(getW(document.body), getW(document.documentElement));
+    result.height = Math.max(getH(document.body), getH(document.documentElement));
+  }
+
+  return result;
+};
+
+/**
+ * returns the current scroll positions of the given element or the page if no element is specified
+ */
+export const getScrollPositions = (elem?: HTMLElement | null) => {
   const result = {
     left: 0,
     top: 0,
