@@ -1053,8 +1053,10 @@ export const getScrollPositions = (elem?: HTMLElement | null) => {
  */
 export const getScrolledPercentages = (elem?: HTMLElement | null) => {
   const result = {
-    x: 0,
-    y: 0,
+    top: 0,
+    left: 0,
+    xPercent: 0,
+    yPercent: 0,
   };
 
   const amountToScroll = (scrollSize: number, clientSize: number) => {
@@ -1065,8 +1067,13 @@ export const getScrolledPercentages = (elem?: HTMLElement | null) => {
   const scrollPositions = getScrollPositions(elem);
   const clientSize = getClientSize(elem);
 
-  result.x = scrollPositions.left / amountToScroll(scrollSize.width, clientSize.width);
-  result.y = scrollPositions.top / amountToScroll(scrollSize.height, clientSize.height);
+  result.top = scrollPositions.top;
+  result.left = scrollPositions.left;
+
+  result.xPercent =
+    scrollPositions.left / amountToScroll(scrollSize.width, clientSize.width);
+  result.yPercent =
+    scrollPositions.top / amountToScroll(scrollSize.height, clientSize.height);
 
   return result;
 };
