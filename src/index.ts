@@ -1047,3 +1047,26 @@ export const getScrollPositions = (elem?: HTMLElement | null) => {
 
   return result;
 };
+
+/**
+ * returns the current scroll percentages
+ */
+export const getScrolledPercentages = (elem?: HTMLElement | null) => {
+  const result = {
+    x: 0,
+    y: 0,
+  };
+
+  const amountToScroll = (scrollSize: number, clientSize: number) => {
+    return scrollSize - clientSize || 1;
+  };
+
+  const scrollSize = getScrollSize(elem);
+  const scrollPositions = getScrollPositions(elem);
+  const clientSize = getClientSize(elem);
+
+  result.x = scrollPositions.left / amountToScroll(scrollSize.width, clientSize.width);
+  result.y = scrollPositions.top / amountToScroll(scrollSize.height, clientSize.height);
+
+  return result;
+};
