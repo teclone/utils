@@ -19,7 +19,7 @@ export declare interface CallbackCache<C extends Function = Callback, P = any> {
 export const CASE_STYLES = {
   NONE: 0,
   CAMEL_CASE: 1,
-  SNAKE_CASE: 2
+  SNAKE_CASE: 2,
 };
 
 /**
@@ -156,7 +156,7 @@ export const isParameter = (arg: any, isNullable: boolean = true) => {
  */
 export const makeArray = <T>(
   arg: T | T[] | null | undefined,
-  isNullable: boolean = false
+  isNullable: boolean = false,
 ): T[] => {
   if (isArray(arg)) {
     return arg;
@@ -203,11 +203,9 @@ export function makeObject<T>(arg: any): T {
  */
 export const isTypeOf = <T extends O, O extends object = any>(
   props: string | string[],
-  target: O
+  target: O,
 ): target is T => {
-  return makeArray(props).every(
-    prop => typeof getValue(prop, target) !== 'undefined'
-  );
+  return makeArray(props).every(prop => typeof getValue(prop, target) !== 'undefined');
 };
 
 /**
@@ -231,7 +229,7 @@ export const keySetAndTrue = (key: string, object: object): boolean => {
 export const pickValue = <T = any>(
   keys: string | string[],
   object: object,
-  defaultValue?: T
+  defaultValue?: T,
 ): T => {
   keys = makeArray(keys);
   for (const key of keys) {
@@ -250,7 +248,7 @@ export const pickValue = <T = any>(
 export const pickArray = <T = any>(
   keys: string | string[],
   object: object,
-  defaultValue: T[] = []
+  defaultValue: T[] = [],
 ): T[] => {
   keys = makeArray(keys);
   for (const key of keys) {
@@ -269,7 +267,7 @@ export const pickArray = <T = any>(
 export const pickObject = (
   keys: string | string[],
   object: object,
-  defaultValue: object = {}
+  defaultValue: object = {},
 ): object => {
   keys = makeArray(keys);
   for (const key of keys) {
@@ -315,7 +313,7 @@ export function scopeCallback(callbackCache: CallbackCache): (...args) => any;
 export function scopeCallback<T = any>(
   callback: Callback,
   scope?: object,
-  parameters?: T | T[]
+  parameters?: T | T[],
 ): (...args) => any;
 
 /**
@@ -324,7 +322,7 @@ export function scopeCallback<T = any>(
 export function scopeCallback<T = any>(
   callback: Callback | CallbackCache,
   scope: object = null,
-  parameters: T | T[] = []
+  parameters: T | T[] = [],
 ) {
   if (isObject<CallbackCache>(callback)) {
     return (...args) => {
@@ -352,10 +350,7 @@ export function scopeCallback<T = any>(
 /**
  * schedules the execution of a scoped callback to a given time
  */
-export const scheduleCallback = (
-  scopedCallback: Callback,
-  time: number = 1000
-) => {
+export const scheduleCallback = (scopedCallback: Callback, time: number = 1000) => {
   return new Promise(function(resolve) {
     setTimeout(() => {
       resolve(scopedCallback());
@@ -391,7 +386,7 @@ export const generateRandomDigits = (length: number = 4): string => {
  */
 export const generateRandomText = (
   length: number = 4,
-  exemptNumerals: boolean = false
+  exemptNumerals: boolean = false,
 ): string => {
   const letters = alphabets + alphabets.toUpperCase();
 
@@ -420,13 +415,11 @@ export function range(from: string, to: string, step?: number): string[];
 export function range(
   from: string | number,
   to: string | number,
-  step: number = 1
+  step: number = 1,
 ): number[] | string[] {
   const result = [];
   const letters =
-    from.toString().toLowerCase() !== from
-      ? alphabets.toUpperCase()
-      : alphabets;
+    from.toString().toLowerCase() !== from ? alphabets.toUpperCase() : alphabets;
   step = step <= 0 ? 1 : step;
 
   // resolve start and end points
@@ -545,14 +538,12 @@ export const copy = <T extends object, O extends object>(
  */
 export const camelCase = (
   text: string,
-  delimiter: string | RegExp = /[-_\s]/
+  delimiter: string | RegExp = /[-_\s]/,
 ): string => {
   return text
     .split(delimiter)
     .map((token, index) => {
-      return index === 0
-        ? token
-        : token.charAt(0).toUpperCase() + token.substring(1);
+      return index === 0 ? token : token.charAt(0).toUpperCase() + token.substring(1);
     })
     .join('');
 };
@@ -562,7 +553,7 @@ export const camelCase = (
  */
 export const snakeCase = (
   text: string,
-  delimiter: string | RegExp = /[-_\s]/
+  delimiter: string | RegExp = /[-_\s]/,
 ): string => {
   return text
     .split(delimiter)
@@ -579,7 +570,7 @@ export const snakeCase = (
 export const applyCase = (
   text: string,
   caseStyle: number,
-  delimiter: string | RegExp = /[-_\s]/
+  delimiter: string | RegExp = /[-_\s]/,
 ): string => {
   switch (caseStyle) {
     case CASE_STYLES.CAMEL_CASE:
@@ -611,7 +602,7 @@ export const expandProperty = <T extends object>(
   key: string,
   value: any,
   delimiter: string = '.',
-  caseStyle: number = CASE_STYLES.CAMEL_CASE
+  caseStyle: number = CASE_STYLES.CAMEL_CASE,
 ): T & { [propName: string]: any } => {
   const keys = key.split(delimiter);
   const lastKey = applyCase(keys.pop(), caseStyle);
@@ -634,7 +625,7 @@ export const expandProperty = <T extends object>(
 export const padLeft = (
   target: string | number,
   length = 4,
-  padWith: string | number = 0
+  padWith: string | number = 0,
 ): string => {
   target = target.toString();
   padWith = padWith.toString();
@@ -654,7 +645,7 @@ export const padLeft = (
 export const padRight = (
   target: string | number,
   length = 4,
-  padWith: string | number = 0
+  padWith: string | number = 0,
 ): string => {
   target = target.toString();
   padWith = padWith.toString();
@@ -677,7 +668,7 @@ export const padRight = (
 export const encodeQuery = (
   name: string,
   value: string | number | (string | number)[],
-  multiValueIdentifier: string = '[]'
+  multiValueIdentifier: string = '[]',
 ): string => {
   name = encodeURIComponent(name);
   if (isArray(value)) {
@@ -700,7 +691,7 @@ export const encodeQuery = (
  */
 export const encodeQueries = (
   query: { [name: string]: string | number | (string | number)[] },
-  multiValueIdentifier: string = '[]'
+  multiValueIdentifier: string = '[]',
 ): string => {
   return Object.keys(query)
     .map(name => {
@@ -717,10 +708,7 @@ export const expandToNumeric = (size: number | string): number => {
   size = size.toString();
   if (/^\.\d+$/.test(size) || /^\d+(?:\.\d*)?$/.test(size)) {
     return Number.parseFloat(size);
-  } else if (
-    /^(\.\d+)([a-z]+)$/i.test(size) ||
-    /^(\d+(?:\.\d*)?)([a-z]+)$/i.test(size)
-  ) {
+  } else if (/^(\.\d+)([a-z]+)$/i.test(size) || /^(\d+(?:\.\d*)?)([a-z]+)$/i.test(size)) {
     let numeric = Number.parseFloat(RegExp.$1);
     const unit = RegExp.$2.toLowerCase();
 
@@ -746,7 +734,7 @@ const convertToUnit = (
   units: string[],
   value: number,
   maximumFractionDigits: number,
-  defaultUnit: string
+  defaultUnit: string,
 ) => {
   const snapPoints = [1000000000000, 1000000000, 1000000, 1000];
   const length = snapPoints.length;
@@ -770,10 +758,7 @@ const convertToUnit = (
  * @param value number value to be converted
  * @param maximumFractionDigits number of maximum decimal values allowed, defaults to 2
  */
-export const convertToMemoryUnit = (
-  value: number,
-  maximumFractionDigits: number = 2
-) => {
+export const convertToMemoryUnit = (value: number, maximumFractionDigits: number = 2) => {
   const units = ['tb', 'gb', 'mb', 'kb'];
   return convertToUnit(units, value, maximumFractionDigits, 'bytes');
 };
@@ -786,7 +771,7 @@ export const convertToMemoryUnit = (
  */
 export const convertToMonetaryUnit = (
   value: number,
-  maximumFractionDigits: number = 2
+  maximumFractionDigits: number = 2,
 ) => {
   const units = ['T', 'B', 'M', 'K'];
   return convertToUnit(units, value, maximumFractionDigits, '');
@@ -807,14 +792,14 @@ export const stripSlashes = (path: string): string => {
 export const uniqueArray = <T = any>(array: T[]): T[] => {
   const typedHashes = Object.create(null, {
     boolean: {
-      value: Object.create(null)
+      value: Object.create(null),
     },
     string: {
-      value: Object.create(null)
+      value: Object.create(null),
     },
     number: {
-      value: Object.create(null)
-    }
+      value: Object.create(null),
+    },
   }); // create an object with no prototype.
 
   const unique: T[] = [];
@@ -900,9 +885,7 @@ export const notificationSupported = () => {
   if (isBrowser()) {
     return 'Notification' in getGlobal();
   } else if (isServiceWorker()) {
-    return ServiceWorkerRegistration.prototype.hasOwnProperty(
-      'showNotification'
-    );
+    return ServiceWorkerRegistration.prototype.hasOwnProperty('showNotification');
   } else {
     return false;
   }
@@ -969,4 +952,92 @@ export const requestNotification = () => {
       }
     }
   });
+};
+
+/**
+ * returns the width and height of the browser
+ */
+export const getClientSize = () => {
+  const result = {
+    width: 0,
+    height: 0,
+  };
+
+  if (isBrowser()) {
+    result.width = document.documentElement.clientWidth;
+    result.height = document.documentElement.clientHeight;
+  }
+
+  return result;
+};
+
+/**
+ * returns the width and height of the element or the document if no window is specified, without borders, unless if  includeBorders is specified
+ */
+export const getElementSize = (elem?: HTMLElement | null, includeBorders?: boolean) => {
+  const result = {
+    width: 0,
+    height: 0,
+  };
+
+  const getWidth = (elem: HTMLElement) => {
+    return includeBorders
+      ? Math.max(elem.scrollWidth, elem.offsetWidth, elem.clientWidth)
+      : Math.max(elem.scrollWidth, elem.clientWidth);
+  };
+
+  const getHeight = (elem: HTMLElement) => {
+    return includeBorders
+      ? Math.max(elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+      : Math.max(elem.scrollHeight, elem.clientHeight);
+  };
+
+  if (elem) {
+    result.height = getHeight(elem);
+    result.width = getWidth(elem);
+  } else if (isBrowser()) {
+    result.height = Math.max(
+      getHeight(document.body),
+      getHeight(document.documentElement),
+    );
+    result.width = Math.max(getWidth(document.body), getWidth(document.documentElement));
+  }
+
+  return result;
+};
+
+/**
+ * returns the current scroll dimensions of the given element or the window if no element is specified
+ */
+export const getElementScroll = (elem?: HTMLElement | null) => {
+  const result = {
+    left: 0,
+    top: 0,
+  };
+
+  const getLeftScroll = (elem: HTMLElement) => {
+    return elem.scrollLeft || 0;
+  };
+
+  const getTopScroll = (elem: HTMLElement) => {
+    return elem.scrollTop || 0;
+  };
+
+  if (elem) {
+    result.left = getLeftScroll(elem);
+    result.top = getTopScroll(elem);
+  } else if (isBrowser()) {
+    result.top = Math.max(
+      window.pageYOffset,
+      getTopScroll(document.body),
+      getTopScroll(document.documentElement),
+    );
+    result.left = Math.max(
+      window.pageXOffset,
+      getLeftScroll(document.body),
+      getLeftScroll(document.documentElement),
+    );
+  }
+
+  return result;
 };
