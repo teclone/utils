@@ -976,8 +976,8 @@ export const getClientSize = (elem?: HTMLElement | null) => {
     result.width = getW(elem);
     result.height = getH(elem);
   } else if (isBrowser()) {
-    result.width = Math.max(getW(document.body), getW(document.documentElement));
-    result.height = Math.max(getH(document.body), getH(document.documentElement));
+    result.width = Math.max(getW(document.documentElement));
+    result.height = Math.max(getH(document.documentElement));
   }
 
   return result;
