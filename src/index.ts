@@ -1,15 +1,25 @@
-const toString = Object.prototype.toString;
+import { root, host, Callback, isBrowser, isServiceWorker } from '@teclone/global';
 
 const alphabets = 'abcdefghijklmnopqrstuvwxyz';
 
 const digits = '0123456789';
 
-export declare interface Callback {
-  (...args): any;
-  [propName: string]: any;
-}
+/**
+ * test if argument is a function
+ */
+export const isCallable = (arg: any): arg is Function => {
+  return (
+    (toString.call(arg) === '[object Function]' || arg instanceof Function) &&
+    !(arg instanceof RegExp)
+  );
+};
 
-export declare interface CallbackCache<C extends Function = Callback, P = any> {
+/**
+ * to string method
+ */
+export const toString = Object.prototype.toString;
+
+export interface CallbackCache<C extends Function = Callback, P = any> {
   callback: C;
   parameters?: P | P[];
   scope?: object;
@@ -95,16 +105,6 @@ export const isArray = <T>(arg: T | T[]): arg is T[] => {
 };
 
 /**
- * test if argument is a function
- */
-export const isCallable = (arg: any): arg is Function => {
-  return (
-    (toString.call(arg) === '[object Function]' || arg instanceof Function) &&
-    !(arg instanceof RegExp)
-  );
-};
-
-/**
  * test if argument is a regular expressions
  */
 export const isRegex = (arg: any): arg is RegExp => {
@@ -151,6 +151,21 @@ export const isParameter = (arg: any, isNullable: boolean = true) => {
 
   return true;
 };
+
+/**
+ * detects if argument is a Document
+ */
+export const isDocumentNode = (arg: any): arg is Document => {
+  return arg?.nodeType === 9;
+};
+
+/**
+ * detects if argument is an element node
+ */
+export const isElementNode = (arg: any): arg is Element => {
+  return arg?.nodeType === 1;
+};
+
 /**
  * puts argument into an array if it is not an array,
  */
@@ -665,7 +680,7 @@ export const padRight = (
  * @param multiValueIdentifier an identifier to be prepended to multivalue query names for
  * identification.
  */
-export const encodeQuery = (
+export const encodeDataEntry = (
   name: string,
   value: string | number | (string | number)[],
   multiValueIdentifier: string = '[]',
@@ -689,13 +704,13 @@ export const encodeQuery = (
  * @param multiValueIdentifier an identifier to be prepended to multivalue query names for
  * identification.
  */
-export const encodeQueries = (
+export const encodeData = (
   query: { [name: string]: string | number | (string | number)[] },
   multiValueIdentifier: string = '[]',
 ): string => {
   return Object.keys(query)
     .map(name => {
-      return encodeQuery(name, query[name], multiValueIdentifier);
+      return encodeDataEntry(name, query[name], multiValueIdentifier);
     })
     .join('&');
 };
@@ -829,23 +844,13 @@ export const uniqueArray = <T = any>(array: T[]): T[] => {
 };
 
 /**
- * detects if we are ruining in browser
- */
-export const isBrowser = () => typeof window !== 'undefined';
-
-/**
- * detects if we are running in a service worker
- */
-export const isServiceWorker = () => typeof self !== 'undefined';
-
-/**
  * returns the global object, either window, self or null
  */
 export const getGlobal = () => {
-  if (isBrowser()) {
-    return window;
-  } else if (isServiceWorker()) {
+  if (isServiceWorker()) {
     return self;
+  } else if (isBrowser()) {
+    return host;
   } else {
     return null;
   }
@@ -865,7 +870,7 @@ export const serviceWorkerSupported = () => {
   if (isServiceWorker()) {
     return true;
   } else if (isBrowser()) {
-    return 'serviceWorker' in window.navigator;
+    return 'serviceWorker' in host.navigator;
   } else {
     return false;
   }
@@ -907,7 +912,7 @@ export const pushManagerSupported = () => {
  */
 export const getFromStorage = (key: string, defaultValue: any = null) => {
   if (localStorageSupported()) {
-    const value = window.localStorage.getItem(key);
+    const value = host.localStorage.getItem(key);
     if (isNull(value) || isUndefined(value)) {
       return defaultValue;
     } else {
@@ -924,7 +929,7 @@ export const getFromStorage = (key: string, defaultValue: any = null) => {
  */
 export const setToStorage = (key: string, value: string) => {
   if (localStorageSupported()) {
-    window.localStorage.setItem(key, value);
+    host.localStorage.setItem(key, value);
     return true;
   }
   return false;
@@ -976,8 +981,8 @@ export const getClientSize = (elem?: HTMLElement | null) => {
     result.width = getW(elem);
     result.height = getH(elem);
   } else if (isBrowser()) {
-    result.width = Math.max(getW(document.documentElement));
-    result.height = Math.max(getH(document.documentElement));
+    result.width = Math.max(getW(root.documentElement));
+    result.height = Math.max(getH(root.documentElement));
   }
 
   return result;
@@ -1005,8 +1010,8 @@ export const getScrollSize = (elem?: HTMLElement | null) => {
     result.width = getW(elem);
     result.height = getH(elem);
   } else if (isBrowser()) {
-    result.width = Math.max(getW(document.body), getW(document.documentElement));
-    result.height = Math.max(getH(document.body), getH(document.documentElement));
+    result.width = Math.max(getW(root.body), getW(root.documentElement));
+    result.height = Math.max(getH(root.body), getH(root.documentElement));
   }
 
   return result;
@@ -1034,14 +1039,14 @@ export const getScrollPositions = (elem?: HTMLElement | null) => {
     result.top = getTopScroll(elem);
   } else if (isBrowser()) {
     result.top = Math.max(
-      window.pageYOffset,
-      getTopScroll(document.body),
-      getTopScroll(document.documentElement),
+      host.pageYOffset,
+      getTopScroll(root.body),
+      getTopScroll(root.documentElement),
     );
     result.left = Math.max(
-      window.pageXOffset,
-      getLeftScroll(document.body),
-      getLeftScroll(document.documentElement),
+      host.pageXOffset,
+      getLeftScroll(root.body),
+      getLeftScroll(root.documentElement),
     );
   }
 
@@ -1077,3 +1082,5 @@ export const getScrolledPercentages = (elem?: HTMLElement | null) => {
 
   return result;
 };
+
+export * from '@teclone/global';

@@ -235,7 +235,7 @@ describe('Utils', function() {
       const target = {};
       Object.defineProperty(target, 'name', {
         value: 'name',
-        configurable: false
+        configurable: false,
       });
       expect(Utils.deleteProperty('name', target)).toBeFalsy();
       expect(target['name']).toBeDefined();
@@ -254,7 +254,7 @@ describe('Utils', function() {
       const target = { age: 22 };
       Object.defineProperty(target, 'name', {
         value: 'name',
-        configurable: false
+        configurable: false,
       });
       expect(Utils.deleteProperties(['age', 'name'], target)).toBeFalsy();
       expect(target['name']).toBeDefined();
@@ -294,16 +294,14 @@ describe('Utils', function() {
     it(`should return the value for the first set key in the object`, function() {
       expect(Utils.pickValue('name', object)).toEqual(object.name);
       expect(Utils.pickValue(['height', 'name'], object)).toEqual(object.name);
-      expect(Utils.pickValue(['height', 'age', 'name'], object)).toEqual(
-        object.age
-      );
+      expect(Utils.pickValue(['height', 'age', 'name'], object)).toEqual(object.age);
     });
 
     it(`should capture any error that occurs while trying the access value`, function() {
       const proxy = new Proxy(object, {
         get() {
           throw new Error('you cant read from this object');
-        }
+        },
       });
       expect(Utils.pickValue('name', proxy)).toBeUndefined();
     });
@@ -319,19 +317,13 @@ describe('Utils', function() {
 
     it(`should return the value for the first set key in the object that is an array`, function() {
       expect(Utils.pickArray('names', object)).toEqual(object.names);
-      expect(Utils.pickArray(['heights', 'names'], object)).toEqual(
-        object.names
-      );
-      expect(Utils.pickArray(['heights', 'ages', 'names'], object)).toEqual(
-        object.ages
-      );
+      expect(Utils.pickArray(['heights', 'names'], object)).toEqual(object.names);
+      expect(Utils.pickArray(['heights', 'ages', 'names'], object)).toEqual(object.ages);
     });
 
     it(`should return the default value if no key is set in the object that is an array`, function() {
       expect(Utils.pickArray('heights', object)).toEqual([]);
-      expect(Utils.pickArray(['heights', 'unset'], object, [22.5])).toEqual([
-        22.5
-      ]);
+      expect(Utils.pickArray(['heights', 'unset'], object, [22.5])).toEqual([22.5]);
     });
   });
 
@@ -339,21 +331,17 @@ describe('Utils', function() {
     const object = {
       settings: { notify: true, zoom: false },
       themes: ['oneUI', 'touchWiz'],
-      name: 'customApp'
+      name: 'customApp',
     };
 
     it(`should return the value for the first set key in the object that is an object`, function() {
       expect(Utils.pickObject('settings', object)).toEqual(object.settings);
-      expect(Utils.pickObject(['themes', 'settings'], object)).toEqual(
-        object.settings
-      );
+      expect(Utils.pickObject(['themes', 'settings'], object)).toEqual(object.settings);
     });
 
     it(`should return the default value if no key is set in the object that is an object`, function() {
       expect(Utils.pickObject('heights', object)).toEqual({});
-      expect(Utils.pickObject(['heights', 'unset'], object, object)).toEqual(
-        object
-      );
+      expect(Utils.pickObject(['heights', 'unset'], object, object)).toEqual(object);
     });
   });
 
@@ -401,7 +389,7 @@ describe('Utils', function() {
       const callbackCache: Utils.CallbackCache<jest.Mock> = {
         callback: jest.fn(),
         parameters: [1, 2],
-        scope: { id: 1 }
+        scope: { id: 1 },
       };
       callbackCache.callback.mockReturnThis();
 
@@ -457,9 +445,7 @@ describe('Utils', function() {
 
   describe('.range(from: number | string, to: number | string, step: number = 1): number[] | string[]', function() {
     const alphabets = 'abcdefghijklmnopqrstuvwxyz'.split('');
-    const upperCaseAlphabets = alphabets.map(alphabet =>
-      alphabet.toUpperCase()
-    );
+    const upperCaseAlphabets = alphabets.map(alphabet => alphabet.toUpperCase());
 
     it(`should create a range of numbers if passed in numeric values starting from the given
         from argument and stopping at the given end argument, stepping ahead according to the
@@ -483,7 +469,7 @@ describe('Utils', function() {
       expect(Utils.range('a', 'z')).toEqual(alphabets);
 
       expect(Utils.range('a', 'z', 2)).toEqual(
-        alphabets.filter((char, index) => index % 2 === 0)
+        alphabets.filter((char, index) => index % 2 === 0),
       );
     });
 
@@ -495,7 +481,7 @@ describe('Utils', function() {
       expect(Utils.range('A', 'Z', 0.25)).toEqual(upperCaseAlphabets);
 
       expect(Utils.range('A', 'Z', 2.5)).toEqual(
-        upperCaseAlphabets.filter((char, index) => index % 3 === 0)
+        upperCaseAlphabets.filter((char, index) => index % 3 === 0),
       );
     });
 
@@ -511,31 +497,12 @@ describe('Utils', function() {
   describe('.flatten<T>(arr: Array<T>, depth: number = 1)', function() {
     it(`should flatten the given array up to the given length`, function() {
       const testData = [1, 2, 3, 4, [5, 6, [7, 8, 9, [10]]]];
-      expect(Utils.flatten(testData, 2)).toEqual([
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        [10]
-      ]);
+      expect(Utils.flatten(testData, 2)).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, [10]]);
     });
 
     it(`should default the depth parameter to 1 if not given`, function() {
       const testData = [1, 2, 3, 4, [5, 6, [7, 8, 9, [10]]]];
-      expect(Utils.flatten(testData)).toEqual([
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        [7, 8, 9, [10]]
-      ]);
+      expect(Utils.flatten(testData)).toEqual([1, 2, 3, 4, 5, 6, [7, 8, 9, [10]]]);
     });
 
     it(`should do nothing but return the array if the depth parameter is less than 1`, function() {
@@ -560,10 +527,7 @@ describe('Utils', function() {
     it(`should keep existing properties and override when necessary`, function() {
       const colors = { white: '#fff', grey: '#777', faint: '#999' };
 
-      const copy = Utils.copy(
-        { colors: { white: '#000', red: 'red' } },
-        { colors }
-      );
+      const copy = Utils.copy({ colors: { white: '#000', red: 'red' } }, { colors });
       expect(copy.colors.white).toEqual('#fff');
       expect(copy.colors.red).toEqual('red');
     });
@@ -603,21 +567,12 @@ describe('Utils', function() {
   describe(`.expandProperty(target: object, key: string, value: any, delimiter: string = ".",
         caseStyle= CASE_STYLES.CAMEL_CASE)`, function() {
     it(`should expand the given keys into an object property`, function() {
-      const target = Utils.expandProperty(
-        {},
-        'headers.contentType',
-        'text/html'
-      );
+      const target = Utils.expandProperty({}, 'headers.contentType', 'text/html');
       expect(target.headers.contentType).toEqual('text/html');
     });
 
     it(`should apply camelCase styles to property names during the expansion`, function() {
-      const target = Utils.expandProperty(
-        {},
-        'headers.content-type',
-        'text/html',
-        '.'
-      );
+      const target = Utils.expandProperty({}, 'headers.content-type', 'text/html', '.');
       expect(target.headers.contentType).toEqual('text/html');
     });
 
@@ -628,7 +583,7 @@ describe('Utils', function() {
         'headers.content-type',
         'text/html',
         '.',
-        Utils.CASE_STYLES.SNAKE_CASE
+        Utils.CASE_STYLES.SNAKE_CASE,
       );
       expect(target.headers.content_type).toEqual('text/html');
       expect(target.headers).not.toHaveProperty('contentType');
@@ -641,7 +596,7 @@ describe('Utils', function() {
         'headers.content-type',
         'text/html',
         '.',
-        Utils.CASE_STYLES.NONE
+        Utils.CASE_STYLES.NONE,
       );
       expect(target.headers['content-type']).toEqual('text/html');
       expect(target.headers).not.toHaveProperty('contentType');
@@ -675,54 +630,52 @@ describe('Utils', function() {
     });
   });
 
-  describe(`encodeQuery(name: string, value: string | number | (string|number)[],
+  describe(`encodeDataEntry(name: string, value: string | number | (string|number)[],
         multiValueIdentifier: string = '[]'): string`, function() {
     it(`should encode the given name and value query parameter and return the result`, function() {
-      expect(Utils.encodeQuery('name', 'Harrison')).toEqual('name=Harrison');
+      expect(Utils.encodeDataEntry('name', 'Harrison')).toEqual('name=Harrison');
     });
 
     it(`should append the given multivalue parameter to array value query names for easy
             identification`, function() {
       const fruits = ['apple', 'orange', 'mango'];
-      expect(Utils.encodeQuery('fruits', fruits, '{}')).toEqual(
-        'fruits{}=apple&fruits{}=orange&fruits{}=mango'
+      expect(Utils.encodeDataEntry('fruits', fruits, '{}')).toEqual(
+        'fruits{}=apple&fruits{}=orange&fruits{}=mango',
       );
     });
 
     it(`should default the multivalue parameter to empty [] if not given`, function() {
       const fruits = ['apple', 'orange', 'mango'];
-      expect(Utils.encodeQuery('fruits', fruits)).toEqual(
-        'fruits[]=apple&fruits[]=orange&fruits[]=mango'
+      expect(Utils.encodeDataEntry('fruits', fruits)).toEqual(
+        'fruits[]=apple&fruits[]=orange&fruits[]=mango',
       );
     });
   });
 
-  describe(`encodeQueries(query: {[name: string]: string | number | (string|number)[],
+  describe(`encodeData(query: {[name: string]: string | number | (string|number)[],
         multiValueIdentifier: string = '[]'): string`, function() {
     it(`should encode each name value entries in the given query object and return`, function() {
-      expect(Utils.encodeQueries({ name: 'Harrison' })).toEqual(
-        'name=Harrison'
-      );
+      expect(Utils.encodeData({ name: 'Harrison' })).toEqual('name=Harrison');
     });
 
     it(`should append the given multivalue parameter to array value query names for easy
             identification`, function() {
       const query = {
         name: 'Harrison',
-        fruits: ['apple', 'orange', 'mango']
+        fruits: ['apple', 'orange', 'mango'],
       };
-      expect(Utils.encodeQueries(query, '{}')).toEqual(
-        'name=Harrison&fruits{}=apple&fruits{}=orange&fruits{}=mango'
+      expect(Utils.encodeData(query, '{}')).toEqual(
+        'name=Harrison&fruits{}=apple&fruits{}=orange&fruits{}=mango',
       );
     });
 
     it(`should default the multivalue parameter to empty [] if not given`, function() {
       const query = {
         name: 'Harrison',
-        fruits: ['apple', 'orange', 'mango']
+        fruits: ['apple', 'orange', 'mango'],
       };
-      expect(Utils.encodeQueries(query)).toEqual(
-        'name=Harrison&fruits[]=apple&fruits[]=orange&fruits[]=mango'
+      expect(Utils.encodeData(query)).toEqual(
+        'name=Harrison&fruits[]=apple&fruits[]=orange&fruits[]=mango',
       );
     });
   });
@@ -765,14 +718,10 @@ describe('Utils', function() {
 
   describe('.stripSlashes(path: string): string', function() {
     it(`should strip beginning and ending backward or forward slashes from the given path`, function() {
-      expect(Utils.stripSlashes('/path/to/resource/')).toEqual(
-        'path/to/resource'
-      );
-      expect(Utils.stripSlashes('\\path/to/resource\\')).toEqual(
-        'path/to/resource'
-      );
+      expect(Utils.stripSlashes('/path/to/resource/')).toEqual('path/to/resource');
+      expect(Utils.stripSlashes('\\path/to/resource\\')).toEqual('path/to/resource');
       expect(Utils.stripSlashes('\\/\\/path/to/resource\\/\\/')).toEqual(
-        'path/to/resource'
+        'path/to/resource',
       );
     });
   });
@@ -788,11 +737,11 @@ describe('Utils', function() {
 
     it(`should keep the fractional part within the given maximumFractionDigits argument`, function() {
       const formater = new Intl.NumberFormat(undefined, {
-        maximumFractionDigits: 1
+        maximumFractionDigits: 1,
       });
       const value = 50002;
       expect(Utils.convertToMemoryUnit(value, 1)).toEqual(
-        formater.format(value / 1000) + 'kb'
+        formater.format(value / 1000) + 'kb',
       );
     });
   });
@@ -810,17 +759,14 @@ describe('Utils', function() {
   describe(`uniqueArray<T = any>(array: T[]): T[]`, function() {
     it(`should return an array containing unique elements from the given array, respecting cases`, function() {
       expect(
-        Utils.uniqueArray(['2', 2, '2', 0, '0', '0', null, null, undefined])
+        Utils.uniqueArray(['2', 2, '2', 0, '0', '0', null, null, undefined]),
       ).toEqual(['2', 2, 0, '0', null, undefined]);
     });
 
     it(`should also check objects fo strict equality`, function() {
       const object1 = {};
       const object2 = {};
-      expect(Utils.uniqueArray([object1, object1, object2])).toEqual([
-        object1,
-        object2
-      ]);
+      expect(Utils.uniqueArray([object1, object1, object2])).toEqual([object1, object2]);
     });
   });
 });
