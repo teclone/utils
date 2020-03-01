@@ -890,19 +890,6 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@forensic-js/node-utils@1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@forensic-js/node-utils/-/node-utils-1.0.2.tgz#376c010cebbe268ef5e719124f07816579c2d4c9"
-  integrity sha512-bFbUJJ32x7ls+qGAoDnVAKqTSI2dxOx8Kyk77lP1gSofzjqBhF46OTS339q6KZIg2PuzvrfJp+ithev/cagCGA==
-  dependencies:
-    "@babel/plugin-transform-runtime" "7.4.3"
-    "@babel/runtime" "7.4.3"
-
-"@forensic-js/utils@2.9.0":
-  version "2.9.0"
-  resolved "https://registry.yarnpkg.com/@forensic-js/utils/-/utils-2.9.0.tgz#9fde9ed9f4b1416e5d94832d8600b6afd2c71127"
-  integrity sha512-BST/ASr53UiOF9bNhR0ZEhGYy1V9LZ+PJCDLZ9OCu3CfXIi2yerwpbPnyIUARyjRoipJ6ve5s+dZQEOhtgODdQ==
-
 "@jest/console@^24.7.1", "@jest/console@^24.9.0":
   version "24.9.0"
   resolved "https://registry.yarnpkg.com/@jest/console/-/console-24.9.0.tgz#79b1bc06fb74a8cfb01cbdedf945584b1b9707f0"
@@ -1303,6 +1290,51 @@
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@teclone/global/-/global-1.0.0.tgz#3c25b75514d555ec6d3f1dba03f85d942b3939e2"
   integrity sha512-U20DRE3Hn7euijxlBfwUwGS7uSA7Bqi86atyK2oLpzdRkXZgldH4skFq0wtKBurBIyMwB5Rg7tohLjwyosUIEw==
+
+"@teclone/global@1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@teclone/global/-/global-1.0.1.tgz#87e4d406b9d9b3e3f2321693fab6cbc549970b60"
+  integrity sha512-K+d1N8ms6yzKrz6aZIzfzyropdxsJ7gNtQmZZOLHAS2mKrl6biQpryzEgzDg1FcYfPdAPgtl/ve+8FLzwfrGZg==
+
+"@teclone/node-utils@1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@teclone/node-utils/-/node-utils-1.0.4.tgz#e049cec18e382043d6ca0854fb3ff14fa82a954e"
+  integrity sha512-aMTuOExhXfgo1s8Qe4cQMyVP5GAvBa0m1xTVnDSeRQgotFSNvFzkBDEw16yFho5ij8cXBCMxym0TwC+ZB7bZqQ==
+  dependencies:
+    "@babel/plugin-transform-runtime" "7.4.3"
+    "@babel/runtime" "7.4.3"
+
+"@teclone/rollup-all@1.10.8":
+  version "1.10.8"
+  resolved "https://registry.yarnpkg.com/@teclone/rollup-all/-/rollup-all-1.10.8.tgz#e3caf2a0748fd94892e4c5635cd22b1509cf462c"
+  integrity sha512-iZ7pncngmaei+cuzRm/Hznuq9YY+Uvp07fbt9kGWkkNkBiEbi4PijdBMJLCNZ9hYjHLIWW3XFnbdh1In8cTPiA==
+  dependencies:
+    "@babel/core" "7.7.5"
+    "@babel/plugin-proposal-class-properties" "^7.4.0"
+    "@babel/plugin-proposal-nullish-coalescing-operator" "7.7.4"
+    "@babel/plugin-proposal-object-rest-spread" "^7.4.0"
+    "@babel/plugin-proposal-optional-chaining" "7.7.5"
+    "@babel/plugin-transform-runtime" "7.7.6"
+    "@babel/preset-env" "7.7.6"
+    "@babel/preset-typescript" "7.7.4"
+    "@babel/runtime" "7.7.6"
+    "@rollup/plugin-commonjs" "11.0.1"
+    "@rollup/plugin-json" "4.0.0"
+    "@rollup/plugin-node-resolve" "7.0.0"
+    "@teclone/node-utils" "1.0.4"
+    "@teclone/utils" "2.14.3"
+    args "5.0.1"
+    chalk "3.0.0"
+    rollup "1.27.9"
+    rollup-plugin-babel "4.3.3"
+    rollup-plugin-terser "5.1.2"
+
+"@teclone/utils@2.14.3":
+  version "2.14.3"
+  resolved "https://registry.yarnpkg.com/@teclone/utils/-/utils-2.14.3.tgz#06e6999a0719e1769243836b688fef291b94e072"
+  integrity sha512-8FMfVUjhwypQwDfnwUkYABXLPK0WDBzkYqUQow4axK0BJp9mlVfqvEWMve6vO2Ertk9mV+Tvv+hxiV2vYhFogA==
+  dependencies:
+    "@teclone/global" "1.0.0"
 
 "@tootallnate/once@1":
   version "1.0.0"
@@ -7729,31 +7761,6 @@ rimraf@^2.5.2, rimraf@^2.5.4, rimraf@^2.6.2, rimraf@^2.6.3:
   integrity sha512-uWjbaKIK3T1OSVptzX7Nl6PvQ3qAGtKEtVRjRuazjfL3Bx5eI409VZSqgND+4UNnmzLVdPj9FqFJNPqBZFve4w==
   dependencies:
     glob "^7.1.3"
-
-rollup-all@1.10.6:
-  version "1.10.6"
-  resolved "https://registry.yarnpkg.com/rollup-all/-/rollup-all-1.10.6.tgz#3e6f7f8d7d4d86bc65b0cf128babcdb42e341e37"
-  integrity sha512-XxHGPsx+6yczIzbU9r42lch049I2JfBTnsxJl+9iLNHr9XhfNjGrl86crQ1lyq0wdG5AwQjgdPcl1IX+sq1CLg==
-  dependencies:
-    "@babel/core" "7.7.5"
-    "@babel/plugin-proposal-class-properties" "^7.4.0"
-    "@babel/plugin-proposal-nullish-coalescing-operator" "7.7.4"
-    "@babel/plugin-proposal-object-rest-spread" "^7.4.0"
-    "@babel/plugin-proposal-optional-chaining" "7.7.5"
-    "@babel/plugin-transform-runtime" "7.7.6"
-    "@babel/preset-env" "7.7.6"
-    "@babel/preset-typescript" "7.7.4"
-    "@babel/runtime" "7.7.6"
-    "@forensic-js/node-utils" "1.0.2"
-    "@forensic-js/utils" "2.9.0"
-    "@rollup/plugin-commonjs" "11.0.1"
-    "@rollup/plugin-json" "4.0.0"
-    "@rollup/plugin-node-resolve" "7.0.0"
-    args "5.0.1"
-    chalk "3.0.0"
-    rollup "1.27.9"
-    rollup-plugin-babel "4.3.3"
-    rollup-plugin-terser "5.1.2"
 
 rollup-plugin-babel@4.3.3:
   version "4.3.3"
