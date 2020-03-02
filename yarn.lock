@@ -1291,10 +1291,10 @@
   resolved "https://registry.yarnpkg.com/@teclone/global/-/global-1.0.0.tgz#3c25b75514d555ec6d3f1dba03f85d942b3939e2"
   integrity sha512-U20DRE3Hn7euijxlBfwUwGS7uSA7Bqi86atyK2oLpzdRkXZgldH4skFq0wtKBurBIyMwB5Rg7tohLjwyosUIEw==
 
-"@teclone/global@1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@teclone/global/-/global-1.0.1.tgz#87e4d406b9d9b3e3f2321693fab6cbc549970b60"
-  integrity sha512-K+d1N8ms6yzKrz6aZIzfzyropdxsJ7gNtQmZZOLHAS2mKrl6biQpryzEgzDg1FcYfPdAPgtl/ve+8FLzwfrGZg==
+"@teclone/global@1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@teclone/global/-/global-1.1.0.tgz#a7792fcf57dee54bbd59e8251c01f03697e74b34"
+  integrity sha512-r7qqDd1hBp4hE6mO9hWSHn+3JyUOOQiUO12GhKBowYq2w8fGWY90d/N62FpFXtBDMh/kLGwqho3Qn4bR1gJl/w==
 
 "@teclone/node-utils@1.0.4":
   version "1.0.4"

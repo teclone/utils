@@ -56,6 +56,6 @@
     "url": "https://github.com/teclone/utils.git"
   },
   "dependencies": {
-    "@teclone/global": "1.0.1"
+    "@teclone/global": "1.1.0"
   }
 }
