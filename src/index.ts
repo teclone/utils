@@ -897,6 +897,13 @@ export const notificationSupported = () => {
 };
 
 /**
+ * detects if push notifications permission is granted
+ */
+export const isNotificationGranted = () => {
+  return notificationSupported() && Notification.permission === 'granted';
+};
+
+/**
  * detects if push manager is supported
  */
 export const pushManagerSupported = () => {

@@ -12,7 +12,12 @@
     "skipLibCheck": true,
     "noUnusedLocals": true,
     "noUnusedParameters": false,
-    "lib": ["dom", "es5", "es2015.collection", "es2015.iterable"]
+    "esModuleInterop": true,
+    "module": "esnext",
+    "jsx": "react",
+    "lib": ["dom", "es5", "es2015.collection", "es2015.iterable"],
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true
   },
   "include": ["src"],
   "exclude": []
