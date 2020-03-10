@@ -519,11 +519,7 @@ export const copy = <T extends object, O extends object>(
   } => {
   const cloneEach = (dest: any, value: any) => {
     if (isArray(value)) {
-      dest = makeArray(dest);
-      value.forEach((current, index) => {
-        dest[index] = cloneEach(null, current);
-      });
-      return dest;
+      return value.map(current => cloneEach(null, current));
     }
 
     if (isCallable(value) || isRegex(value) || !isObject(value)) {
