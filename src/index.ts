@@ -220,7 +220,7 @@ export const isTypeOf = <T extends O, O extends object = any>(
   props: string | string[],
   target: O,
 ): target is T => {
-  return makeArray(props).every(prop => typeof getValue(prop, target) !== 'undefined');
+  return makeArray(props).every((prop) => typeof getValue(prop, target) !== 'undefined');
 };
 
 /**
@@ -312,8 +312,8 @@ export const deleteProperty = (key: string, target: object): boolean => {
  * the properties could not be deleted.
  */
 export const deleteProperties = (keys: string[], target: object) => {
-  const results = keys.map(key => deleteProperty(key, target));
-  return results.length === 0 || results.every(result => result);
+  const results = keys.map((key) => deleteProperty(key, target));
+  return results.length === 0 || results.every((result) => result);
 };
 
 /**
@@ -366,7 +366,7 @@ export function scopeCallback<T = any>(
  * schedules the execution of a scoped callback to a given time
  */
 export const scheduleCallback = (scopedCallback: Callback, time: number = 1000) => {
-  return new Promise(function(resolve) {
+  return new Promise(function (resolve) {
     setTimeout(() => {
       resolve(scopedCallback());
     }, time);
@@ -519,7 +519,7 @@ export const copy = <T extends object, O extends object>(
   } => {
   const cloneEach = (dest: any, value: any) => {
     if (isArray(value)) {
-      return value.map(current => cloneEach(null, current));
+      return value.map((current) => cloneEach(null, current));
     }
 
     if (isCallable(value) || isRegex(value) || !isObject(value)) {
@@ -533,7 +533,7 @@ export const copy = <T extends object, O extends object>(
     return dest;
   };
 
-  objects.forEach(item => {
+  objects.forEach((item) => {
     if (isObject(item)) {
       for (const [key, value] of Object.entries(item)) {
         target[key] = cloneEach(target[key], value);
@@ -568,7 +568,7 @@ export const snakeCase = (
 ): string => {
   return text
     .split(delimiter)
-    .map(token => token.toLowerCase())
+    .map((token) => token.toLowerCase())
     .join('_');
 };
 
@@ -684,8 +684,8 @@ export const encodeDataEntry = (
   name = encodeURIComponent(name);
   if (isArray(value)) {
     return value
-      .map(current => encodeURIComponent(current.toString()))
-      .map(current => {
+      .map((current) => encodeURIComponent(current.toString()))
+      .map((current) => {
         return `${name}${multiValueIdentifier}=${current}`;
       })
       .join('&');
@@ -705,7 +705,7 @@ export const encodeData = (
   multiValueIdentifier: string = '[]',
 ): string => {
   return Object.keys(query)
-    .map(name => {
+    .map((name) => {
       return encodeDataEntry(name, query[name], multiValueIdentifier);
     })
     .join('&');
@@ -815,7 +815,7 @@ export const uniqueArray = <T = any>(array: T[]): T[] => {
 
   const unique: T[] = [];
 
-  array.forEach(element => {
+  array.forEach((element) => {
     const elementType = isNull(element) ? 'null' : typeof element;
     if (elementType === 'null' || elementType === 'undefined') {
       if (typeof typedHashes[elementType] === 'undefined') {
@@ -824,7 +824,7 @@ export const uniqueArray = <T = any>(array: T[]): T[] => {
       }
     } else if (typeof typedHashes[elementType] === 'undefined') {
       // we are dealing with objects.
-      if (unique.length === 0 || unique.every(current => current !== element)) {
+      if (unique.length === 0 || unique.every((current) => current !== element)) {
         unique.push(element);
       }
     } else {
@@ -893,10 +893,14 @@ export const notificationSupported = () => {
 };
 
 /**
- * detects if push notifications permission is granted
+ * returns the status of notification
  */
-export const isNotificationGranted = () => {
-  return notificationSupported() && Notification.permission === 'granted';
+export const notificationStatus = (): NotificationPermission | 'not-supported' => {
+  if (notificationSupported()) {
+    return Notification.permission;
+  } else {
+    return 'not-supported';
+  }
 };
 
 /**
@@ -908,6 +912,34 @@ export const pushManagerSupported = () => {
     'PushManager' in getGlobal() &&
     PushSubscription.prototype.hasOwnProperty('getKey')
   );
+};
+
+/**
+ * request for notification permission
+ */
+export const requestNotification = () => {
+  const hasPromiseSupport = () => {
+    try {
+      Notification.requestPermission().then();
+    } catch (e) {
+      return false;
+    }
+    return true;
+  };
+
+  return new Promise((resolve) => {
+    if (notificationSupported()) {
+      if (hasPromiseSupport()) {
+        Notification.requestPermission().then((status) => {
+          resolve(status);
+        });
+      } else {
+        Notification.requestPermission((status) => {
+          resolve(status);
+        });
+      }
+    }
+  });
 };
 
 /**
@@ -936,30 +968,6 @@ export const setToStorage = (key: string, value: string) => {
     return true;
   }
   return false;
-};
-
-/**
- * request for notification permission
- */
-export const requestNotification = () => {
-  const hasPromiseSupport = () => {
-    try {
-      Notification.requestPermission().then();
-    } catch (e) {
-      return false;
-    }
-    return true;
-  };
-
-  return new Promise(resolve => {
-    if (notificationSupported()) {
-      if (hasPromiseSupport()) {
-        Notification.requestPermission().then(status => resolve(status));
-      } else {
-        Notification.requestPermission(status => resolve(status));
-      }
-    }
-  });
 };
 
 /**
