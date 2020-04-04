@@ -892,10 +892,12 @@ export const notificationSupported = () => {
   }
 };
 
+export type NotificationStatus = NotificationPermission | 'not-supported';
+
 /**
  * returns the status of notification
  */
-export const notificationStatus = (): NotificationPermission | 'not-supported' => {
+export const notificationStatus = (): NotificationStatus => {
   if (notificationSupported()) {
     return Notification.permission;
   } else {
