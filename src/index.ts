@@ -1112,4 +1112,14 @@ export const isStandaloneApp = () => {
   return false;
 };
 
+/**
+ * sets timeout for the given amount of time
+ * @param time
+ */
+export const sleep = (time: number = 3000) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, time);
+  });
+};
+
 export * from '@teclone/global';
