@@ -8,9 +8,7 @@
 
 Utils is a collection of utility methods for day to day web application and library development. It is developed for reusability purposes as it is utilized by most of all libraries published by same author.
 
-If you bumped into this project and find it useful for your project, please don't hesitate to give us a star.
-
-because it is a typescript project, you get excellent auto-completion and type checks.
+If you bumped into this project and find it useful for your project, please don't hesitate to give us a star. Because it is a typescript project, you get excellent auto-completion and type checks.
 
 ## Installation
 
