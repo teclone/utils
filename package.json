@@ -17,6 +17,7 @@
     "report-coverage": "jest --coverage --coverageReporters=text-lcov | coveralls",
     "semantic-release": "semantic-release"
   },
+  "sideEffects": false,
   "keywords": [
     "utility-methods",
     "node-utils",
@@ -33,7 +34,7 @@
     "@babel/plugin-proposal-optional-chaining": "7.10.1",
     "@babel/preset-env": "7.10.2",
     "@babel/preset-typescript": "7.10.1",
-    "@teclone/rollup-all": "1.12.4",
+    "@teclone/rollup-all": "1.12.7",
     "@types/jest": "25.2.3",
     "babel-jest": "26.0.1",
     "commitizen": "4.1.2",

@@ -211,41 +211,22 @@ describe('Utils', function () {
     });
   });
 
-  describe(`.isTypeof<T extends O, O extends object = any>(props: string | string, target: O): target is T`, function () {
+  describe(`.isTypeof<T extends O, O extends object = any>(target: O, props: string | string[]): target is T`, function () {
     it(`should assert that target is of type T if all the given props are defined in the
             target object`, function () {
-      expect(Utils.isTypeOf<Array<number>>('length', [])).toEqual(true);
+      expect(Utils.isTypeOf<Array<number>>([], 'length')).toEqual(true);
     });
 
     it(`should assert that target is not of type T if any of the given props is not defined in
             the target object`, function () {
-      expect(Utils.isTypeOf<Array<number>>('len', [])).toEqual(false);
+      expect(Utils.isTypeOf<Array<number>>([], 'len')).toEqual(false);
     });
   });
 
-  describe('.deleteProperty(key: string, target: object): boolean', function () {
-    it(`should delete the given property from the target object`, function () {
-      const target = { name: 'name' };
-      expect(Utils.deleteProperty('name', target)).toBeTruthy();
-      expect(target.name).toBeUndefined();
-    });
-
-    it(`should return false if the given property cannot be deleted because it is non
-        configurable`, function () {
-      const target = {};
-      Object.defineProperty(target, 'name', {
-        value: 'name',
-        configurable: false,
-      });
-      expect(Utils.deleteProperty('name', target)).toBeFalsy();
-      expect(target['name']).toBeDefined();
-    });
-  });
-
-  describe('.deleteProperties(keys: string[], target: object): boolean', function () {
+  describe('.deleteProperties(target: object, ...keys: string[]): boolean', function () {
     it(`should delete the given array of properties from the target object`, function () {
       const target = { name: 'name' };
-      expect(Utils.deleteProperties(['name'], target)).toBeTruthy();
+      expect(Utils.deleteProperties(target, 'name')).toBeTruthy();
       expect(target.name).toBeUndefined();
     });
 
@@ -256,78 +237,78 @@ describe('Utils', function () {
         value: 'name',
         configurable: false,
       });
-      expect(Utils.deleteProperties(['age', 'name'], target)).toBeFalsy();
+      expect(Utils.deleteProperties(target, 'age', 'name')).toBeFalsy();
       expect(target['name']).toBeDefined();
       expect(target.age).toBeUndefined();
     });
   });
 
-  describe('.keyNotSetOrTrue(key: string, object: object): boolean', function () {
+  describe('.keyNotSetOrTrue(object: object, key: string,): boolean', function () {
     it(`should return true if key is not set in the given object`, function () {
-      expect(Utils.keyNotSetOrTrue('key', {})).toBeTruthy();
+      expect(Utils.keyNotSetOrTrue({}, 'key')).toBeTruthy();
     });
 
     it(`should return true if key is set in the given object and its value is truthy`, function () {
-      expect(Utils.keyNotSetOrTrue('key', { key: 1 })).toBeTruthy();
+      expect(Utils.keyNotSetOrTrue({ key: 1 }, 'key')).toBeTruthy();
     });
 
     it(`should return false if key is set in the given object and its value is falsy`, function () {
-      expect(Utils.keyNotSetOrTrue('key', { key: 0 })).toBeFalsy();
+      expect(Utils.keyNotSetOrTrue({ key: 0 }, 'key')).toBeFalsy();
     });
   });
 
-  describe('.keySetAndTrue(key: string, object: object): boolean', function () {
+  describe('.keySetAndTrue(object: object, key: string): boolean', function () {
     it(`should return true if key is set in the given object and true`, function () {
-      expect(Utils.keySetAndTrue('key', { key: true })).toBeTruthy();
+      expect(Utils.keySetAndTrue({ key: true }, 'key')).toBeTruthy();
     });
 
     it(`should return false if key is not set in the given object or if key is set but
         its value is falsy`, function () {
-      expect(Utils.keySetAndTrue('key', {})).toBeFalsy();
-      expect(Utils.keySetAndTrue('key', { key: false })).toBeFalsy();
+      expect(Utils.keySetAndTrue({}, 'key')).toBeFalsy();
+      expect(Utils.keySetAndTrue({ key: false }, 'key')).toBeFalsy();
     });
   });
 
-  describe('.pickValue<T=any>(keys: string | string[], object: object, defaultValue: T = null): T', function () {
+  describe('.pickValue<T=any>(object: object, keys: string | string[], defaultValue: T = null): T', function () {
     const object = { name: 'Jack', age: 10 };
 
     it(`should return the value for the first set key in the object`, function () {
-      expect(Utils.pickValue('name', object)).toEqual(object.name);
-      expect(Utils.pickValue(['height', 'name'], object)).toEqual(object.name);
-      expect(Utils.pickValue(['height', 'age', 'name'], object)).toEqual(object.age);
+      expect(Utils.pickValue(object, 'name')).toEqual(object.name);
+      expect(Utils.pickValue(object, ['height', 'name'])).toEqual(object.name);
+      expect(Utils.pickValue(object, ['height', 'age', 'name'])).toEqual(object.age);
     });
 
-    it(`should capture any error that occurs while trying the access value`, function () {
+    it(`should capture any error that occurs while trying the to access value`, function () {
       const proxy = new Proxy(object, {
         get() {
           throw new Error('you cant read from this object');
         },
       });
-      expect(Utils.pickValue('name', proxy)).toBeUndefined();
+      expect(Utils.pickValue(proxy, 'name')).toBeUndefined();
     });
 
     it(`should return the default value if no key is set in the object`, function () {
-      expect(Utils.pickValue('height', object)).toBeUndefined();
-      expect(Utils.pickValue(['height', 'unset'], object, 22)).toEqual(22);
+      expect(Utils.pickValue(object, 'height')).toBeUndefined();
+      expect(Utils.pickValue(object, ['height', 'unset'], 22)).toEqual(22);
     });
   });
 
-  describe('.pickArray<T=any>(keys: string | string[], object: object, defaultValue: T[] = []): T[]', function () {
+  describe('.pickArray<T=any>(object: object, keys: string | string[], defaultValue: T[] = []): T[]', function () {
     const object = { names: ['Jack', 'Jane'], ages: [10, 20, 30] };
 
     it(`should return the value for the first set key in the object that is an array`, function () {
-      expect(Utils.pickArray('names', object)).toEqual(object.names);
-      expect(Utils.pickArray(['heights', 'names'], object)).toEqual(object.names);
-      expect(Utils.pickArray(['heights', 'ages', 'names'], object)).toEqual(object.ages);
+      expect(Utils.pickArray(object, 'names')).toEqual(object.names);
+      expect(Utils.pickArray(object, ['heights', 'names'])).toEqual(object.names);
+      expect(Utils.pickArray(object, ['heights', 'ages', 'names'])).toEqual(object.ages);
     });
 
     it(`should return the default value if no key is set in the object that is an array`, function () {
-      expect(Utils.pickArray('heights', object)).toEqual([]);
-      expect(Utils.pickArray(['heights', 'unset'], object, [22.5])).toEqual([22.5]);
+      expect(Utils.pickArray(object, 'heights')).toEqual([]);
+      expect(Utils.pickArray(object, ['heights', 'unset'], [22.5])).toEqual([22.5]);
     });
   });
 
-  describe('.pickObject(keys: string | string[], object: object, defaultValue: object = {}): object', function () {
+  describe('.pickObject( object: object, keys: string | string[], defaultValue: object = {}): object', function () {
     const object = {
       settings: { notify: true, zoom: false },
       themes: ['oneUI', 'touchWiz'],
@@ -335,13 +316,15 @@ describe('Utils', function () {
     };
 
     it(`should return the value for the first set key in the object that is an object`, function () {
-      expect(Utils.pickObject('settings', object)).toEqual(object.settings);
-      expect(Utils.pickObject(['themes', 'settings'], object)).toEqual(object.settings);
+      expect(Utils.pickObject(object, 'settings', object)).toEqual(object.settings);
+      expect(Utils.pickObject(object, ['themes', 'settings'], object)).toEqual(
+        object.settings,
+      );
     });
 
     it(`should return the default value if no key is set in the object that is an object`, function () {
-      expect(Utils.pickObject('heights', object)).toEqual({});
-      expect(Utils.pickObject(['heights', 'unset'], object, object)).toEqual(object);
+      expect(Utils.pickObject(object, 'heights')).toEqual({});
+      expect(Utils.pickObject(object, ['heights', 'unset'], object)).toEqual(object);
     });
   });
 
