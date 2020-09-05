@@ -15,3 +15,4 @@ export * from './isDocumentNode';
 export * from './isElementNode';
 export * from './isAndroid';
 export * from './isTypeOf';
+export * from './isPwa';
