@@ -12,3 +12,4 @@ export * from './getClientSize';
 export * from './getScrollSize';
 export * from './getScrollPositions';
 export * from './getScrollPercentages';
+export * from './hasRelatedAppInstalled';
