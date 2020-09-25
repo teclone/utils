@@ -1,7 +1,7 @@
 module.exports = {
-    'testEnvironment': 'node',
-    'collectCoverage': true,
-    'transform': {
-        '^.+\\.tsx?$': 'babel-jest'
-    }
-}
+  testEnvironment: 'node',
+  collectCoverage: true,
+  transform: {
+    '^.+\\.tsx?$': 'babel-jest',
+  },
+};

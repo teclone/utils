@@ -1,17 +1,39 @@
-export const get = <T = any>(obj: object, key: string | number | boolean, def?: T): T => {
-  try {
-    const keyArray =
-      typeof key === 'string' || typeof key === 'boolean'
-        ? key.toString().split('.')
-        : [key];
-    let start = -1,
-      end = keyArray.length;
+import { isArray } from '../../typeof';
 
-    while (++start < end) {
-      obj = obj ? obj[keyArray[start]] : undefined;
+export const get = <T = any>(
+  obj: object,
+  key: string | number | boolean,
+  def?: T
+): T => {
+  try {
+    const keys = key.toString().split('.');
+
+    let currentObj = obj;
+    let startIndex = -1;
+
+    while (++startIndex < keys.length - 1) {
+      currentObj = currentObj ? currentObj[keys[startIndex]] : undefined;
     }
-    return (obj === undefined ? def : obj) as any;
-  } catch (ex) {
-    return def;
-  }
+
+    const lastKey = keys.pop();
+    if (isArray(currentObj) && /^[+-]\d+$/.test(lastKey)) {
+      const numberKey = parseInt(lastKey);
+
+      const multiplier: number = numberKey < 0 ? -1 : 1;
+      const absKey = Math.abs(numberKey);
+
+      if (currentObj.length > absKey) {
+        const value = currentObj[absKey];
+        if (typeof value === 'number') {
+          return (value * multiplier) as any;
+        } else {
+          return value as any;
+        }
+      }
+    } else if (currentObj) {
+      return currentObj[lastKey] || def;
+    }
+  } catch (ex) {}
+
+  return def;
 };
