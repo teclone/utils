@@ -1,3 +1,5 @@
+import { toString } from '../toString';
+
 /**
  * test if argument is a regular expressions
  */
