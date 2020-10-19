@@ -1,6 +1,5 @@
 import { localStorageSupported } from '../localStorageSupported';
-import { isUndefined, isNull } from '../../typeof';
-import { host } from '../../helpers';
+import { host, isNull, isUndefined } from '../../helpers';
 
 /**
  * retrieves a value from storage

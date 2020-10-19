@@ -1,5 +1,4 @@
-import { isString } from '../../typeof';
-import { isBrowser, makeArray } from '../../helpers';
+import { isBrowser, makeArray, isString } from '../../helpers';
 
 /**
  * detects if the given path matches the current path
@@ -8,7 +7,7 @@ import { isBrowser, makeArray } from '../../helpers';
 export const isActivePath = (
   path: string,
   currentPath?: string,
-  prefixes?: string | RegExp | Array<string | RegExp>,
+  prefixes?: string | RegExp | Array<string | RegExp>
 ) => {
   const testPrefix = (prefix: string | RegExp) => {
     if (isString(prefix)) {
@@ -18,7 +17,8 @@ export const isActivePath = (
     }
   };
 
-  currentPath = !currentPath && isBrowser() ? window.location.pathname : currentPath;
+  currentPath =
+    !currentPath && isBrowser() ? window.location.pathname : currentPath;
   if (!currentPath || !path.startsWith('/')) {
     return false;
   }

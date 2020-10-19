@@ -1,4 +1,4 @@
-import { isArray } from '../../typeof';
+import { isArray } from '../../helpers';
 
 /**
  * encodes the query name and value and returns the result
@@ -10,7 +10,7 @@ import { isArray } from '../../typeof';
 export const encodeDataEntry = (
   name: string,
   value: string | number | (string | number)[],
-  multiValueIdentifier: string = '[]',
+  multiValueIdentifier: string = '[]'
 ): string => {
   name = encodeURIComponent(name);
   if (isArray(value)) {

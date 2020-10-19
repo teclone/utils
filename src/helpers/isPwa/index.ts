@@ -1,4 +1,4 @@
-import { isBrowser } from '../../helpers';
+import { isBrowser } from '@teclone/global';
 
 /**
  * returns true if the web app is launched in standalone mode, for pwa

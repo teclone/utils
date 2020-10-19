@@ -1,4 +1,4 @@
-import { isNull } from '../../typeof';
+import { isNull } from '../../helpers';
 
 /**
  * returns only unique elements in the array, respecting element types. in essence, 0 is considered different from '0'
@@ -28,7 +28,10 @@ export const uniqueArray = <T = any>(array: T[]): T[] => {
       }
     } else if (typeof typedHashes[elementType] === 'undefined') {
       // we are dealing with objects.
-      if (unique.length === 0 || unique.every((current) => current !== element)) {
+      if (
+        unique.length === 0 ||
+        unique.every((current) => current !== element)
+      ) {
         unique.push(element);
       }
     } else {

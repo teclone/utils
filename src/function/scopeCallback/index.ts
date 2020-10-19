@@ -1,5 +1,4 @@
-import { Callback, makeArray, get } from '../../helpers';
-import { isObject } from '../../typeof';
+import { Callback, makeArray, get, isObject } from '../../helpers';
 
 export interface CallbackCache<C extends Function = Callback, P = any> {
   callback: C;
@@ -20,7 +19,7 @@ export function scopeCallback(callbackCache: CallbackCache): (...args) => any;
 export function scopeCallback<T = any>(
   callback: Callback,
   scope?: object,
-  parameters?: T | T[],
+  parameters?: T | T[]
 ): (...args) => any;
 
 /**
@@ -29,7 +28,7 @@ export function scopeCallback<T = any>(
 export function scopeCallback<T = any>(
   callback: Callback | CallbackCache,
   scope: object = null,
-  parameters: T | T[] = [],
+  parameters: T | T[] = []
 ) {
   if (isObject<CallbackCache>(callback)) {
     return (...args) => {

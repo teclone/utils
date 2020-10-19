@@ -1,5 +1,5 @@
 import { alphabets } from '../../constants';
-import { isString } from '../../typeof';
+import { isString } from '../../helpers';
 
 /**
  * creates a range of numerical values
@@ -17,11 +17,13 @@ export function range(from: string, to: string, step?: number): string[];
 export function range(
   from: string | number,
   to: string | number,
-  step: number = 1,
+  step: number = 1
 ): number[] | string[] {
   const result = [];
   const letters =
-    from.toString().toLowerCase() !== from ? alphabets.toUpperCase() : alphabets;
+    from.toString().toLowerCase() !== from
+      ? alphabets.toUpperCase()
+      : alphabets;
   step = step <= 0 ? 1 : step;
 
   // resolve start and end points

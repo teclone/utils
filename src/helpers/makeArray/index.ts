@@ -1,14 +1,13 @@
-import { isArray } from '../../typeof/isArray';
-import { isParameter } from '../../typeof/isParameter';
+import { isParameter } from '../isParameter';
 
 /**
  * puts argument into an array if it is not an array,
  */
 export const makeArray = <T>(
   arg: T | T[] | null | undefined,
-  isNullable: boolean = false,
+  isNullable: boolean = false
 ): T[] => {
-  if (isArray(arg)) {
+  if (Array.isArray(arg)) {
     return arg;
   }
 

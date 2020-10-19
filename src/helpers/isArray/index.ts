@@ -1,4 +1,4 @@
-import { toString } from '../../helpers';
+import { toString } from '..';
 
 /**
  * test if argument is an array

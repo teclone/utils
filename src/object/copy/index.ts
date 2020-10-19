@@ -1,5 +1,10 @@
-import { isArray, isCallable, isRegex, isObject } from '../../typeof';
-import { makeObject } from '../../helpers/makeObject';
+import {
+  isArray,
+  isCallable,
+  isRegex,
+  isObject,
+  makeObject,
+} from '../../helpers';
 
 /**
  * copies the objects into the target object, without creating references, unlike Object.assign

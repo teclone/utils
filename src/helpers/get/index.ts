@@ -1,5 +1,3 @@
-import { isArray } from '../../typeof';
-
 export const get = <T = any>(
   obj: object,
   key: string | number | boolean,
@@ -16,7 +14,7 @@ export const get = <T = any>(
     }
 
     const lastKey = keys.pop();
-    if (isArray(currentObj) && /^[+-]\d+$/.test(lastKey)) {
+    if (Array.isArray(currentObj) && /^[+-]\d+$/.test(lastKey)) {
       const numberKey = parseInt(lastKey);
 
       const multiplier: number = numberKey < 0 ? -1 : 1;

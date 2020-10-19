@@ -1,5 +1,4 @@
-import { makeArray, get } from '../../helpers';
-import { isArray } from '../../typeof';
+import { makeArray, get, isArray } from '../../helpers';
 
 /**
  * returns the value for the first key that exists in the object whose value is an array otherwise,
@@ -8,7 +7,7 @@ import { isArray } from '../../typeof';
 export const pickArray = <T = any>(
   object: object,
   keys: string | string[],
-  defaultValue: T[] = [],
+  defaultValue: T[] = []
 ): T[] => {
   let value;
   for (const key of makeArray(keys)) {

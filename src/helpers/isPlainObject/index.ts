@@ -1,4 +1,4 @@
-import { isObject } from '../isObject';
+import { isObject } from '../../helpers';
 
 /**
  * test if argument is a plain javascript object

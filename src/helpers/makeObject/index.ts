@@ -1,4 +1,4 @@
-import { isObject } from '../../typeof';
+import { isObject } from '../isObject';
 
 export function makeObject<T extends object>(arg: T): T;
 export function makeObject(arg: any): object;
