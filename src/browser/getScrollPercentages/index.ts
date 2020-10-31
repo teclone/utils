@@ -1,11 +1,12 @@
 import { getScrollSize } from '../getScrollSize';
 import { getScrollPositions } from '../getScrollPositions';
 import { getClientSize } from '../getClientSize';
+import { DOMTarget } from '../resolveDomTarget';
 
 /**
  * returns the current scroll percentages
  */
-export const getScrolledPercentages = (elem?: HTMLElement | null) => {
+export const getScrolledPercentages = (elem?: DOMTarget) => {
   const result = {
     top: 0,
     left: 0,
