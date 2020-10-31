@@ -13,3 +13,4 @@ export * from './getScrollSize';
 export * from './getScrollPositions';
 export * from './getScrollPercentages';
 export * from './hasRelatedAppInstalled';
+export * from './resolveDomTarget';
