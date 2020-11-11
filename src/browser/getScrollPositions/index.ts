@@ -10,11 +10,11 @@ export const getScrollPositions = (elem?: DOMTarget) => {
     top: 0,
   };
 
-  const getLeftScroll = (elem: HTMLElement) => {
+  const getLeftScroll = (elem: Element) => {
     return elem.scrollLeft || 0;
   };
 
-  const getTopScroll = (elem: HTMLElement) => {
+  const getTopScroll = (elem: Element) => {
     return elem.scrollTop || 0;
   };
 

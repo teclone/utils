@@ -11,11 +11,11 @@ export const getClientSize = (elem?: DOMTarget) => {
     height: 0,
   };
 
-  const getW = (elem: HTMLElement) => {
+  const getW = (elem: Element) => {
     return elem.clientWidth;
   };
 
-  const getH = (elem: HTMLElement) => {
+  const getH = (elem: Element) => {
     return elem.clientHeight;
   };
 

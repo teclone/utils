@@ -11,11 +11,11 @@ export const getScrollSize = (elem?: DOMTarget) => {
     height: 0,
   };
 
-  const getW = (elem: HTMLElement) => {
+  const getW = (elem: Element) => {
     return Math.max(elem.clientWidth, elem.scrollWidth);
   };
 
-  const getH = (elem: HTMLElement) => {
+  const getH = (elem: Element) => {
     return Math.max(elem.clientHeight, elem.scrollHeight);
   };
 

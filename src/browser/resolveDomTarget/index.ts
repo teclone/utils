@@ -3,15 +3,13 @@ import { isBrowser, isElementNode } from '../../helpers';
 export type GlobalWindow = Window & typeof globalThis;
 
 export interface RefDomTarget {
-  current: HTMLElement;
+  current: Element;
   [p: string]: any;
 }
 
-export type DOMTarget = GlobalWindow | RefDomTarget | HTMLElement | null;
+export type DOMTarget = GlobalWindow | RefDomTarget | Element | null;
 
-export const resolveDomTarget = (
-  target: DOMTarget
-): HTMLElement | GlobalWindow => {
+export const resolveDomTarget = (target: DOMTarget): Element | GlobalWindow => {
   let arg: any = target;
   if (arg && arg.current && isElementNode(arg.current)) {
     return arg.current;
