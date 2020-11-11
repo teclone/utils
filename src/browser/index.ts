@@ -14,3 +14,4 @@ export * from './getScrollPositions';
 export * from './getScrollPercentages';
 export * from './hasRelatedAppInstalled';
 export * from './resolveDomTarget';
+export * from './hasIntersectionObserver';
