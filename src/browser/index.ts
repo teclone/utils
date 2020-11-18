@@ -11,7 +11,7 @@ export * from './setToStorage';
 export * from './getClientSize';
 export * from './getScrollSize';
 export * from './getScrollPositions';
-export * from './getScrollPercentages';
+export * from './getScrolledPercentages';
 export * from './hasRelatedAppInstalled';
 export * from './resolveDomTarget';
 export * from './hasIntersectionObserver';
