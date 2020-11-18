@@ -1,21 +1,19 @@
 language: node_js
-cache:
-  directories:
-    - ~/.npm
+cache: yarn
 notifications:
   email: false
 node_js:
   - '10'
   - '12'
 script:
-  - npm run test
+  - yarn test
 jobs:
   include:
     - stage: release
       node_js: '12'
       script:
-        - npm run test
-        - npm run build
+        - yarn test
+        - yarn build
       after_success:
-        - npm run semantic-release
-        - npm run report-coverage
+        - yarn semantic-release
+        - yarn report-coverage
