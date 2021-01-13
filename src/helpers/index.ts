@@ -25,3 +25,4 @@ export * from './isElementNode';
 export * from './isAndroid';
 export * from './isTypeOf';
 export * from './isPwa';
+export * from './isIos';
