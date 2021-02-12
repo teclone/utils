@@ -15,3 +15,4 @@ export * from './getScrolledPercentages';
 export * from './hasRelatedAppInstalled';
 export * from './resolveDomTarget';
 export * from './hasIntersectionObserver';
+export * from './setIdleCallback';
