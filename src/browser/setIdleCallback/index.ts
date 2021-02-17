@@ -1,8 +1,8 @@
-export const setIdleCallback = (callback: () => void, timeout: number) => {
+export const setIdleCallback = (callback: () => void, timeout?: number) => {
   if (typeof window.requestIdleCallback !== 'undefined') {
     const id = window.requestIdleCallback(
       callback,
-      timeout ? { timeout } : undefined
+      typeof timeout !== 'undefined' ? { timeout } : undefined
     );
     return () => {
       window.cancelIdleCallback(id);
