@@ -14,7 +14,7 @@ export const get = <T = any>(
     }
 
     const lastKey = keys.pop();
-    if (Array.isArray(currentObj) && /^[+-]\d+$/.test(lastKey)) {
+    if (Array.isArray(currentObj) && /^[+-]?\d+$/.test(lastKey)) {
       const numberKey = parseInt(lastKey);
 
       const multiplier: number = numberKey < 0 ? -1 : 1;
