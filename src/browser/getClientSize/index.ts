@@ -1,4 +1,4 @@
-import { isBrowser, isElementNode, root } from '../../helpers';
+import { isBrowser, isElementNode } from '../../helpers';
 import { DOMTarget, resolveDomTarget } from '../resolveDomTarget';
 
 /**
@@ -24,8 +24,8 @@ export const getClientSize = (elem?: DOMTarget) => {
     result.width = getW(resolvedElem);
     result.height = getH(resolvedElem);
   } else if (isBrowser()) {
-    result.width = Math.max(getW(root.documentElement));
-    result.height = Math.max(getH(root.documentElement));
+    result.width = Math.max(getW(document.documentElement));
+    result.height = Math.max(getH(document.documentElement));
   }
 
   return result;

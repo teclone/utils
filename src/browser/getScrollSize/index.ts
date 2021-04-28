@@ -1,4 +1,4 @@
-import { isBrowser, isElementNode, root } from '../../helpers';
+import { isBrowser, isElementNode } from '../../helpers';
 import { DOMTarget, resolveDomTarget } from '../resolveDomTarget';
 
 /**
@@ -25,8 +25,14 @@ export const getScrollSize = (elem?: DOMTarget) => {
     result.width = getW(resolvedElem);
     result.height = getH(resolvedElem);
   } else if (isBrowser()) {
-    result.width = Math.max(getW(root.body), getW(root.documentElement));
-    result.height = Math.max(getH(root.body), getH(root.documentElement));
+    result.width = Math.max(
+      getW(document.body),
+      getW(document.documentElement)
+    );
+    result.height = Math.max(
+      getH(document.body),
+      getH(document.documentElement)
+    );
   }
 
   return result;

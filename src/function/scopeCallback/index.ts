@@ -1,4 +1,5 @@
-import { Callback, makeArray, get, isObject } from '../../helpers';
+import { makeArray, get, isObject } from '../../helpers';
+import { Callback } from '../scheduleCallback';
 
 export interface CallbackCache<C extends Function = Callback, P = any> {
   callback: C;

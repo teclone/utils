@@ -1,4 +1,4 @@
-import { isServiceWorker, isBrowser, host } from '../../helpers';
+import { isServiceWorker, isBrowser } from '../../helpers';
 
 /**
  * returns the global object, either window, self or null
@@ -7,7 +7,7 @@ export const getGlobal = () => {
   if (isServiceWorker()) {
     return self;
   } else if (isBrowser()) {
-    return host;
+    return window;
   } else {
     return null;
   }

@@ -1,4 +1,4 @@
-import { isBrowser, host, root, isElementNode } from '../../helpers';
+import { isBrowser, isElementNode } from '../../helpers';
 import { DOMTarget, resolveDomTarget } from '../resolveDomTarget';
 
 /**
@@ -25,14 +25,14 @@ export const getScrollPositions = (elem?: DOMTarget) => {
     result.top = getTopScroll(resolvedElem);
   } else if (isBrowser()) {
     result.top = Math.max(
-      host.pageYOffset,
-      getTopScroll(root.body),
-      getTopScroll(root.documentElement)
+      window.pageYOffset,
+      getTopScroll(document.body),
+      getTopScroll(document.documentElement)
     );
     result.left = Math.max(
-      host.pageXOffset,
-      getLeftScroll(root.body),
-      getLeftScroll(root.documentElement)
+      window.pageXOffset,
+      getLeftScroll(document.body),
+      getLeftScroll(document.documentElement)
     );
   }
 

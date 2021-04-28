@@ -1,4 +1,4 @@
-import { isBrowser } from '@teclone/global';
+import { isBrowser } from '../isBrowser';
 
 /**
  * returns true if browser is android

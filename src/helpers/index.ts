@@ -1,5 +1,3 @@
-export * from '@teclone/global';
-
 export * from './toString';
 export * from './makeArray';
 export * from './get';
@@ -26,3 +24,8 @@ export * from './isAndroid';
 export * from './isTypeOf';
 export * from './isPwa';
 export * from './isIos';
+
+export * from './isBrowser';
+export * from './isNodeJS';
+export * from './isServiceWorker';
+export * from './isReactNative';

@@ -1,5 +1,4 @@
 import { localStorageSupported } from '../localStorageSupported';
-import { host } from '../../helpers';
 
 /**
  * sets a value to storage if storage is a supported.
@@ -7,7 +6,7 @@ import { host } from '../../helpers';
  */
 export const setToStorage = (key: string, value: string) => {
   if (localStorageSupported()) {
-    host.localStorage.setItem(key, value);
+    window.localStorage.setItem(key, value);
     return true;
   }
   return false;
