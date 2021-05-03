@@ -2,9 +2,9 @@
   "name": "@teclone/utils",
   "version": "0.0.0-development",
   "description": "A collection of day-to-day utility methods usable in both node and browser environments",
-  "main": "build/index",
-  "module": "build/esm/index",
-  "typings": "build/index",
+  "main": "index",
+  "module": "esm/index",
+  "typings": "index",
   "publishConfig": {
     "access": "public"
   },

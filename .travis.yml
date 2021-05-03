@@ -15,5 +15,7 @@ jobs:
         - yarn test
         - yarn build
       after_success:
+        - mv build/* ./
+        - rm build -rf
         - yarn semantic-release
         - yarn report-coverage
