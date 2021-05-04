@@ -1,4 +1,4 @@
 /**
  * to string method
  */
-export const toString = Object.prototype.toString;
+export const toString = (arg) => Object.prototype.toString.call(arg);
