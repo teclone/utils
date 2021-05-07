@@ -1546,11 +1546,6 @@
   resolved "https://registry.yarnpkg.com/@teclone/global/-/global-1.1.0.tgz#a7792fcf57dee54bbd59e8251c01f03697e74b34"
   integrity sha512-r7qqDd1hBp4hE6mO9hWSHn+3JyUOOQiUO12GhKBowYq2w8fGWY90d/N62FpFXtBDMh/kLGwqho3Qn4bR1gJl/w==
 
-"@teclone/global@^1.1.1":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@teclone/global/-/global-1.1.1.tgz#28616f43441b8bd39913aab9ae697e6ff1e0e0fa"
-  integrity sha512-AwFRMZbqnqQ/OdWel7RpWu525DpywJJwX/U7FVcincqkpUatFttb6qPGX6yhZmFXKrMe7YO2S3vyr7f2ueIn1w==
-
 "@teclone/node-utils@1.0.5":
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/@teclone/node-utils/-/node-utils-1.0.5.tgz#3296e4f917e24631410e59c10d4ac6366d92d229"
@@ -4583,9 +4578,9 @@ growly@^1.3.0:
   integrity sha1-8QdIy+dq+WS3yWyTxrzCivEgwIE=
 
 handlebars@^4.7.6:
-  version "4.7.6"
-  resolved "https://registry.yarnpkg.com/handlebars/-/handlebars-4.7.6.tgz#d4c05c1baf90e9945f77aa68a7a219aa4a7df74e"
-  integrity sha512-1f2BACcBfiwAfStCKZNrUCgqNZkGsAT7UM3kkYtXuLo0KnaVfjKOyf7PRzB6++aK9STyT1Pd2ZCPe3EGOXleXA==
+  version "4.7.7"
+  resolved "https://registry.yarnpkg.com/handlebars/-/handlebars-4.7.7.tgz#9ce33416aad02dbd6c8fafa8240d5d98004945a1"
+  integrity sha512-aAcXm5OAfE/8IXkcZvCepKU3VzW1/39Fb5ZuqMtgI/hT8X2YgoMvBY5dLhq/cpOvw7Lk1nK/UF71aLG/ZnVYRA==
   dependencies:
     minimist "^1.2.5"
     neo-async "^2.6.0"
@@ -9247,9 +9242,9 @@ typescript@3.9.5:
   integrity sha512-hSAifV3k+i6lEoCJ2k6R2Z/rp/H3+8sdmcn5NrS3/3kE7+RyZXm9aqvxWqjEXHAd8b0pShatpcdMTvEdvAJltQ==
 
 uglify-js@^3.1.4:
-  version "3.10.0"
-  resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-3.10.0.tgz#397a7e6e31ce820bfd1cb55b804ee140c587a9e7"
-  integrity sha512-Esj5HG5WAyrLIdYU74Z3JdG2PxdIusvj6IWHMtlyESxc7kcDz7zYlYjpnSokn1UbpV0d/QX9fan7gkCNd/9BQA==
+  version "3.13.5"
+  resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-3.13.5.tgz#5d71d6dbba64cf441f32929b1efce7365bb4f113"
+  integrity sha512-xtB8yEqIkn7zmOyS2zUNBsYCBRhDkvlNxMMY2smuJ/qA8NCHeQvKCF3i9Z4k8FJH4+PJvZRtMrPynfZ75+CSZw==
 
 uid-number@0.0.6:
   version "0.0.6"
