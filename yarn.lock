@@ -1546,11 +1546,6 @@
   resolved "https://registry.yarnpkg.com/@teclone/global/-/global-1.1.0.tgz#a7792fcf57dee54bbd59e8251c01f03697e74b34"
   integrity sha512-r7qqDd1hBp4hE6mO9hWSHn+3JyUOOQiUO12GhKBowYq2w8fGWY90d/N62FpFXtBDMh/kLGwqho3Qn4bR1gJl/w==
 
-"@teclone/global@^1.1.1":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@teclone/global/-/global-1.1.1.tgz#28616f43441b8bd39913aab9ae697e6ff1e0e0fa"
-  integrity sha512-AwFRMZbqnqQ/OdWel7RpWu525DpywJJwX/U7FVcincqkpUatFttb6qPGX6yhZmFXKrMe7YO2S3vyr7f2ueIn1w==
-
 "@teclone/node-utils@1.0.5":
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/@teclone/node-utils/-/node-utils-1.0.5.tgz#3296e4f917e24631410e59c10d4ac6366d92d229"
@@ -4703,9 +4698,9 @@ hook-std@^2.0.0:
   integrity sha512-zZ6T5WcuBMIUVh49iPQS9t977t7C0l7OtHrpeMb5uk48JdflRX0NSFvCekfYNmGQETnLq9W/isMyHl69kxGi8g==
 
 hosted-git-info@^2.1.4, hosted-git-info@^2.7.1, hosted-git-info@^2.8.8:
-  version "2.8.8"
-  resolved "https://registry.yarnpkg.com/hosted-git-info/-/hosted-git-info-2.8.8.tgz#7539bd4bc1e0e0a895815a2e0262420b12858488"
-  integrity sha512-f/wzC2QaWBs7t9IYqB4T3sR1xviIViXJRJTWBlx2Gf3g0Xi5vI7Yy4koXQ1c9OYDGHN9sBy1DQ2AB8fqZBWhUg==
+  version "2.8.9"
+  resolved "https://registry.yarnpkg.com/hosted-git-info/-/hosted-git-info-2.8.9.tgz#dffc0bf9a21c02209090f2aa69429e1414daf3f9"
+  integrity sha512-mxIDAb9Lsm6DoOJ7xH+5+X4y1LU/4Hi50L9C5sIswK3JzULS4bwk1FvjdBgvYR4bzT4tuUQiC15FE2f5HbLvYw==
 
 hosted-git-info@^3.0.0:
   version "3.0.5"
