@@ -1,9 +1,9 @@
 import { isArray, isObject } from '../../helpers';
 
 /**
- * copies the objects into the target object, without creating references, unlike Object.assign
+ * copies the objects into the target object, shallowly, it means that inner objects can create references
  */
-export const copy = <T extends object, O extends object>(
+export const shallowCopy = <T extends object, O extends object>(
   target: T,
   ...objects: O[]
 ): T &
@@ -21,11 +21,11 @@ export const copy = <T extends object, O extends object>(
 
   const cloneEach = (dest: any, value: any) => {
     if (isArray(value)) {
-      return value.map((current) => cloneEach(null, current));
+      return value.map((current) => current);
     }
 
-    if (isObject(value)) {
-      return copy(isObject(dest) ? dest : {}, value);
+    if (isObject(dest) && isObject(value)) {
+      return shallowCopy(dest, value);
     }
 
     return value;
