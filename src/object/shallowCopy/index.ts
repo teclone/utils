@@ -1,7 +1,7 @@
 import { isArray, isObject } from '../../helpers';
 
 /**
- * copies the objects into the target object, shallowly, it means that inner objects can create references
+ * copies objects into the target object, shallowly, it means that inner objects can create references
  */
 export const shallowCopy = <T extends object, O extends object>(
   target: T,
