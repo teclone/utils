@@ -7,9 +7,11 @@ import { makeArray, get } from '../../helpers';
 export const pickValue = <T = any>(
   object: object,
   keys: string | string[],
-  defaultValue?: T,
+  defaultValue?: T
 ): T => {
-  for (const key of makeArray(keys)) {
+  keys = makeArray(keys);
+  for (let i = 0; i < keys.length; i++) {
+    const key = keys[i];
     if (get(object, key) !== undefined) {
       return object[key];
     }

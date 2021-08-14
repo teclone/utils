@@ -10,7 +10,9 @@ export const pickObject = (
   defaultValue: object = {}
 ): object => {
   let value;
-  for (const key of makeArray(keys)) {
+  keys = makeArray(keys);
+  for (let i = 0; i < keys.length; i++) {
+    const key = keys[i];
     value = get(object, key);
     if (isObject(value)) {
       return value;

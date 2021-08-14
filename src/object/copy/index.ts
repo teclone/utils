@@ -31,9 +31,12 @@ export const copy = <T extends object, O extends object>(
     return value;
   };
 
-  for (const object of objects) {
+  for (let i = 0; i < objects.length; i++) {
+    const object = objects[i];
     if (isObject(object)) {
-      for (const key in object) {
+      const keys = Object.keys(object);
+      for (let j = 0; j < keys.length; j++) {
+        const key = keys[j];
         if (isValidKey(key)) {
           target[key as any] = cloneEach(target[key as any], object[key]);
         }

@@ -10,7 +10,9 @@ export const pickArray = <T = any>(
   defaultValue: T[] = []
 ): T[] => {
   let value;
-  for (const key of makeArray(keys)) {
+  keys = makeArray(keys);
+  for (let i = 0; i < keys.length; i++) {
+    const key = keys[i];
     value = get(object, key);
     if (isArray(value)) {
       return value;
